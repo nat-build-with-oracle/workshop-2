@@ -290,6 +290,7 @@ body.notes-open .slide.is-active{animation:none}
   </div>
   <h2 class="en">Talking costs as much as spawning.</h2>
   <h2 class="th">ค่าคุยกันแพงเท่าค่าแตกเอเจนต์</h2>
+  <p class="src">black:~/.claude/projects + ~/stage-restore · 110,952 transcripts · tool calls only · 2026-09-05</p>
   <div class="note"><p class="en">From 110,952 session transcripts on black, real tool calls only. For every subagent spawned, one SendMessage. Also: TaskCreate 10,456, Workflow 1,963, TeamCreate 1,802 — about 5.8 tasks per team. Both dirs hold some duplicate sessions, so these are upper bounds; the ratio holds.</p><p class="th">จาก transcript 110,952 ไฟล์บน black นับเฉพาะ tool call จริง แตก subagent หนึ่งตัว ส่ง SendMessage หนึ่งครั้ง อีกอย่าง: TaskCreate 10,456, Workflow 1,963, TeamCreate 1,802 ราว 5.8 งานต่อทีม ทั้งสองโฟลเดอร์มี session ซ้ำบ้าง เลยเป็นเพดานบน แต่สัดส่วนยังใช้ได้</p></div>
 </section>
 
@@ -304,6 +305,7 @@ body.notes-open .slide.is-active{animation:none}
   </div>
   <h2 class="en">Three is the habit. Twenty is the ceremony.</h2>
   <h2 class="th">สามคือความเคยชิน ยี่สิบคือพิธีกรรม</h2>
+  <p class="src">73 real <code>/sonnet N</code> calls · 110,952 transcripts on black · 2026-09-05</p>
   <div class="note"><p class="en">73 real /sonnet N calls. Bimodal — nobody picks 8 or 12. Three for everyday tunnel-breaking; twenty for the big pass (a redesign, a book). The prism dig found the same: lens counts cluster at 10 and 20, ignoring a documented cap of 7.</p><p class="th">/sonnet N จริง 73 ครั้ง สองยอด ไม่มีใครเลือก 8 หรือ 12 สามสำหรับทะลุอุโมงค์ทุกวัน ยี่สิบสำหรับรอบใหญ่ (รื้อดีไซน์ เขียนหนังสือ) การขุด prism ก็เจอแบบเดียวกัน จำนวนเลนส์กระจุกที่ 10 กับ 20 เมินเพดาน 7 ในเอกสาร</p></div>
 </section>
 
@@ -317,6 +319,7 @@ body.notes-open .slide.is-active{animation:none}
   </div>
   <h2 class="en">The cheap models do 89% of it.</h2>
   <h2 class="th">โมเดลราคาถูกทำงานไป 89%</h2>
+  <p class="src">black:~/.claude/projects · explicit <code>model:</code> on Agent calls · 2026-09-05</p>
   <div class="note"><p class="en">Explicit model on Agent calls, ~/.claude/projects only. Half of all Agent calls don't name a model at all and inherit the session default. Fleet memory logs a team that "used Opus instead of Sonnet" as friction. Opus decides; Sonnet and Haiku do.</p><p class="th">การระบุ model ตอนเรียก Agent เฉพาะ ~/.claude/projects ครึ่งหนึ่งของ Agent call ไม่ระบุโมเดลเลย รับค่าตั้งต้นของ session มา memory ฟลีตจดทีมที่ "ใช้ Opus แทน Sonnet" ไว้ว่าเป็นความติดขัด Opus ตัดสิน Sonnet กับ Haiku ลงมือ</p></div>
 </section>
 
@@ -440,7 +443,7 @@ body.notes-open .slide.is-active{animation:none}
 <aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
 
 <nav class="chrome" aria-label="Deck navigation">
-  <span class="build" title="built 2026-09-06 11:00 +07">v26.9.6-alpha.1100</span><span class="mark">Multi-Agent Workflows</span>
+  <span class="build" title="built 2026-09-06 14:37 +07">v26.9.6-alpha.1437</span><span class="mark">Multi-Agent Workflows</span>
   <span class="spacer"></span>
   <span class="hint">← → · T language · N notes · F fullscreen</span>
   <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
