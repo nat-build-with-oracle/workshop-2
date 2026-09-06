@@ -1,0 +1,50 @@
+{
+  "generated": "2026-09-06T02:43:22.560Z",
+  "base": "https://nat-build-with-oracle.github.io/workshop-2/",
+  "decks": [
+    {
+      "file": "multi-agent.html",
+      "title": "Multi-Agent Workflows",
+      "slides": 23,
+      "languages": [
+        "en",
+        "th"
+      ],
+      "notes": true,
+      "build": "v26.9.6-alpha.0942",
+      "anchor": "start",
+      "url": "https://nat-build-with-oracle.github.io/workshop-2/multi-agent.html#start",
+      "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/multi-agent.html#start",
+      "full": "https://nat-build-with-oracle.github.io/workshop-2/multi-agent-full.html"
+    },
+    {
+      "file": "oracle-prism.html",
+      "title": "Oracle Prism",
+      "slides": 20,
+      "languages": [
+        "en",
+        "th"
+      ],
+      "notes": true,
+      "build": "v26.9.6-alpha.0942",
+      "anchor": "start",
+      "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-prism.html#start",
+      "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-prism.html#start",
+      "full": "https://nat-build-with-oracle.github.io/workshop-2/oracle-prism-full.html"
+    },
+    {
+      "file": "oracle-dna.html",
+      "title": "∿ ARRA Oracle DNA",
+      "slides": 17,
+      "languages": [
+        "en"
+      ],
+      "notes": false,
+      "build": "v26.9.6-alpha.0942",
+      "anchor": "start",
+      "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-dna.html#start",
+      "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-dna.html#start",
+      "full": null
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$comment": "The deck registry — one source of truth for what the index lists. Add a deck here and run ./build.sh; index.html is generated, never hand-edited. Anything derivable from the deck file itself (slide count, languages, title tag, build stamp) is NOT stored here — the generator reads it from the HTML so it can never drift.",
+  "site": {
+    "eyebrow": "Build with Oracle · Workshop 2",
+    "title": { "en": "Three decks.", "th": "สามเด็ค" },
+    "lede": {
+      "en": "When to split the work. How one agent sees five ways. How a persona becomes files.",
+      "th": "เมื่อไรควรแบ่งงาน เอเจนต์เดียวมองได้ห้าแบบยังไง แล้วตัวตนกลายเป็นไฟล์ได้ยังไง"
+    },
+    "base": "https://nat-build-with-oracle.github.io/workshop-2/"
+  },
+  "decks": [
+    {
+      "file": "multi-agent.html",
+      "full": "multi-agent-full.html",
+      "accent": "ma",
+      "anchor": "start",
+      "title": { "lead": "Multi-Agent", "accent": "Workflows" },
+      "titleTh": { "lead": "เวิร์กโฟลว์", "accent": "หลายเอเจนต์" },
+      "blurb": {
+        "en": "Fifteen times the tokens. Three reasons to pay it. Four rules learned the hard way.",
+        "th": "token สิบห้าเท่า เหตุผลสามข้อที่คุ้มจ่าย กฎสี่ข้อที่เรียนมาแบบเจ็บตัว"
+      },
+      "foot": { "en": "notes · N", "th": "มีโน้ต · กด N" }
+    },
+    {
+      "file": "oracle-prism.html",
+      "full": "oracle-prism-full.html",
+      "accent": "prism",
+      "anchor": "start",
+      "title": { "lead": "Oracle", "accent": "Prism" },
+      "titleTh": { "lead": "Oracle", "accent": "Prism" },
+      "blurb": {
+        "en": "One agent, five lenses, zero subagents — and what 110,952 transcripts say it's really for.",
+        "th": "เอเจนต์เดียว ห้าเลนส์ ไม่แตก subagent แล้ว transcript 110,952 ไฟล์บอกว่ามันมีไว้ทำอะไรจริง ๆ"
+      },
+      "foot": { "en": "notes · N", "th": "มีโน้ต · กด N" }
+    },
+    {
+      "file": "oracle-dna.html",
+      "accent": "dna",
+      "anchor": "start",
+      "title": { "lead": "∿ ARRA Oracle", "accent": "DNA" },
+      "titleTh": { "lead": "∿ ARRA Oracle", "accent": "DNA" },
+      "blurb": {
+        "en": "A persona is two Markdown files — and fifty named influences behind them.",
+        "th": "ตัวตนหนึ่งคือไฟล์ Markdown สองไฟล์ กับต้นแบบห้าสิบคนที่อยู่เบื้องหลัง"
+      },
+      "foot": { "en": "skills · resonances", "th": "สกิล · ตัวตน" }
+    }
+  ]
+}
