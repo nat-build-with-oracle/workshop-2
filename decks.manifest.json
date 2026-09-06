@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-06T12:31:51.394Z",
+  "generated": "2026-09-06T12:36:50.697Z",
   "base": "https://nat-build-with-oracle.github.io/workshop-2/",
   "decks": [
     {
@@ -11,7 +11,7 @@
         "th"
       ],
       "notes": true,
-      "build": "v26.9.6-alpha.1931",
+      "build": "v26.9.6-alpha.1936",
       "anchor": "start",
       "url": "https://nat-build-with-oracle.github.io/workshop-2/multi-agent.html#start",
       "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/multi-agent.html#start",
@@ -26,7 +26,7 @@
         "th"
       ],
       "notes": true,
-      "build": "v26.9.6-alpha.1931",
+      "build": "v26.9.6-alpha.1936",
       "anchor": "start",
       "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-prism.html#start",
       "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-prism.html#start",
@@ -40,10 +40,24 @@
         "en"
       ],
       "notes": false,
-      "build": "v26.9.6-alpha.1931",
+      "build": "v26.9.6-alpha.1936",
       "anchor": "start",
       "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-dna.html#start",
       "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-dna.html#start",
+      "full": null
+    },
+    {
+      "file": "oracle-family.html",
+      "title": "Oracle Family",
+      "slides": 6,
+      "languages": [
+        "en"
+      ],
+      "notes": false,
+      "build": null,
+      "anchor": "1",
+      "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-family.html#1",
+      "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-family.html#1",
       "full": null
     }
   ]

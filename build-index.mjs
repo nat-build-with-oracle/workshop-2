@@ -20,7 +20,8 @@ function inspect(file) {
   const p = path.join(ROOT, file);
   if (!fs.existsSync(p)) throw new Error(`decks.json lists ${file}, which does not exist`);
   const s = fs.readFileSync(p, 'utf8');
-  const slides = (s.match(/class="slide"/g) || []).length;
+  // match class="slide" and class="slide live" alike — a deck may modify the class
+  const slides = (s.match(/class="slide(?:["\s])/g) || []).length;
   if (!slides) throw new Error(`${file} has no .slide elements — wrong file?`);
   // a deck is bilingual if it carries Thai spans and a language switch
   const bilingual = /class="[^"]*\bth\b[^"]*"|lang-th/.test(s) && /btn-th|langsw/.test(s);

@@ -77,6 +77,27 @@
         "en": "skills · resonances",
         "th": "สกิล · ตัวตน"
       }
+    },
+    {
+      "file": "oracle-family.html",
+      "accent": "dna",
+      "anchor": "1",
+      "title": {
+        "lead": "Oracle",
+        "accent": "Family"
+      },
+      "titleTh": {
+        "lead": "ครอบครัว",
+        "accent": "Oracle"
+      },
+      "blurb": {
+        "en": "Live from the fleet — the lineage timeline, the Hey Graph, and the skills behind it. Original slides, Thai.",
+        "th": "สดจากฟลีต — ไทม์ไลน์สายตระกูล Hey Graph และสกิลเบื้องหลัง สไลด์ต้นฉบับ ภาษาไทย"
+      },
+      "foot": {
+        "en": "live embeds · TH",
+        "th": "ฝังสด · ไทย"
+      }
     }
   ]
 }
