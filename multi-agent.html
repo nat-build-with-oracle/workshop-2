@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Multi-Agent Workflows</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,16 +72,16 @@ svg .box{fill:none;stroke:var(--work);stroke-width:1.5;stroke-dasharray:4 4}
 .five .nm.th{font-family:var(--thai);font-weight:600;font-size:clamp(1rem,2vw,1.4rem)}
 
 /* simple bars */
-.bars{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.bars{display:flex;flex-direction:column;gap:14px;max-width:min(1100px,100%)}
 .bar{display:grid;grid-template-columns:110px 1fr 90px;gap:16px;align-items:center;font-size:17px}
 .bar .lb{color:var(--muted)}
 .bar .tk{height:28px;display:flex}
 .bar .tk i{display:block;height:100%;border-radius:3px;background:var(--work);min-width:4px}
 .bar .tk i.o{background:var(--orch)}
 .bar .n{font-family:var(--mono);font-size:17px;text-align:right;font-variant-numeric:tabular-nums}
-.stack{display:flex;height:64px;border-radius:4px;overflow:hidden;max-width:900px}
+.stack{display:flex;height:64px;border-radius:4px;overflow:hidden;max-width:min(1100px,100%)}
 .stack i{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:clamp(14px,2vw,22px);color:#fff}
-.stack-lb{display:flex;max-width:900px;gap:12px;font-size:15px;color:var(--muted)}
+.stack-lb{display:flex;max-width:min(1100px,100%);gap:12px;font-size:15px;color:var(--muted)}
 .stack-lb span{flex:1}
 
 /* two columns for decide */
@@ -443,7 +444,7 @@ body.notes-open .slide.is-active{animation:none}
 <aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
 
 <nav class="chrome" aria-label="Deck navigation">
-  <span class="build" title="built 2026-09-06 14:37 +07">v26.9.6-alpha.1437</span><span class="mark">Multi-Agent Workflows</span>
+  <span class="build" title="built 2026-09-06 16:14 +07">v26.9.6-alpha.1614</span><span class="mark">Multi-Agent Workflows</span>
   <span class="spacer"></span>
   <span class="hint">← → · T language · N notes · F fullscreen</span>
   <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
