@@ -121,8 +121,10 @@ h2.th{font-size:clamp(2.1rem,5.2vw,4.2rem);max-width:24ch}
 .counter{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;padding:6px 10px}
 .hint{font-family:var(--mono);font-size:12px;color:var(--faint)}
 @media (max-width:800px){.hint{display:none}}
-.notes{position:fixed;left:0;right:0;bottom:60px;z-index:39;max-height:38vh;overflow:auto;background:var(--surface);border-top:2px solid var(--l4);padding:18px clamp(16px,5vw,60px) 22px;display:none;font-size:15px;line-height:1.7;color:var(--muted)}
+.notes{position:fixed;left:0;right:0;bottom:60px;z-index:39;max-height:32vh;overflow:auto;background:var(--surface);border-top:2px solid var(--l4);padding:18px clamp(16px,5vw,60px) 22px;display:none;font-size:15px;line-height:1.7;color:var(--muted)}
 .notes.is-open{display:block}
+body.notes-open .slide{padding-bottom:calc(32vh + 132px)}
+body.notes-open .slide.is-active{animation:none}
 .notes .nt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--l4);margin-bottom:8px}
 .notes p{margin:0 0 8px;max-width:90ch}
 .notes .th{line-height:1.9}
@@ -437,7 +439,7 @@ h2.th{font-size:clamp(2.1rem,5.2vw,4.2rem);max-width:24ch}
     if (h) { try { history.replaceState(null, '', '#' + h); } catch (e) {} }
   }
   function go(k) { i = Math.max(0, Math.min(total - 1, k)); render(); window.scrollTo({ top: 0, behavior: 'instant' }); }
-  function toggleNotes() { notesOpen = !notesOpen; notes.classList.toggle('is-open', notesOpen); }
+  function toggleNotes() { notesOpen = !notesOpen; notes.classList.toggle('is-open', notesOpen); document.body.classList.toggle('notes-open', notesOpen); }
 
   prev.addEventListener('click', () => go(i - 1));
   next.addEventListener('click', () => go(i + 1));
