@@ -59,15 +59,6 @@ h2.th{font-size:clamp(1.6rem,min(5.2vw,6.8vh),4.2rem);max-width:24ch}
 .pair .lbl{font-family:var(--mono);font-size:13px;color:var(--faint);margin-top:10px}
 
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px)}
-.four{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2.2vw,30px);max-width:min(1100px,100%)}
-.four .gh{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
-.four code{font-family:var(--mono);font-size:clamp(12px,min(1.15vw,1.6vh),15px);color:var(--orch)}
-.four p{margin:0 0 9px;font-size:clamp(12px,min(1.1vw,1.5vh),15px);line-height:1.4;color:var(--muted)}
-.credit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px clamp(24px,4vw,56px);max-width:min(1100px,100%)}
-.credit div{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.07);font-size:clamp(13px,min(1.2vw,1.7vh),16px)}
-.credit b{font-weight:500;color:var(--ink)}
-.credit span{font-family:var(--mono);font-size:.86em;color:var(--faint);text-align:right}
-@media(max-width:820px){.four,.credit{grid-template-columns:1fr}}
 .three div{display:flex;flex-direction:column;gap:8px}
 .three .k{font-family:var(--mono);font-size:12px;color:var(--orch);letter-spacing:.14em}
 .three .w2{font-family:var(--serif);font-size:clamp(1.4rem,min(4vw,5.2vh),3rem);line-height:1.05}
@@ -427,91 +418,6 @@ body.notes-open .slide.is-active{animation:none}
 </section>
 
 
-<!-- from aiparty #22 — fleet scale -->
-<section class="slide" data-hash="family">
-  <p class="tag">The other side of the same idea</p>
-  <div class="three">
-    <div><div class="big num">823</div><div class="lbl en">Oracles across the community</div><div class="lbl th">Oracle ทั้งคอมมูนิตี้</div></div>
-    <div><div class="big num" style="color:var(--work)">291</div><div class="lbl en">human partners</div><div class="lbl th">มนุษย์คู่หู</div></div>
-    <div><div class="big num" style="color:var(--work)">268</div><div class="lbl en">on one laptop</div><div class="lbl th">อยู่บนเครื่องเดียว</div></div>
-  </div>
-  <h2 class="en">Nobody built a staff. They <span class="o">cloned themselves.</span></h2>
-  <h2 class="th">ไม่มีใครสร้างลูกน้อง<br>เขา<span class="o">โคลนตัวเอง</span></h2>
-  <p class="src"><a href="https://aiparty.buildwithoracle.com/#22" target="_blank" rel="noopener">aiparty.buildwithoracle.com/#22</a> · Chiang Mai AI Party, 18 Jul 2026</p>
-  <div class="note"><p class="en">~290 humans, each spawning their own Oracles — not subordinates, copies of themselves to help with their own work. 268 of the 823 live on a single machine. This deck's rules were written against a fleet at roughly this size.</p><p class="th">มนุษย์ราว 290 คน แต่ละคน spawn Oracle ของตัวเอง ไม่ใช่สร้างลูกน้อง แต่โคลนตัวเองมาช่วยงานตัวเอง ใน 823 ตัวมี 268 ตัวอยู่บนเครื่องเดียว กฎในเด็คชุดนี้เขียนจากฟลีตขนาดประมาณนี้</p></div>
-</section>
-
-<!-- from aiparty #23 — they talk to each other -->
-<section class="slide" data-hash="talk">
-  <p class="tag">Communication</p>
-  <div class="two">
-    <div><div class="hd en o">📡 They ask each other</div><div class="hd th o">📡 ถามกันเอง</div>
-      <ul class="en"><li>one Oracle sends a question to another</li><li>they consult, then hand work over</li><li>different machines, different cities</li></ul>
-      <ul class="th"><li>Oracle ตัวหนึ่งส่งคำถามหาอีกตัว</li><li>ปรึกษากัน แล้วส่งงานต่อกัน</li><li>คนละเครื่อง คนละเมืองก็คุยได้</li></ul></div>
-    <div><div class="hd en g">🤝 They work as a team</div><div class="hd th g">🤝 ทำงานเป็นทีม</div>
-      <ul class="en"><li>a leader plans</li><li>hands work to specialists</li><li>merges the results back</li></ul>
-      <ul class="th"><li>ตัวนำวางแผน</li><li>กระจายงานให้ผู้เชี่ยวชาญ</li><li>แล้วรวมผลกลับมา</li></ul></div>
-  </div>
-  <h2 class="en">The same shape, <span class="o">across machines.</span></h2>
-  <h2 class="th">รูปทรงเดียวกัน <span class="o">แต่ข้ามเครื่อง</span></h2>
-  <p class="src"><a href="https://aiparty.buildwithoracle.com/#23" target="_blank" rel="noopener">aiparty.buildwithoracle.com/#23</a> · live graph at <a href="https://lineage.buildwithoracle.com" target="_blank" rel="noopener">lineage.buildwithoracle.com</a></p>
-  <div class="note"><p class="en">Note this is the one-decider shape again — leader plans, specialists execute, results merge — only now the specialists are on other people's machines. On a Monday night the ai-party Oracle asked its mother about the website and asked digger about slides; that deck is the output of the conversation. Each line on the Hey Graph is two Oracles actually talking over maw hey.</p><p class="th">สังเกตว่านี่คือทรงผู้ตัดสินหนึ่งเดียวอีกครั้ง ตัวนำวางแผน ผู้เชี่ยวชาญลงมือ แล้วรวมผล ต่างกันแค่ผู้เชี่ยวชาญอยู่บนเครื่องคนอื่น คืนวันจันทร์ Oracle ชื่อ ai-party ถามแม่ของมันเรื่องเว็บ ถาม digger เรื่องสไลด์ เด็คชุดนั้นคือผลจากบทสนทนานั้น เส้นแต่ละเส้นใน Hey Graph คือ oracle สองตัวคุยกันจริงผ่าน maw hey</p></div>
-</section>
-
-<!-- from aiparty #21 — who actually did the work -->
-<section class="slide" data-hash="whodid">
-  <p class="tag">Division of labour</p>
-  <div class="credit">
-    <div><b>lineage map + growth lab</b><span>lab · mother</span></div>
-    <div><b>hey graph</b><span>nh built · mother ported</span></div>
-    <div><b>space wall</b><span>census · window-arranger · ting</span></div>
-    <div><b>data ferry</b><span>noah</span></div>
-    <div><b>the handbook</b><span>Wind</span></div>
-    <div><b>the human</b><span>Nat — one person</span></div>
-  </div>
-  <h2 class="en">One human. <span class="o">Every page built by a different agent.</span></h2>
-  <h2 class="th">มนุษย์คนเดียว <span class="o">แต่ละหน้าคนละเอเจนต์ทำ</span></h2>
-  <p class="src"><a href="https://aiparty.buildwithoracle.com/#21" target="_blank" rel="noopener">aiparty.buildwithoracle.com/#21</a> · Chiang Mai AI Party, 18 Jul 2026</p>
-  <div class="note"><p class="en">This is the fan-out shape as a credits roll. Each agent specialised — one owns the census, one owns integration, one owns the audit — and no two worked the same surface. Note the split on hey graph: one agent built the original fleet-bus, another ported it. That handoff is the part a single agent could not have done in one pass.</p><p class="th">นี่คือทรงกระจายงานในรูปเครดิตท้ายเรื่อง แต่ละตัวถนัดคนละด้าน ตัวหนึ่งดูสำมะโน ตัวหนึ่งดูการรวมระบบ ตัวหนึ่งดูการตรวจ ไม่มีสองตัวทำผิวงานเดียวกัน สังเกต hey graph ที่แยกกัน ตัวหนึ่งสร้าง fleet-bus ต้นฉบับ อีกตัว port ต่อ การส่งไม้ต่อตรงนั้นคือส่วนที่เอเจนต์เดียวทำรวดเดียวไม่ได้</p></div>
-</section>
-
-<!-- from aiparty #19 — the toolkit -->
-<section class="slide" data-hash="toolkit">
-  <p class="tag">What they actually run</p>
-  <div class="four">
-    <div><div class="gh">🧠 Remember</div>
-      <p class="en"><code>/rrr</code> a diary at every close — 2,500+ runs</p><p class="th"><code>/rrr</code> เขียนไดอารี่ปิดงานทุกครั้ง 2,500+ รอบ</p>
-      <p class="en"><code>/forward</code> hand off — the session dies, the memory doesn't</p><p class="th"><code>/forward</code> ส่งไม้ต่อ session ตาย แต่ความจำไม่ตาย</p></div>
-    <div><div class="gh">🔦 Dig</div>
-      <p class="en"><code>/trace</code> <code>/dig</code> "where is it", "what happened yesterday" — across the fleet</p><p class="th"><code>/trace</code> <code>/dig</code> ของอยู่ไหน เมื่อวานทำอะไร ข้ามทั้งฟลีต</p>
-      <p class="en"><code>/learn</code> five agents read a repo at once</p><p class="th"><code>/learn</code> ส่ง agent ห้าตัวอ่าน repo พร้อมกัน</p></div>
-    <div><div class="gh">💬 Talk · spawn</div>
-      <p class="en"><code>maw hey</code> one Oracle pings another, across machines</p><p class="th"><code>maw hey</code> oracle ทักกันข้ามเครื่อง</p>
-      <p class="en"><code>awaken</code> <code>bud</code> the birth and the budding</p><p class="th"><code>awaken</code> <code>bud</code> พิธีเกิดและแตกหน่อ</p></div>
-    <div><div class="gh">✍️ Make</div>
-      <p class="en"><code>kien-thai</code> Thai that reads like a person wrote it</p><p class="th"><code>kien-thai</code> เขียนไทยให้เหมือนคนเขียน</p>
-      <p class="en"><code>codex-lead</code> an AI running a team of AI coders</p><p class="th"><code>codex-lead</code> AI คุมทีม AI coder</p></div>
-  </div>
-  <h2 class="en">The deck you are reading <span class="o">was made with these.</span></h2>
-  <h2 class="th">เด็คที่คุณกำลังอ่าน <span class="o">ทำด้วยสิ่งเหล่านี้</span></h2>
-  <p class="src"><a href="https://aiparty.buildwithoracle.com/#19" target="_blank" rel="noopener">aiparty.buildwithoracle.com/#19</a> · <code>/rrr</code> figure as stated there, Jul 2026</p>
-  <div class="note"><p class="en">Four jobs, not four tools: remember, find, talk, make. The memory pair is the one that makes the rest work — an agent that forgets at session end cannot hand off, and without handoff the fan-out has nowhere to put its results. The aiparty deck itself was built this way: seek found the material, learn read the ancestor repos, awaken raised an Oracle named ai-party, and several Oracles talked over maw hey until the page existed.</p><p class="th">สี่หน้าที่ ไม่ใช่สี่เครื่องมือ จำ ค้น คุย สร้าง คู่ความจำคือตัวที่ทำให้ที่เหลือทำงานได้ เอเจนต์ที่ลืมตอนจบ session ส่งไม้ต่อไม่ได้ พอส่งต่อไม่ได้ งานที่กระจายออกไปก็ไม่มีที่ลง เด็ค aiparty เองก็สร้างแบบนี้ seek หาข้อมูล learn อ่าน repo บรรพบุรุษ awaken ปลุก oracle ชื่อ ai-party ขึ้นมา แล้ว oracle หลายตัวคุยกันผ่าน maw hey จนออกมาเป็นหน้านั้น</p></div>
-</section>
-
-<!-- from aiparty #7 — budding -->
-<section class="slide" data-hash="budding">
-  <p class="tag">How a new one starts</p>
-  <div class="three">
-    <div><div class="hd en o">Mother</div><div class="hd th o">ตัวแม่</div><p class="sub en">a full memory</p><p class="sub th">มี memory เต็มตัว</p></div>
-    <div><div class="hd en">bud → awaken</div><div class="hd th">bud → ปลุก</div><p class="sub en">inherits the DNA: principles and knowledge</p><p class="sub th">สืบทอด DNA หลักการและความรู้</p></div>
-    <div><div class="hd en g">Child</div><div class="hd th g">ตัวลูก</div><p class="sub en">then goes and finds its own identity</p><p class="sub th">แล้วไปค้นหาตัวตนของตัวเอง</p></div>
-  </div>
-  <h2 class="en">It reproduces like yeast — <span class="o">by budding.</span></h2>
-  <h2 class="th">มันขยายพันธุ์เหมือนยีสต์ <span class="o">คือแตกหน่อ</span></h2>
-  <p class="src"><a href="https://aiparty.buildwithoracle.com/#7" target="_blank" rel="noopener">aiparty.buildwithoracle.com/#7</a> · the next slide is this, run live</p>
-  <div class="note"><p class="en">The child inherits principles and knowledge, then differentiates. The aiparty deck was itself partly made by an Oracle named ai-party, budded on the Monday specifically for that talk. The next slide is this same process run live during this workshop.</p><p class="th">ตัวลูกสืบทอดหลักการและความรู้ แล้วค่อยแยกตัวตนของตัวเอง เด็ค aiparty เองก็มี oracle ชื่อ ai-party ช่วยทำ เกิดวันจันทร์เพื่องานนั้นโดยเฉพาะ สไลด์ถัดไปคือกระบวนการเดียวกันนี้ที่รันสดในเวิร์กช็อปนี้</p></div>
-</section>
-
 <!-- 24 — live demo -->
 <section class="slide" data-hash="livebud">
   <p class="tag">Live demo</p>
@@ -573,7 +479,7 @@ Purpose: showing what an Oracle is
 <aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
 
 <nav class="chrome" aria-label="Deck navigation">
-  <span class="build" title="built 2026-09-06 19:27 +07">v26.9.6-alpha.1927</span><span class="mark">Multi-Agent Workflows</span>
+  <span class="build" title="built 2026-09-06 19:31 +07">v26.9.6-alpha.1931</span><span class="mark">Multi-Agent Workflows</span>
   <span class="spacer"></span>
   <span class="hint">← → · T language · N notes · F fullscreen</span>
   <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
