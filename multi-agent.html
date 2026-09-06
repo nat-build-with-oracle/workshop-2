@@ -121,6 +121,19 @@ body.notes-open .slide.is-active{animation:none}
   .bar{grid-template-columns:90px 1fr 70px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.src a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;opacity:.9}
+.src a:hover{opacity:1}
+.refs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 26px;max-width:none;align-content:start}
+.refg{display:flex;flex-direction:column;gap:1px;margin-bottom:7px;break-inside:avoid}
+.refg>h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin:0 0 4px;font-weight:400}
+.refs li{list-style:none;font-size:11.8px;line-height:1.42;padding:2px 0}
+.refs ul{margin:0;padding:0}
+.refs b{font-weight:600;font-size:12px}
+.refs a{color:inherit;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.refs .u{font-family:var(--mono);font-size:10.6px;opacity:.72;overflow-wrap:anywhere}
+.refs .n{color:var(--muted);font-size:11px}
+@media(max-width:1100px){.refs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:820px){.refs{grid-template-columns:1fr}}
 .build{font-family:var(--mono);font-size:11.5px;color:var(--faint);opacity:.85;margin-right:10px;font-variant-numeric:tabular-nums}
 </style>
 
@@ -150,7 +163,7 @@ body.notes-open .slide.is-active{animation:none}
   <div class="big">15<small>×</small></div>
   <h2 class="en">More agents means about fifteen times the tokens.</h2>
   <h2 class="th">ใช้หลายเอเจนต์ กิน token ราวสิบห้าเท่า</h2>
-  <p class="src">Anthropic, multi-agent research system, 2025</p>
+  <p class="src"><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">anthropic.com/engineering/multi-agent-research-system</a></p>
   <div class="note"><p class="en">Single chat = 1×. Single agent with tools ≈ 4×. Multi-agent ≈ 15×. Anthropic's Jan 2026 follow-up says 3–10× is typical. Either way: it's expensive.</p><p class="th">แชตเดี่ยว = 1 เท่า เอเจนต์เดี่ยวมีเครื่องมือ ≈ 4 เท่า หลายเอเจนต์ ≈ 15 เท่า บทความ ม.ค. 2026 บอกว่าปกติอยู่ที่ 3–10 เท่า ยังไงก็แพง</p></div>
 </section>
 
@@ -160,7 +173,7 @@ body.notes-open .slide.is-active{animation:none}
   <div class="big">80<small>%</small></div>
   <h2 class="en">Most of the gain is just more thinking, not smarter teamwork.</h2>
   <h2 class="th">ผลที่ดีขึ้นส่วนใหญ่มาจากคิดเยอะขึ้น ไม่ใช่ทำงานเป็นทีมเก่งขึ้น</h2>
-  <p class="src">Token spend explained 80% of performance variance — same source</p>
+  <p class="src">Token spend explained 80% of the variance — <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">same source</a></p>
   <div class="note"><p class="en">The orchestrator beat single-agent Opus 4 by 90.2% on their eval. But 80% of the variance came from token count alone. You're mostly buying compute.</p><p class="th">orchestrator ชนะ Opus 4 เดี่ยว 90.2% บน eval ของเขา แต่ 80% ของความต่างมาจากจำนวน token ล้วน ๆ ที่ซื้อมาส่วนใหญ่คือ compute</p></div>
 </section>
 
@@ -174,7 +187,7 @@ body.notes-open .slide.is-active{animation:none}
     <div><span class="k">02</span><span class="w2 en">Work is independent</span><span class="w2 th">งานแยกขาดจากกัน</span></div>
     <div><span class="k">03</span><span class="w2 en">A specialist is better</span><span class="w2 th">มีตัวเชี่ยวชาญที่เก่งกว่า</span></div>
   </div>
-  <p class="src">Anthropic, "When to use multi-agent systems", Jan 2026</p>
+  <p class="src">Anthropic, Jan 2026 — <a href="https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them" target="_blank" rel="noopener">claude.com/blog/building-multi-agent-systems…</a></p>
   <div class="note"><p class="en">Context protection — the work needs more than one window, or noisy sub-work would pollute the main thread. Parallelization — breadth-first, not a chain. Specialization — a different model/tool/persona measurably wins on one slice. Anything else: single agent.</p><p class="th">กันบริบท — งานใหญ่กว่าหน้าต่างเดียว หรืองานย่อยจะมาเลอะ thread หลัก ทำขนาน — แบบกว้าง ไม่ใช่โซ่ เชี่ยวชาญ — โมเดล/เครื่องมือ/บุคลิกอื่นชนะชิ้นนั้นแบบวัดได้ นอกนั้นใช้เอเจนต์เดียว</p></div>
 </section>
 
@@ -314,7 +327,7 @@ body.notes-open .slide.is-active{animation:none}
   <div class="stack-lb"><span class="en">the task was badly specified</span><span class="th">โจทย์ระบุไม่ดี</span><span class="en">agents didn't agree</span><span class="th">เอเจนต์ไม่ตรงกัน</span><span class="en">nobody checked</span><span class="th">ไม่มีใครตรวจ</span></div>
   <h2 class="en">Most failures are the humans, not the agents.</h2>
   <h2 class="th">ที่พังส่วนใหญ่มาจากคน ไม่ใช่เอเจนต์</h2>
-  <p class="src">MAST taxonomy, arXiv:2503.13657 — 7 frameworks, 14 failure modes</p>
+  <p class="src"><a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">arXiv:2503.13657</a> — 7 frameworks, 14 failure modes</p>
   <div class="note"><p class="en">Specification 41.77%, inter-agent misalignment 36.94%, verification 21.30%. The fleet's own failure log — boot death, stale reports, queued ≠ delivered, resuming dead sessions — all falls in the second and third buckets. No recorded spec failures, which is either good design or a blind spot.</p><p class="th">การระบุงาน 41.77% เอเจนต์ไม่ตรงกัน 36.94% การตรวจสอบ 21.30% บันทึกความล้มเหลวของฟลีตเอง — บูตตาย รายงานเก่า เข้าคิว ≠ ส่งถึง ปลุก session ตาย — ตกอยู่ในกลุ่มสองกับสามทั้งหมด ไม่มีบันทึกพังจากโจทย์เลย จะเพราะออกแบบดีหรือเป็นจุดบอดก็ยังไม่รู้</p></div>
 </section>
 
@@ -395,12 +408,39 @@ body.notes-open .slide.is-active{animation:none}
   <div class="note"><p class="en">Two figures were flagged as weakly sourced and left out: a 2026 SWE-bench multi-agent cost study (none found) and a "$47K runaway agent" story (one vendor blog only). The dense version of this deck with all sources is multi-agent-deck.html.</p><p class="th">ตัวเลขสองอย่างถูกตัดออกเพราะแหล่งอ่อน: งานศึกษาต้นทุน SWE-bench หลายเอเจนต์ปี 2026 (หาไม่เจอ) กับเรื่อง "เอเจนต์วิ่งเลยเถิด $47K" (มีแค่บล็อกผู้ขายเจ้าเดียว) เวอร์ชันละเอียดพร้อมแหล่งอ้างอิงทั้งหมดอยู่ที่ multi-agent-deck.html</p></div>
 </section>
 
+
+
+<!-- references -->
+<section class="slide" data-hash="refs">
+  <p class="tag">References · 1 of 2</p>
+  <h2 class="en" style="font-size:clamp(1.7rem,3.4vw,2.6rem);max-width:none">The evidence behind the numbers.</h2>
+  <h2 class="th" style="font-size:clamp(1.4rem,2.8vw,2.1rem);max-width:none">หลักฐานเบื้องหลังตัวเลข</h2>
+  <div class="refs">
+    <div class="refg"><h3>Cost, gain, and when not to</h3><ul><li><b>Anthropic — How we built our multi-agent research system (2025)</b><br><span class="u"><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">www.anthropic.com/engineering/multi-agent-research-system</a></span><br><span class="n">15× tokens · 80% of variance · 90.2% eval gain</span></li><li><b>Anthropic — When to use multi-agent systems (Jan 2026)</b><br><span class="u"><a href="https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them" target="_blank" rel="noopener">claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them</a></span><br><span class="n">3–10× typical · the three reasons · the isolation test</span></li><li><b>Cognition — Don’t Build Multi-Agents</b><br><span class="u"><a href="https://cognition.com/blog/dont-build-multi-agents" target="_blank" rel="noopener">cognition.com/blog/dont-build-multi-agents</a></span><br><span class="n">two principles · the Flappy Bird failure</span></li></ul></div>
+    <div class="refg"><h3>Why it fails</h3><ul><li><b>MAST — Why Do Multi-Agent LLM Systems Fail?</b><br><span class="u"><a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">arxiv.org/abs/2503.13657</a></span><br><span class="n">41.77 / 36.94 / 21.30 · 7 frameworks</span></li></ul></div>
+    <div class="refg"><h3>Ensembles</h3><ul><li><b>More Agents Is All You Need</b><br><span class="u"><a href="https://arxiv.org/abs/2402.05120" target="_blank" rel="noopener">arxiv.org/abs/2402.05120</a></span><br><span class="n">sampling + voting scales with N</span></li><li><b>Mixture-of-Agents</b><br><span class="u"><a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener">arxiv.org/abs/2406.04692</a></span><br><span class="n">65.1% on AlpacaEval 2.0</span></li><li><b>Du et al. — Multi-agent debate</b><br><span class="u"><a href="https://arxiv.org/abs/2305.14325" target="_blank" rel="noopener">arxiv.org/abs/2305.14325</a></span><br><span class="n">arithmetic 67.0% → 81.8%</span></li></ul></div>
+  </div>
+  <div class="note"><p class="en">Every URL checked 2026-09-06 — all resolved 200.</p><p class="th">ตรวจทุกลิงก์วันที่ 2026-09-06 ตอบ 200 ทั้งหมด</p></div>
+</section>
+
+<!-- references -->
+<section class="slide" data-hash="refs2">
+  <p class="tag">References · 2 of 2</p>
+  <h2 class="en" style="font-size:clamp(1.7rem,3.4vw,2.6rem);max-width:none">The primitives, the field, and the fleet.</h2>
+  <h2 class="th" style="font-size:clamp(1.4rem,2.8vw,2.1rem);max-width:none">กลไก วงการ และฟลีต</h2>
+  <div class="refs">
+    <div class="refg"><h3>The primitives</h3><ul><li><b>Claude Code — subagents</b><br><span class="u"><a href="https://code.claude.com/docs/en/agent-sdk/subagents" target="_blank" rel="noopener">code.claude.com/docs/en/agent-sdk/subagents</a></span><br><span class="n">depth 3 · concurrency 20</span></li><li><b>Claude Code — workflows</b><br><span class="u"><a href="https://code.claude.com/docs/en/workflows" target="_blank" rel="noopener">code.claude.com/docs/en/workflows</a></span><br><span class="n">16 concurrent · 1,000 per run</span></li><li><b>Claude Code — agent teams</b><br><span class="u"><a href="https://code.claude.com/docs/en/agent-teams" target="_blank" rel="noopener">code.claude.com/docs/en/agent-teams</a></span><br><span class="n">experimental</span></li><li><b>Managed agents — orchestration</b><br><span class="u"><a href="https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration" target="_blank" rel="noopener">platform.claude.com/docs/en/managed-agents/multiagent-orchestration</a></span><br><span class="n">coordinator + roster</span></li></ul></div>
+    <div class="refg"><h3>The landscape</h3><ul><li><b>LangGraph</b><br><span class="u"><a href="https://www.langchain.com/langgraph" target="_blank" rel="noopener">www.langchain.com/langgraph</a></span></li><li><b>CrewAI</b><br><span class="u"><a href="https://github.com/crewAIInc/crewAI" target="_blank" rel="noopener">github.com/crewAIInc/crewAI</a></span></li><li><b>AutoGen</b><br><span class="u"><a href="https://microsoft.github.io/autogen/" target="_blank" rel="noopener">microsoft.github.io/autogen/</a></span></li><li><b>OpenAI Agents SDK</b><br><span class="u"><a href="https://openai.github.io/openai-agents-python/" target="_blank" rel="noopener">openai.github.io/openai-agents-python/</a></span></li><li><b>Google ADK + A2A</b><br><span class="u"><a href="https://adk.dev/a2a/" target="_blank" rel="noopener">adk.dev/a2a/</a></span></li><li><b>Semantic Kernel — Magentic</b><br><span class="u"><a href="https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-orchestration/magentic" target="_blank" rel="noopener">learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-orchestration/magentic</a></span></li><li><b>smolagents</b><br><span class="u"><a href="https://github.com/huggingface/smolagents" target="_blank" rel="noopener">github.com/huggingface/smolagents</a></span></li><li><b>A2A protocol</b><br><span class="u"><a href="https://a2a-protocol.org/" target="_blank" rel="noopener">a2a-protocol.org/</a></span></li><li><b>Model Context Protocol</b><br><span class="u"><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">modelcontextprotocol.io/</a></span></li></ul></div>
+    <div class="refg"><h3>From the fleet — internal, not public</h3><ul><li><b>110,952 session transcripts</b><br><span class="n">black:~/.claude/projects + ~/stage-restore</span></li><li><b>9,173 memory files</b><br><span class="n">the four rules, quoted with dates</span></li><li><b>15 multi-agent skills</b><br><span class="n">black:~/.claude/skills</span></li></ul></div>
+  </div>
+  <div class="note"><p class="en">Fleet sources are internal paths, not public links.</p><p class="th">ตรวจทุกลิงก์วันที่ 2026-09-06 ตอบ 200 ทั้งหมด</p></div>
+</section>
 </main>
 
 <aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
 
 <nav class="chrome" aria-label="Deck navigation">
-  <span class="build" title="built 2026-09-06 10:02 +07">v26.9.6-alpha.1002</span><span class="mark">Multi-Agent Workflows</span>
+  <span class="build" title="built 2026-09-06 10:08 +07">v26.9.6-alpha.1008</span><span class="mark">Multi-Agent Workflows</span>
   <span class="spacer"></span>
   <span class="hint">← → · S language · N notes · F fullscreen</span>
   <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
