@@ -1,0 +1,57 @@
+     --- .envrc is NOT staged (contains pass reference) ---
+     WARNING: .envrc not ignored
+
+⏺ Bash(cd /Users/nat/Code/github.com/Soul-Brews-Studio/workshop-2-demo-oracle
+  echo "tracked?"; git ls-files .envrc | grep -q . && echo "YES - .envrc is tracked" || echo "no -
+  untracked"
+  echo "=== status ==="; git status --short)
+  ⎿  tracked?
+     YES - .envrc is tracked
+     === status ===
+      M CLAUDE.md
+     ?? .gitignore
+     ?? SKILLS.md
+     ?? "\317\210/.gitignore"
+     ?? "\317\210/archive/"
+     ?? "\317\210/inbox/"
+     ?? "\317\210/lab/"
+     ?? "\317\210/learn/"
+     ?? "\317\210/memory/resonance/"
+     ?? "\317\210/outbox/"
+     ?? "\317\210/writing/"
+
+⏺ Bash(cd /Users/nat/Code/github.com/Soul-Brews-Studio/workshop-2-demo-oracle
+  git add -A
+  git status --short
+  git commit -q -F - << 'EOF'
+  awaken: Demo Oracle born (fast mode)
+
+  Budded from workshop-2 via `maw bud`, awakened with /awaken --fast.
+
+  - CLAUDE.md: identity, demographics, 5 Principles + Rule 6 in own words,
+    golden rules, brain structure
+  - ψ/ 7-pillar structure with .gitignore (active/, memory/logs/ excluded)
+  - ψ/memory/resonance/demo-oracle.md — soul file
+  - ψ/memory/resonance/oracle.md — philosophy (fed, not discovered)
+  - ψ/memory/resonance/awaken_2026-09-06_fast.md — growth record
+  - ψ/outbox/ — family announcement, not yet sent
+  - SKILLS.md — 53 inherited user-level skills
+
+  Theme: The Starter Culture 🫙
+  Outstanding: /awaken --soul-sync (principles were fed, not traced)
+
+  Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+  EOF
+  git log --oneline -3)
+
+✻ Wrangling… (2m 13s · ↓ 8.1k tokens)
+  ⎿  Tip: Use /btw to ask a quick side question without interrupting Claude's current work
+
+                                                                                          64269 tokens
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ see labs dir ? can you write a landing page for me / rect / tailwind
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+  📁 Soul-Brews-Studio/workshop-2-demo-oracle  main* 🔐t2
+  📡 57f5702e • 🕐 16:45 • Opus 5
+  🔋5h ███░░░░░░░  26% ⟳2h14m • 🔋7d ███░░░░░░░  31% ⟳16h14m • 🧠 █░░░░░░░░░   6% 64k/1000k
+  ⏵⏵ bypass permissions on (shift+tab to cycle)

@@ -1,17 +1,17 @@
 {
-  "generated": "2026-09-06T09:14:51.106Z",
+  "generated": "2026-09-06T09:46:49.572Z",
   "base": "https://nat-build-with-oracle.github.io/workshop-2/",
   "decks": [
     {
       "file": "multi-agent.html",
       "title": "Multi-Agent Workflows",
-      "slides": 25,
+      "slides": 26,
       "languages": [
         "en",
         "th"
       ],
       "notes": true,
-      "build": "v26.9.6-alpha.1614",
+      "build": "v26.9.6-alpha.1646",
       "anchor": "start",
       "url": "https://nat-build-with-oracle.github.io/workshop-2/multi-agent.html#start",
       "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/multi-agent.html#start",
@@ -26,7 +26,7 @@
         "th"
       ],
       "notes": true,
-      "build": "v26.9.6-alpha.1614",
+      "build": "v26.9.6-alpha.1646",
       "anchor": "start",
       "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-prism.html#start",
       "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-prism.html#start",
@@ -40,7 +40,7 @@
         "en"
       ],
       "notes": false,
-      "build": "v26.9.6-alpha.1614",
+      "build": "v26.9.6-alpha.1646",
       "anchor": "start",
       "url": "https://nat-build-with-oracle.github.io/workshop-2/oracle-dna.html#start",
       "local": "file:///Users/nat/Code/github.com/github.com/nat-build-with-oracle/workshop-2/oracle-dna.html#start",
