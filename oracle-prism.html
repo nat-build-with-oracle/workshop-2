@@ -396,12 +396,12 @@ body.notes-open .slide.is-active{animation:none}
 
 </main>
 
-<aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press A to hide</div><div id="notes-body"></div></aside>
+<aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
 
 <nav class="chrome" aria-label="Deck navigation">
   <span class="mark">Oracle Prism</span>
   <span class="spacer"></span>
-  <span class="hint">← → · S language · A notes · F fullscreen</span>
+  <span class="hint">← → · S language · N notes · F fullscreen</span>
   <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
   <button class="nav-btn" id="prev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
   <span class="counter" id="counter">1 / 20</span>
@@ -454,7 +454,7 @@ body.notes-open .slide.is-active{animation:none}
     else if (k === 'Home') { e.preventDefault(); go(0); }
     else if (k === 'End') { e.preventDefault(); go(total - 1); }
     else if (k === 's' || k === 'S') { e.preventDefault(); setLang(lang === 'en' ? 'th' : 'en'); }
-    else if (k === 'a' || k === 'A') { e.preventDefault(); toggleNotes(); }
+    else if (k === 'n' || k === 'N') { e.preventDefault(); toggleNotes(); }
     else if (k === 'f' || k === 'F') { e.preventDefault(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
   });
   let tx = null;
