@@ -167,7 +167,7 @@ em.q { font-style: normal; color: var(--lilac); }
 .spec-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .spec-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .spec-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
-.spec-name .th { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1; letter-spacing: -.02em; }
+.spec-name .th { font-size: clamp(1.5rem, min(4vw, 5vh), 3.1rem); font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1; letter-spacing: -.02em; }
 .spec-name .en { font-family: var(--mono); font-size: 13px; color: var(--faint); letter-spacing: .06em; text-transform: uppercase; }
 .spec-role { font-size: 15.5px; color: var(--muted); line-height: 1.6; max-width: 46ch; }
 
@@ -380,6 +380,57 @@ body.grid-mode .deck { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* short viewport: shrink dense content so it never slides under the chrome bar */
+@media (max-height: 840px){
+  .tbl-wrap table, table{font-size:11.5px}
+  th,td{padding:7px 10px!important;line-height:1.42}
+  .dna div, .dna-row{font-size:11.6px;padding:5px 0}
+  .dna-row .ask{font-size:11px;margin-top:3px}
+  .dna-row .got{font-size:11px}
+  .panel{padding:12px 14px;gap:6px}
+  .panel p{font-size:12px;line-height:1.5}
+  .ev-item{padding:8px 0}
+  .ev-item p{font-size:11.8px;line-height:1.5}
+  .lens-row{padding:8px 0}
+  .reason{padding:14px 13px}
+  .reason p{font-size:12px}
+  .rule{padding:11px 12px}
+  .rule p{font-size:11.5px}
+  .defect{padding:12px}
+  .defect p{font-size:11.5px}
+  .plan-row{padding:7px 0}
+  .plan-row .what{font-size:12.5px}
+  .caveat{padding:9px 0}
+  .caveat p{font-size:12px}
+  .three .s{font-size:12.5px}
+  pre{padding:11px 13px;font-size:11px;line-height:1.6}
+  .anno-item{padding:8px 0}
+  .anno-item p{font-size:11.8px}
+  .layer{padding:14px 16px!important}
+  .layer p{font-size:12.5px;line-height:1.55}
+  .pattern{padding:11px 12px}
+  .pattern p{font-size:11.5px}
+  .fact{padding:6px 0;font-size:12.5px}
+  .spec-role{font-size:13px}
+  .pedigree li{padding:4px 0;font-size:12px}
+  .wall-col li{font-size:11.4px}
+  .voice-cell{padding:12px 11px}
+  .voice p, .voice .say{font-size:13px}
+  .reading{font-size:14px}
+
+  /* the two tallest layouts: the 50-name wall and the 10-lens DNA grid */
+  .wall{gap:6px 16px}
+  .wall-col{gap:4px}
+  .wall-col li{font-size:10.1px;line-height:1.28}
+  .wall-col>.hd{padding-bottom:4px}
+  .wall-col>.hd b{font-size:11.5px}
+  .dna{gap:2px 26px}
+  .dna-row{padding:4px 0;gap:2px 10px}
+  .dna-row .who{font-size:11.8px;line-height:1.25}
+  .dna-row .got{font-size:10.4px;line-height:1.35}
+  .dna-row .ask{font-size:10.8px;line-height:1.35;margin-top:2px;padding-left:8px}
 }
 .build{font-family:var(--mono);font-size:11.5px;color:var(--faint);opacity:.85;margin-right:10px;font-variant-numeric:tabular-nums}
 </style>
@@ -946,7 +997,7 @@ git branch --show-current</pre>
 </section>
 
 <nav class="chrome" aria-label="Deck navigation">
-  <span class="build" title="built 2026-09-06 10:09 +07">v26.9.6-alpha.1009</span><span class="mark">
+  <span class="build" title="built 2026-09-06 10:26 +07">v26.9.6-alpha.1026</span><span class="mark">
     <svg width="26" height="12" viewBox="0 0 200 40" fill="none" aria-hidden="true"><path d="M2 20C2 20 14 2 30 2s28 36 44 36 28-36 44-36 28 36 44 36 28-18 28-18" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
     ARRA Oracle DNA
   </span>

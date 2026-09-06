@@ -149,7 +149,7 @@ ${decks.map(card).join('\n\n')}
 ${fullsRow}
   <div class="keys">
     <span><b>← →</b> <span class="en">slides</span><span class="th">เลื่อนสไลด์</span></span>
-    <span><b>S</b> EN / ไทย</span>
+    <span><b>T</b> EN / ไทย</span>
     <span><b>N</b> <span class="en">presenter notes</span><span class="th">โน้ตผู้บรรยาย</span></span>
     <span><b>F</b> <span class="en">fullscreen</span><span class="th">เต็มจอ</span></span>
     <span><b>G</b> <span class="en">grid, full decks</span><span class="th">ตารางรวม เฉพาะเวอร์ชันละเอียด</span></span>
@@ -168,7 +168,7 @@ ${fullsRow}
     try { localStorage.setItem('workshop2-lang', lang); } catch (e) {}
   }
   en.addEventListener('click', () => set('en')); th.addEventListener('click', () => set('th'));
-  document.addEventListener('keydown', e => { if (!e.metaKey && !e.ctrlKey && !e.altKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); set(lang === 'en' ? 'th' : 'en'); } });
+  document.addEventListener('keydown', e => { if (!e.metaKey && !e.ctrlKey && !e.altKey && (e.key === 't' || e.key === 'T')) { e.preventDefault(); set(lang === 'en' ? 'th' : 'en'); } });
   set(lang);
 })();
 </script>

@@ -39,35 +39,35 @@ h1.th,h2.th{font-weight:600;letter-spacing:0;line-height:1.35}
 @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 .tag{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
-h1{font-family:var(--serif);font-weight:400;font-size:clamp(3.4rem,10vw,8rem);line-height:.95;letter-spacing:-.02em;margin:0;text-wrap:balance}
-h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,6.4vw,5.4rem);line-height:1.02;letter-spacing:-.015em;margin:0;text-wrap:balance;max-width:20ch}
-h2.th{font-size:clamp(2.1rem,5.2vw,4.2rem);max-width:24ch}
-.sub{font-size:clamp(1.15rem,2.2vw,1.6rem);line-height:1.5;color:var(--muted);margin:0;max-width:44ch;text-wrap:pretty}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,min(10vw,13vh),8rem);line-height:.95;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,min(6.4vw,8.2vh),5.4rem);line-height:1.02;letter-spacing:-.015em;margin:0;text-wrap:balance;max-width:20ch}
+h2.th{font-size:clamp(1.6rem,min(5.2vw,6.8vh),4.2rem);max-width:24ch}
+.sub{font-size:clamp(1rem,min(2.2vw,2.9vh),1.6rem);line-height:1.5;color:var(--muted);margin:0;max-width:44ch;text-wrap:pretty}
 .o{color:var(--orch)} .g{color:var(--good)} .w{color:var(--warn)}
 .src{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin:0}
 
-.big{font-family:var(--serif);font-size:clamp(7rem,22vw,17rem);line-height:.85;letter-spacing:-.04em;color:var(--orch)}
+.big{font-family:var(--serif);font-size:clamp(4rem,min(22vw,26vh),17rem);line-height:.85;letter-spacing:-.04em;color:var(--orch)}
 .big small{font-size:.28em;color:var(--muted);letter-spacing:-.01em;margin-left:.1em}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:end}
-.pair .big{font-size:clamp(4.5rem,13vw,10rem)}
+.pair .big{font-size:clamp(3rem,min(13vw,17vh),10rem)}
 .pair .lbl{font-family:var(--mono);font-size:13px;color:var(--faint);margin-top:10px}
 
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px)}
 .three div{display:flex;flex-direction:column;gap:8px}
 .three .k{font-family:var(--mono);font-size:12px;color:var(--orch);letter-spacing:.14em}
-.three .w2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05}
+.three .w2{font-family:var(--serif);font-size:clamp(1.4rem,min(4vw,5.2vh),3rem);line-height:1.05}
 .three .w2.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.5rem,3.2vw,2.4rem)}
 
 /* diagrams */
-.fig{width:100%;max-width:560px;height:auto;display:block}
-.fig.wide{max-width:900px}
+.fig{width:100%;max-width:min(560px,58vh);max-height:34vh;height:auto;display:block}
+.fig.wide{max-width:min(900px,96vh);max-height:30vh}
 svg .n-o{fill:var(--orch)} svg .n-w{fill:var(--work)} svg .n-x{fill:none;stroke:var(--ink);stroke-width:2}
 svg .e{stroke:var(--work);stroke-width:2;fill:none;opacity:.7} svg .e-o{stroke:var(--orch);stroke-width:2;fill:none}
 svg .box{fill:none;stroke:var(--work);stroke-width:1.5;stroke-dasharray:4 4}
 .five{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,2vw,28px);align-items:end}
 .five div{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
 .five svg{width:100%;height:auto}
-.five .nm{font-family:var(--serif);font-size:clamp(1.2rem,2.4vw,1.8rem)}
+.five .nm{font-family:var(--serif);font-size:clamp(1rem,min(2.4vw,3.1vh),1.8rem)}
 .five .nm.th{font-family:var(--thai);font-weight:600;font-size:clamp(1rem,2vw,1.4rem)}
 
 /* simple bars */
@@ -85,7 +85,7 @@ svg .box{fill:none;stroke:var(--work);stroke-width:1.5;stroke-dasharray:4 4}
 
 /* two columns for decide */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,5vw,80px)}
-.two .hd{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05;margin-bottom:14px}
+.two .hd{font-family:var(--serif);font-size:clamp(1.4rem,min(4vw,5.2vh),3rem);line-height:1.05;margin-bottom:14px}
 .two .hd.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.5rem,3.2vw,2.4rem)}
 .two ul{margin:0;padding-left:20px;font-size:clamp(1rem,1.8vw,1.3rem);line-height:1.7;color:var(--muted)}
 
@@ -440,9 +440,9 @@ body.notes-open .slide.is-active{animation:none}
 <aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
 
 <nav class="chrome" aria-label="Deck navigation">
-  <span class="build" title="built 2026-09-06 10:09 +07">v26.9.6-alpha.1009</span><span class="mark">Multi-Agent Workflows</span>
+  <span class="build" title="built 2026-09-06 10:26 +07">v26.9.6-alpha.1026</span><span class="mark">Multi-Agent Workflows</span>
   <span class="spacer"></span>
-  <span class="hint">← → · S language · N notes · F fullscreen</span>
+  <span class="hint">← → · T language · N notes · F fullscreen</span>
   <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
   <button class="nav-btn" id="prev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
   <span class="counter" id="counter">1 / 23</span>
@@ -494,7 +494,7 @@ body.notes-open .slide.is-active{animation:none}
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(i - 1); }
     else if (k === 'Home') { e.preventDefault(); go(0); }
     else if (k === 'End') { e.preventDefault(); go(total - 1); }
-    else if (k === 's' || k === 'S') { e.preventDefault(); setLang(lang === 'en' ? 'th' : 'en'); }
+    else if (k === 't' || k === 'T') { e.preventDefault(); setLang(lang === 'en' ? 'th' : 'en'); }
     else if (k === 'n' || k === 'N') { e.preventDefault(); toggleNotes(); }
     else if (k === 'f' || k === 'F') { e.preventDefault(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
   });
