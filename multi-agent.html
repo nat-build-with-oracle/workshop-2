@@ -1,0 +1,467 @@
+<title>Multi-Agent Workflows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ground:#eef0f3; --surface:#ffffff; --ink:#151a21; --muted:#5b6573; --faint:#8a93a0;
+  --rule:#d5dae1; --orch:#c2410c; --work:#98a2b0; --warn:#b42318; --good:#0f7a5a;
+  --sans:'Inter','Noto Sans Thai',system-ui,sans-serif;
+  --serif:'Instrument Serif','Noto Sans Thai',Georgia,serif;
+  --thai:'Noto Sans Thai','Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0f1318; --surface:#171c23; --ink:#e8ecf1; --muted:#a3adba; --faint:#6f7987;
+    --rule:#262d37; --orch:#f97316; --work:#5f6a78; --warn:#f0655a; --good:#3fbf93;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0f1318; --surface:#171c23; --ink:#e8ecf1; --muted:#a3adba; --faint:#6f7987;
+  --rule:#262d37; --orch:#f97316; --work:#5f6a78; --warn:#f0655a; --good:#3fbf93;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:18px;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--orch);outline-offset:3px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+[data-lang="en"] .th{display:none!important}
+[data-lang="th"] .en{display:none!important}
+.th{font-family:var(--thai)}
+h1.th,h2.th{font-weight:600;letter-spacing:0;line-height:1.35}
+.sub.th{line-height:1.7}
+
+/* ---------- one idea per slide ---------- */
+.slide{display:none;min-height:100dvh;padding:8vh clamp(24px,7vw,120px) 120px;max-width:1180px;margin-inline:auto;flex-direction:column;justify-content:center;gap:clamp(22px,4vh,44px)}
+.slide.is-active{display:flex;animation:in 260ms ease-out both}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(3.4rem,10vw,8rem);line-height:.95;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,6.4vw,5.4rem);line-height:1.02;letter-spacing:-.015em;margin:0;text-wrap:balance;max-width:20ch}
+h2.th{font-size:clamp(2.1rem,5.2vw,4.2rem);max-width:24ch}
+.sub{font-size:clamp(1.15rem,2.2vw,1.6rem);line-height:1.5;color:var(--muted);margin:0;max-width:44ch;text-wrap:pretty}
+.o{color:var(--orch)} .g{color:var(--good)} .w{color:var(--warn)}
+.src{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin:0}
+
+.big{font-family:var(--serif);font-size:clamp(7rem,22vw,17rem);line-height:.85;letter-spacing:-.04em;color:var(--orch)}
+.big small{font-size:.28em;color:var(--muted);letter-spacing:-.01em;margin-left:.1em}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:end}
+.pair .big{font-size:clamp(4.5rem,13vw,10rem)}
+.pair .lbl{font-family:var(--mono);font-size:13px;color:var(--faint);margin-top:10px}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px)}
+.three div{display:flex;flex-direction:column;gap:8px}
+.three .k{font-family:var(--mono);font-size:12px;color:var(--orch);letter-spacing:.14em}
+.three .w2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05}
+.three .w2.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.5rem,3.2vw,2.4rem)}
+
+/* diagrams */
+.fig{width:100%;max-width:560px;height:auto;display:block}
+.fig.wide{max-width:900px}
+svg .n-o{fill:var(--orch)} svg .n-w{fill:var(--work)} svg .n-x{fill:none;stroke:var(--ink);stroke-width:2}
+svg .e{stroke:var(--work);stroke-width:2;fill:none;opacity:.7} svg .e-o{stroke:var(--orch);stroke-width:2;fill:none}
+svg .box{fill:none;stroke:var(--work);stroke-width:1.5;stroke-dasharray:4 4}
+.five{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,2vw,28px);align-items:end}
+.five div{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.five svg{width:100%;height:auto}
+.five .nm{font-family:var(--serif);font-size:clamp(1.2rem,2.4vw,1.8rem)}
+.five .nm.th{font-family:var(--thai);font-weight:600;font-size:clamp(1rem,2vw,1.4rem)}
+
+/* simple bars */
+.bars{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.bar{display:grid;grid-template-columns:110px 1fr 90px;gap:16px;align-items:center;font-size:17px}
+.bar .lb{color:var(--muted)}
+.bar .tk{height:28px;display:flex}
+.bar .tk i{display:block;height:100%;border-radius:3px;background:var(--work);min-width:4px}
+.bar .tk i.o{background:var(--orch)}
+.bar .n{font-family:var(--mono);font-size:17px;text-align:right;font-variant-numeric:tabular-nums}
+.stack{display:flex;height:64px;border-radius:4px;overflow:hidden;max-width:900px}
+.stack i{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:clamp(14px,2vw,22px);color:#fff}
+.stack-lb{display:flex;max-width:900px;gap:12px;font-size:15px;color:var(--muted)}
+.stack-lb span{flex:1}
+
+/* two columns for decide */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,5vw,80px)}
+.two .hd{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05;margin-bottom:14px}
+.two .hd.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.5rem,3.2vw,2.4rem)}
+.two ul{margin:0;padding-left:20px;font-size:clamp(1rem,1.8vw,1.3rem);line-height:1.7;color:var(--muted)}
+
+/* ---------- chrome ---------- */
+.rail{position:fixed;top:0;left:0;right:0;height:3px;z-index:40}
+.rail i{display:block;height:100%;background:var(--orch);transition:width 260ms}
+.chrome{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:12px;padding:12px clamp(16px,4vw,40px);background:color-mix(in srgb,var(--ground) 90%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--rule)}
+.chrome .mark{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.chrome .spacer{flex:1}
+.langsw{display:flex;gap:2px;padding:2px;border:1px solid var(--rule);border-radius:4px}
+.langsw button{font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:2px;color:var(--faint);min-height:28px}
+.langsw button[aria-pressed="true"]{background:var(--orch);color:#fff}
+.nav-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--rule);border-radius:3px;color:var(--muted)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.counter{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;padding:6px 10px}
+.hint{font-family:var(--mono);font-size:12px;color:var(--faint)}
+@media (max-width:800px){.hint{display:none}}
+
+/* presenter notes drawer */
+.notes{position:fixed;left:0;right:0;bottom:60px;z-index:39;max-height:38vh;overflow:auto;background:var(--surface);border-top:2px solid var(--orch);padding:18px clamp(16px,5vw,60px) 22px;display:none;font-size:15px;line-height:1.7;color:var(--muted)}
+.notes.is-open{display:block}
+.notes .nt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--orch);margin-bottom:8px}
+.notes p{margin:0 0 8px;max-width:90ch}
+.notes .th{line-height:1.9}
+.note{display:none}
+
+@media (max-width:820px){
+  .slide{justify-content:flex-start;padding-top:12vh}
+  .three,.two,.pair{grid-template-columns:1fr}
+  .five{grid-template-columns:repeat(5,1fr);gap:8px}
+  .bar{grid-template-columns:90px 1fr 70px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="rail" aria-hidden="true"><i id="rail-fill" style="width:0%"></i></div>
+
+<main id="deck">
+
+<!-- 1 -->
+<section class="slide" data-hash="start">
+  <svg class="fig wide" viewBox="0 0 640 150" fill="none" aria-label="One decider fanning out to workers">
+    <line class="e-o" x1="70" y1="75" x2="230" y2="22"/><line class="e-o" x1="70" y1="75" x2="230" y2="57"/><line class="e-o" x1="70" y1="75" x2="230" y2="93"/><line class="e-o" x1="70" y1="75" x2="230" y2="128"/>
+    <line class="e" x1="246" y1="22" x2="400" y2="22"/><line class="e" x1="246" y1="57" x2="400" y2="57"/><line class="e" x1="246" y1="93" x2="400" y2="93"/><line class="e" x1="246" y1="128" x2="400" y2="128"/>
+    <line class="e" x1="416" y1="22" x2="570" y2="75"/><line class="e" x1="416" y1="57" x2="570" y2="75"/><line class="e" x1="416" y1="93" x2="570" y2="75"/><line class="e" x1="416" y1="128" x2="570" y2="75"/>
+    <circle class="n-o" cx="70" cy="75" r="13"/><circle class="n-w" cx="238" cy="22" r="8"/><circle class="n-w" cx="238" cy="57" r="8"/><circle class="n-w" cx="238" cy="93" r="8"/><circle class="n-w" cx="238" cy="128" r="8"/>
+    <circle class="n-w" cx="408" cy="22" r="8"/><circle class="n-w" cx="408" cy="57" r="8"/><circle class="n-w" cx="408" cy="93" r="8"/><circle class="n-w" cx="408" cy="128" r="8"/><circle class="n-o" cx="570" cy="75" r="13"/>
+  </svg>
+  <h1 class="en">Multi-Agent<br>Workflows</h1>
+  <h1 class="th" style="font-size:clamp(2.6rem,7vw,5.6rem)">เวิร์กโฟลว์<br>หลายเอเจนต์</h1>
+  <p class="sub en">When to split work across agents — and when not to.</p>
+  <p class="sub th">เมื่อไรควรแบ่งงานให้หลายเอเจนต์ แล้วเมื่อไรไม่ควร</p>
+  <div class="note"><p class="en">Research: 6 Sonnet agents — 3 on black (skills, 110,952 transcripts, 9,173 memory files), 3 on the web. Sept 2026.</p><p class="th">งานวิจัย: Sonnet 6 ตัว — 3 ตัวบน black (สกิล, transcript 110,952 ไฟล์, memory 9,173 ไฟล์) อีก 3 ตัวค้นเว็บ ก.ย. 2026</p></div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-hash="cost">
+  <p class="tag">The price</p>
+  <div class="big">15<small>×</small></div>
+  <h2 class="en">More agents means about fifteen times the tokens.</h2>
+  <h2 class="th">ใช้หลายเอเจนต์ กิน token ราวสิบห้าเท่า</h2>
+  <p class="src">Anthropic, multi-agent research system, 2025</p>
+  <div class="note"><p class="en">Single chat = 1×. Single agent with tools ≈ 4×. Multi-agent ≈ 15×. Anthropic's Jan 2026 follow-up says 3–10× is typical. Either way: it's expensive.</p><p class="th">แชตเดี่ยว = 1 เท่า เอเจนต์เดี่ยวมีเครื่องมือ ≈ 4 เท่า หลายเอเจนต์ ≈ 15 เท่า บทความ ม.ค. 2026 บอกว่าปกติอยู่ที่ 3–10 เท่า ยังไงก็แพง</p></div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-hash="gain">
+  <p class="tag">The catch</p>
+  <div class="big">80<small>%</small></div>
+  <h2 class="en">Most of the gain is just more thinking, not smarter teamwork.</h2>
+  <h2 class="th">ผลที่ดีขึ้นส่วนใหญ่มาจากคิดเยอะขึ้น ไม่ใช่ทำงานเป็นทีมเก่งขึ้น</h2>
+  <p class="src">Token spend explained 80% of performance variance — same source</p>
+  <div class="note"><p class="en">The orchestrator beat single-agent Opus 4 by 90.2% on their eval. But 80% of the variance came from token count alone. You're mostly buying compute.</p><p class="th">orchestrator ชนะ Opus 4 เดี่ยว 90.2% บน eval ของเขา แต่ 80% ของความต่างมาจากจำนวน token ล้วน ๆ ที่ซื้อมาส่วนใหญ่คือ compute</p></div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-hash="reasons">
+  <p class="tag">So when is it worth it?</p>
+  <h2 class="en">Only three reasons.</h2>
+  <h2 class="th">มีแค่สามเหตุผล</h2>
+  <div class="three">
+    <div><span class="k">01</span><span class="w2 en">Context is too big</span><span class="w2 th">บริบทใหญ่เกิน</span></div>
+    <div><span class="k">02</span><span class="w2 en">Work is independent</span><span class="w2 th">งานแยกขาดจากกัน</span></div>
+    <div><span class="k">03</span><span class="w2 en">A specialist is better</span><span class="w2 th">มีตัวเชี่ยวชาญที่เก่งกว่า</span></div>
+  </div>
+  <p class="src">Anthropic, "When to use multi-agent systems", Jan 2026</p>
+  <div class="note"><p class="en">Context protection — the work needs more than one window, or noisy sub-work would pollute the main thread. Parallelization — breadth-first, not a chain. Specialization — a different model/tool/persona measurably wins on one slice. Anything else: single agent.</p><p class="th">กันบริบท — งานใหญ่กว่าหน้าต่างเดียว หรืองานย่อยจะมาเลอะ thread หลัก ทำขนาน — แบบกว้าง ไม่ใช่โซ่ เชี่ยวชาญ — โมเดล/เครื่องมือ/บุคลิกอื่นชนะชิ้นนั้นแบบวัดได้ นอกนั้นใช้เอเจนต์เดียว</p></div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-hash="test">
+  <p class="tag">The one question</p>
+  <h2 class="en">Can each agent work <span class="o">without</span> seeing the others?</h2>
+  <h2 class="th">แต่ละเอเจนต์ทำงานได้ไหม <span class="o">โดยไม่ต้องเห็น</span>งานของตัวอื่น</h2>
+  <p class="sub en">If no — don't split it.</p>
+  <p class="sub th">ถ้าไม่ได้ ก็อย่าแบ่ง</p>
+  <div class="note"><p class="en">Anthropic's test: "can the context be truly isolated?" Cognition's essay agrees from the other side — agents that can't see each other make conflicting implicit decisions. Their example: one draws a Mario background, another draws a bird that doesn't match.</p><p class="th">เกณฑ์ของ Anthropic: "แยกบริบทออกจากกันได้จริงไหม" บทความของ Cognition เห็นตรงกันจากอีกฝั่ง เอเจนต์ที่ไม่เห็นกันจะตัดสินใจโดยนัยขัดกัน ตัวอย่างคือตัวหนึ่งวาดฉาก Mario อีกตัววาดนกที่ไม่เข้ากัน</p></div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-hash="shapes">
+  <p class="tag">Shapes</p>
+  <h2 class="en">Multi-agent is five shapes.</h2>
+  <h2 class="th">หลายเอเจนต์มีห้ารูปทรง</h2>
+  <div class="five">
+    <div><svg viewBox="0 0 120 90"><line class="e-o" x1="60" y1="18" x2="20" y2="62"/><line class="e-o" x1="60" y1="18" x2="47" y2="62"/><line class="e-o" x1="60" y1="18" x2="73" y2="62"/><line class="e-o" x1="60" y1="18" x2="100" y2="62"/><circle class="n-o" cx="60" cy="18" r="9"/><circle class="n-w" cx="20" cy="62" r="6"/><circle class="n-w" cx="47" cy="62" r="6"/><circle class="n-w" cx="73" cy="62" r="6"/><circle class="n-w" cx="100" cy="62" r="6"/></svg><span class="nm en">Fan-out</span><span class="nm th">กระจาย</span></div>
+    <div><svg viewBox="0 0 120 90"><line class="e" x1="18" y1="45" x2="102" y2="45"/><circle class="n-o" cx="18" cy="45" r="8"/><circle class="n-w" cx="46" cy="45" r="7"/><circle class="n-w" cx="74" cy="45" r="7"/><circle class="n-w" cx="102" cy="45" r="7"/></svg><span class="nm en">Pipeline</span><span class="nm th">ต่อท่อ</span></div>
+    <div><svg viewBox="0 0 120 90"><line class="e" x1="60" y1="45" x2="22" y2="16"/><line class="e" x1="60" y1="45" x2="98" y2="16"/><line class="e" x1="60" y1="45" x2="14" y2="52"/><line class="e" x1="60" y1="45" x2="106" y2="52"/><line class="e" x1="60" y1="45" x2="60" y2="82"/><circle class="n-x" cx="60" cy="45" r="10"/><circle class="n-w" cx="22" cy="16" r="6"/><circle class="n-w" cx="98" cy="16" r="6"/><circle class="n-w" cx="14" cy="52" r="6"/><circle class="n-w" cx="106" cy="52" r="6"/><circle class="n-w" cx="60" cy="82" r="6"/></svg><span class="nm en">Adversarial</span><span class="nm th">รุมทุบ</span></div>
+    <div><svg viewBox="0 0 120 90"><rect class="box" x="38" y="60" width="44" height="18" rx="2"/><line class="e" x1="30" y1="24" x2="90" y2="24"/><line class="e" x1="30" y1="24" x2="48" y2="60"/><line class="e" x1="90" y1="24" x2="72" y2="60"/><line class="e" x1="60" y1="40" x2="60" y2="60"/><line class="e" x1="30" y1="24" x2="60" y2="40"/><line class="e" x1="90" y1="24" x2="60" y2="40"/><circle class="n-o" cx="30" cy="24" r="7"/><circle class="n-w" cx="90" cy="24" r="7"/><circle class="n-w" cx="60" cy="40" r="7"/></svg><span class="nm en">Team</span><span class="nm th">ทีม</span></div>
+    <div><svg viewBox="0 0 120 90"><path d="M18 45 H50" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><path d="M60 22 L74 68 H46 Z" fill="none" stroke="var(--work)" stroke-width="1.6"/><line x1="70" y1="47" x2="108" y2="26" stroke="var(--orch)" stroke-width="2"/><line x1="70" y1="47" x2="108" y2="40" stroke="var(--work)" stroke-width="2"/><line x1="70" y1="47" x2="108" y2="54" stroke="var(--work)" stroke-width="2"/><line x1="70" y1="47" x2="108" y2="68" stroke="var(--work)" stroke-width="2"/></svg><span class="nm en">Inline</span><span class="nm th">ตัวเดียว</span></div>
+  </div>
+  <div class="note"><p class="en">Orange = the one that decides. Grey = the ones that do. We'll take each one in turn.</p><p class="th">สีส้ม = ตัวที่ตัดสินใจ สีเทา = ตัวที่ลงมือทำ เดี๋ยวไล่ดูทีละแบบ</p></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-hash="fanout">
+  <p class="tag">Shape 1</p>
+  <svg class="fig" viewBox="0 0 240 150" aria-label="Fan-out"><line class="e-o" x1="120" y1="28" x2="30" y2="118"/><line class="e-o" x1="120" y1="28" x2="90" y2="118"/><line class="e-o" x1="120" y1="28" x2="150" y2="118"/><line class="e-o" x1="120" y1="28" x2="210" y2="118"/><circle class="n-o" cx="120" cy="28" r="16"/><circle class="n-w" cx="30" cy="118" r="11"/><circle class="n-w" cx="90" cy="118" r="11"/><circle class="n-w" cx="150" cy="118" r="11"/><circle class="n-w" cx="210" cy="118" r="11"/></svg>
+  <h2 class="en">Fan-out. One asks, many answer, one decides.</h2>
+  <h2 class="th">กระจาย หนึ่งถาม หลายตอบ หนึ่งตัดสิน</h2>
+  <p class="sub en">The cheapest way to run in parallel. Most of the fleet's skills are this.</p>
+  <p class="sub th">วิธีทำขนานที่ถูกที่สุด สกิลส่วนใหญ่ของฟลีตเป็นแบบนี้</p>
+  <div class="note"><p class="en">/sonnet N, /oracle-deep-research, /seek --deep, /adversarial-analysis all fan out via the Agent tool. 7 of the fleet's 15 multi-agent skills. Workers are ephemeral; only their final text comes back.</p><p class="th">/sonnet N, /oracle-deep-research, /seek --deep, /adversarial-analysis ล้วนกระจายผ่าน Agent tool 7 จาก 15 สกิลหลายเอเจนต์ของฟลีต คนงานเป็นแบบชั่วคราว กลับมาแค่ข้อความสรุป</p></div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-hash="pipeline">
+  <p class="tag">Shape 2</p>
+  <svg class="fig" viewBox="0 0 240 150" aria-label="Pipeline"><line class="e" x1="30" y1="75" x2="210" y2="75"/><circle class="n-o" cx="30" cy="75" r="14"/><circle class="n-w" cx="90" cy="75" r="12"/><circle class="n-w" cx="150" cy="75" r="12"/><circle class="n-w" cx="210" cy="75" r="12"/></svg>
+  <h2 class="en">Pipeline. Each step feeds the next.</h2>
+  <h2 class="th">ต่อท่อ แต่ละขั้นส่งต่อให้ขั้นถัดไป</h2>
+  <p class="sub en">Written as a script. Same order every time. Can resume where it stopped.</p>
+  <p class="sub th">เขียนเป็นสคริปต์ ลำดับเดิมทุกครั้ง หยุดตรงไหนกลับมาต่อตรงนั้นได้</p>
+  <div class="note"><p class="en">The Workflow tool: a JS script with agent(), parallel(), pipeline(), phase(). The script itself costs zero tokens. Caps: 16 concurrent, 1,000 agents per run. The fleet started using it 2026-05-29 and it was still ramping in July.</p><p class="th">Workflow tool: สคริปต์ JS มี agent(), parallel(), pipeline(), phase() ตัวสคริปต์ไม่กิน token เพดาน: พร้อมกัน 16 รวม 1,000 ต่อรัน ฟลีตเริ่มใช้ 2026-05-29 แล้วยังไต่อยู่ตอน ก.ค.</p></div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-hash="adversarial">
+  <p class="tag">Shape 3</p>
+  <svg class="fig" viewBox="0 0 240 150" aria-label="Adversarial"><line class="e" x1="120" y1="75" x2="40" y2="25"/><line class="e" x1="120" y1="75" x2="200" y2="25"/><line class="e" x1="120" y1="75" x2="25" y2="90"/><line class="e" x1="120" y1="75" x2="215" y2="90"/><line class="e" x1="120" y1="75" x2="120" y2="135"/><circle class="n-x" cx="120" cy="75" r="18"/><circle class="n-w" cx="40" cy="25" r="11"/><circle class="n-w" cx="200" cy="25" r="11"/><circle class="n-w" cx="25" cy="90" r="11"/><circle class="n-w" cx="215" cy="90" r="11"/><circle class="n-w" cx="120" cy="135" r="11"/></svg>
+  <h2 class="en">Adversarial. Five agents try to break one claim.</h2>
+  <h2 class="th">รุมทุบ ห้าเอเจนต์พยายามทำลายข้อสรุปเดียว</h2>
+  <p class="sub en">If it survives, trust it. The output is a score, not an essay.</p>
+  <p class="sub th">ถ้ารอด ก็เชื่อได้ ผลลัพธ์เป็นคะแนน ไม่ใช่ความเรียง</p>
+  <div class="note"><p class="en">/adversarial-analysis. Born 2026-06-07 from a real bug: a cross-check found issue #2370's fix wouldn't work, which became #2375. Scores X/5 — 5/5 proceed, 4/5 fix the gap, 3/5 investigate, ≤2/5 don't act.</p><p class="th">/adversarial-analysis เกิด 2026-06-07 จากบั๊กจริง การไขว้สอบเจอว่า fix ของ issue #2370 ใช้ไม่ได้ กลายเป็น #2375 ให้คะแนน X/5 — 5/5 ไปต่อ 4/5 อุดช่องก่อน 3/5 สืบเพิ่ม ≤2/5 อย่าเพิ่งทำ</p></div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-hash="team">
+  <p class="tag">Shape 4</p>
+  <svg class="fig" viewBox="0 0 240 150" aria-label="Team"><rect class="box" x="72" y="105" width="96" height="30" rx="3"/><line class="e" x1="50" y1="40" x2="190" y2="40"/><line class="e" x1="50" y1="40" x2="90" y2="105"/><line class="e" x1="190" y1="40" x2="150" y2="105"/><line class="e" x1="120" y1="70" x2="120" y2="105"/><line class="e" x1="50" y1="40" x2="120" y2="70"/><line class="e" x1="190" y1="40" x2="120" y2="70"/><circle class="n-o" cx="50" cy="40" r="13"/><circle class="n-w" cx="190" cy="40" r="12"/><circle class="n-w" cx="120" cy="70" r="12"/><text x="98" y="125" font-family="JetBrains Mono" font-size="12" fill="var(--faint)">tasks</text></svg>
+  <h2 class="en">Team. Agents that stay alive and talk to each other.</h2>
+  <h2 class="th">ทีม เอเจนต์ที่อยู่ยาวและคุยกันเองได้</h2>
+  <p class="sub en">The most powerful shape — and the most expensive, and the most fragile.</p>
+  <p class="sub th">ทรงพลังที่สุด แต่ก็แพงที่สุด และเปราะที่สุด</p>
+  <div class="note"><p class="en">team-agents (Claude teammates via SendMessage + shared task list), codex-team / oracle-team / trio (external coders over tmux). Anthropic: "significantly higher" cost, each teammate is a full session. Fleet memory: teams "produced stale reports and idle noise"; 50% boot-death on the second spawn; "queued ≠ delivered".</p><p class="th">team-agents (เพื่อนร่วมทีม Claude ผ่าน SendMessage + รายการงานร่วม) codex-team / oracle-team / trio (ตัวเขียนโค้ดภายนอกผ่าน tmux) Anthropic บอกต้นทุน "สูงกว่ามาก" แต่ละคนคือ session เต็ม memory ฟลีต: ทีม "ให้รายงานเก่ากับเสียงรบกวน" บูตตาย 50% ตอนแตกตัวที่สอง "เข้าคิว ≠ ส่งถึง"</p></div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-hash="inline">
+  <p class="tag">Shape 5</p>
+  <svg class="fig" viewBox="0 0 240 150" aria-label="Inline"><path d="M20 75 H90" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><path d="M110 30 L140 120 H80 Z" fill="none" stroke="var(--work)" stroke-width="2"/><line x1="130" y1="78" x2="220" y2="35" stroke="var(--orch)" stroke-width="2.5"/><line x1="130" y1="78" x2="220" y2="62" stroke="var(--work)" stroke-width="2.5"/><line x1="130" y1="78" x2="220" y2="90" stroke="var(--work)" stroke-width="2.5"/><line x1="130" y1="78" x2="220" y2="118" stroke="var(--work)" stroke-width="2.5"/></svg>
+  <h2 class="en">Inline. One agent, many lenses, zero spawning.</h2>
+  <h2 class="th">ตัวเดียว หลายเลนส์ ไม่แตกเอเจนต์เลย</h2>
+  <p class="sub en">Free — but the lenses can't disagree honestly. They've read each other.</p>
+  <p class="sub th">ฟรี แต่เลนส์เถียงกันจริงไม่ได้ เพราะมันอ่านกันมาแล้ว</p>
+  <div class="note"><p class="en">/oracle-prism. Same five-lens shape as adversarial, agents removed, written 3½ hours later the same day. One agent writing five sections has already read its own earlier sections — self-consistency pressure. Rule 4 ("don't harmonize") is a plea, not a mechanism.</p><p class="th">/oracle-prism โครงห้าเลนส์เดียวกับ adversarial แต่ถอดเอเจนต์ออก เขียนหลังจากนั้นสามชั่วโมงครึ่งวันเดียวกัน เอเจนต์เดียวเขียนห้าหัวข้อ ก็อ่านหัวข้อก่อนหน้าของตัวเองมาแล้ว กฎข้อ 4 ("ห้ามเกลี่ยให้ตรงกัน") เป็นคำขอร้อง ไม่ใช่กลไก</p></div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-hash="onedecider">
+  <p class="tag">What they share</p>
+  <h2 class="en">Every shape has <span class="o">one</span> decider.</h2>
+  <h2 class="th">ทุกรูปทรงมีผู้ตัดสิน<span class="o">หนึ่งเดียว</span></h2>
+  <p class="sub en">The whole industry landed here too. Group chat with no leader is the shape everyone abandoned.</p>
+  <p class="sub th">ทั้งวงการก็มาลงตรงนี้เหมือนกัน group chat ที่ไม่มีหัวหน้าคือทรงที่ทุกคนทิ้งไปแล้ว</p>
+  <div class="note"><p class="en">LangGraph supervisor, CrewAI hierarchical crews, Microsoft's Magentic manager, Google ADK's root agent, smolagents' manager — all one decider + specialists. AutoGen's free-form GroupChat went into maintenance mode Oct 2025. Three things converging: one decider, typed handoffs instead of chat turns, A2A/MCP protocols instead of framework wire formats.</p><p class="th">LangGraph supervisor, CrewAI crew ลำดับชั้น, Magentic manager ของ Microsoft, root agent ของ Google ADK, manager ของ smolagents ทั้งหมดคือผู้ตัดสินหนึ่ง + ผู้เชี่ยวชาญ GroupChat เปิดกว้างของ AutoGen เข้าโหมดดูแลอย่างเดียว ต.ค. 2025 สามอย่างที่บรรจบ: ผู้ตัดสินหนึ่ง, handoff แบบ typed แทนผลัดกันพูด, โปรโตคอล A2A/MCP แทน wire format ของแต่ละเฟรมเวิร์ก</p></div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-hash="messages">
+  <p class="tag">What the fleet actually does</p>
+  <div class="pair">
+    <div><div class="big num">22,579</div><div class="lbl">Agent spawns</div></div>
+    <div><div class="big num" style="color:var(--work)">22,319</div><div class="lbl">messages between agents</div></div>
+  </div>
+  <h2 class="en">Talking costs as much as spawning.</h2>
+  <h2 class="th">ค่าคุยกันแพงเท่าค่าแตกเอเจนต์</h2>
+  <div class="note"><p class="en">From 110,952 session transcripts on black, real tool calls only. For every subagent spawned, one SendMessage. Also: TaskCreate 10,456, Workflow 1,963, TeamCreate 1,802 — about 5.8 tasks per team. Both dirs hold some duplicate sessions, so these are upper bounds; the ratio holds.</p><p class="th">จาก transcript 110,952 ไฟล์บน black นับเฉพาะ tool call จริง แตก subagent หนึ่งตัว ส่ง SendMessage หนึ่งครั้ง อีกอย่าง: TaskCreate 10,456, Workflow 1,963, TeamCreate 1,802 ราว 5.8 งานต่อทีม ทั้งสองโฟลเดอร์มี session ซ้ำบ้าง เลยเป็นเพดานบน แต่สัดส่วนยังใช้ได้</p></div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-hash="width">
+  <p class="tag">How many agents</p>
+  <div class="bars">
+    <div class="bar"><span class="lb">3 agents</span><span class="tk"><i class="o" style="width:100%"></i></span><span class="n">30 runs</span></div>
+    <div class="bar"><span class="lb">20 agents</span><span class="tk"><i style="width:47%"></i></span><span class="n">14</span></div>
+    <div class="bar"><span class="lb">5 agents</span><span class="tk"><i style="width:33%"></i></span><span class="n">10</span></div>
+    <div class="bar"><span class="lb">10 agents</span><span class="tk"><i style="width:20%"></i></span><span class="n">6</span></div>
+  </div>
+  <h2 class="en">Three is the habit. Twenty is the ceremony.</h2>
+  <h2 class="th">สามคือความเคยชิน ยี่สิบคือพิธีกรรม</h2>
+  <div class="note"><p class="en">73 real /sonnet N calls. Bimodal — nobody picks 8 or 12. Three for everyday tunnel-breaking; twenty for the big pass (a redesign, a book). The prism dig found the same: lens counts cluster at 10 and 20, ignoring a documented cap of 7.</p><p class="th">/sonnet N จริง 73 ครั้ง สองยอด ไม่มีใครเลือก 8 หรือ 12 สามสำหรับทะลุอุโมงค์ทุกวัน ยี่สิบสำหรับรอบใหญ่ (รื้อดีไซน์ เขียนหนังสือ) การขุด prism ก็เจอแบบเดียวกัน จำนวนเลนส์กระจุกที่ 10 กับ 20 เมินเพดาน 7 ในเอกสาร</p></div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-hash="models">
+  <p class="tag">Which model does the work</p>
+  <div class="bars">
+    <div class="bar"><span class="lb">Sonnet</span><span class="tk"><i class="o" style="width:100%"></i></span><span class="n">2,631</span></div>
+    <div class="bar"><span class="lb">Haiku</span><span class="tk"><i style="width:93%"></i></span><span class="n">2,458</span></div>
+    <div class="bar"><span class="lb">Opus</span><span class="tk"><i style="width:22%"></i></span><span class="n">591</span></div>
+  </div>
+  <h2 class="en">The cheap models do 89% of it.</h2>
+  <h2 class="th">โมเดลราคาถูกทำงานไป 89%</h2>
+  <div class="note"><p class="en">Explicit model on Agent calls, ~/.claude/projects only. Half of all Agent calls don't name a model at all and inherit the session default. Fleet memory logs a team that "used Opus instead of Sonnet" as friction. Opus decides; Sonnet and Haiku do.</p><p class="th">การระบุ model ตอนเรียก Agent เฉพาะ ~/.claude/projects ครึ่งหนึ่งของ Agent call ไม่ระบุโมเดลเลย รับค่าตั้งต้นของ session มา memory ฟลีตจดทีมที่ "ใช้ Opus แทน Sonnet" ไว้ว่าเป็นความติดขัด Opus ตัดสิน Sonnet กับ Haiku ลงมือ</p></div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-hash="fails">
+  <p class="tag">Why it fails</p>
+  <div class="stack"><i style="width:42%;background:var(--warn)">42%</i><i style="width:37%;background:var(--orch)">37%</i><i style="width:21%;background:var(--work)">21%</i></div>
+  <div class="stack-lb"><span class="en">the task was badly specified</span><span class="th">โจทย์ระบุไม่ดี</span><span class="en">agents didn't agree</span><span class="th">เอเจนต์ไม่ตรงกัน</span><span class="en">nobody checked</span><span class="th">ไม่มีใครตรวจ</span></div>
+  <h2 class="en">Most failures are the humans, not the agents.</h2>
+  <h2 class="th">ที่พังส่วนใหญ่มาจากคน ไม่ใช่เอเจนต์</h2>
+  <p class="src">MAST taxonomy, arXiv:2503.13657 — 7 frameworks, 14 failure modes</p>
+  <div class="note"><p class="en">Specification 41.77%, inter-agent misalignment 36.94%, verification 21.30%. The fleet's own failure log — boot death, stale reports, queued ≠ delivered, resuming dead sessions — all falls in the second and third buckets. No recorded spec failures, which is either good design or a blind spot.</p><p class="th">การระบุงาน 41.77% เอเจนต์ไม่ตรงกัน 36.94% การตรวจสอบ 21.30% บันทึกความล้มเหลวของฟลีตเอง — บูตตาย รายงานเก่า เข้าคิว≠ส่งถึง ปลุก session ตาย — ตกอยู่ในกลุ่มสองกับสามทั้งหมด ไม่มีบันทึกพังจากโจทย์เลย จะเพราะออกแบบดีหรือเป็นจุดบอดก็ยังไม่รู้</p></div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-hash="rule1">
+  <p class="tag">Rule 1 of 4</p>
+  <h2 class="en">Run <span class="o">one</span> worker first.</h2>
+  <h2 class="th">รัน<span class="o">หนึ่ง</span>ตัวก่อนเสมอ</h2>
+  <p class="sub en">A one-worker test takes 5 seconds. A three-worker failure takes 2 minutes.</p>
+  <p class="sub th">ทดสอบตัวเดียวใช้ 5 วินาที สามตัวพังพร้อมกันใช้ 2 นาที</p>
+  <p class="src">mother-oracle · 2026-04-07</p>
+  <div class="note"><p class="en">Verbatim: "Before scaling Agent Teams to N parallel workers, always test 1 worker first … 1-worker smoke test = 5 seconds, 3-worker failed batch = 2 minutes." Catches auth gaps and tool errors before they multiply — e.g. three Haiku workers that all hit "your account does not have access".</p><p class="th">ตรงตัว: "ก่อนขยาย Agent Teams เป็น N ตัวขนาน ให้ทดสอบ 1 ตัวก่อนเสมอ … smoke test 1 ตัว = 5 วินาที batch 3 ตัวที่พัง = 2 นาที" จับปัญหาสิทธิ์กับเครื่องมือได้ก่อนจะทวีคูณ เช่น Haiku สามตัวที่เจอ "บัญชีไม่มีสิทธิ์" พร้อมกัน</p></div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-hash="rule2">
+  <p class="tag">Rule 2 of 4</p>
+  <h2 class="en">Check the <span class="o">question</span> before the swarm.</h2>
+  <h2 class="th">ตรวจ<span class="o">คำถาม</span>ก่อนปล่อยฝูง</h2>
+  <p class="sub en">Agents work inside the frame. They can't tell you the frame is wrong.</p>
+  <p class="sub th">เอเจนต์ทำงานอยู่ในกรอบ มันบอกไม่ได้ว่ากรอบผิด</p>
+  <p class="src">mawjs-oracle · premise-check · 2–5 minutes</p>
+  <div class="note"><p class="en">Verbatim: "Evaluators optimize inside the frame … they cannot validate the frame itself. Convergent answers within a wrong frame look like high confidence but are actually correlated wrong answers." This is the rule the papers don't have — and MAST says 42% of failures live exactly here.</p><p class="th">ตรงตัว: "ตัวประเมินทำงานอยู่ในกรอบ … มันตรวจตัวกรอบเองไม่ได้ คำตอบที่ตรงกันในกรอบที่ผิด ดูเหมือนมั่นใจสูง แต่จริง ๆ คือผิดพร้อมกัน" นี่คือกฎที่เปเปอร์ไม่มี แล้ว MAST บอกว่า 42% ของความล้มเหลวอยู่ตรงนี้พอดี</p></div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-hash="rule3">
+  <p class="tag">Rule 3 of 4</p>
+  <h2 class="en">Stop when they <span class="o">agree</span>, not when the budget runs out.</h2>
+  <h2 class="th">หยุดตอนพวกมัน<span class="o">เห็นตรงกัน</span> ไม่ใช่ตอนงบหมด</h2>
+  <p class="sub en">Three agents debating past twenty minutes on the same answer: stop.</p>
+  <p class="sub th">สามเอเจนต์ถกกันเกินยี่สิบนาทีบนคำตอบเดียวกัน หยุดได้แล้ว</p>
+  <p class="src">mawjs-oracle · 2026-04-17</p>
+  <div class="note"><p class="en">Verbatim: "When 3-agent debates run past ~20 minutes and converge on the same answer, stop the debate … multi-round debates cap at convergence, not budget." Research agrees: multi-agent debate gains flatten after 2–3 rounds / 3 agents.</p><p class="th">ตรงตัว: "พอการถกเถียง 3 เอเจนต์เลย ~20 นาทีแล้วบรรจบที่คำตอบเดียวกัน ให้หยุด … การถกหลายรอบมีเพดานที่จุดบรรจบ ไม่ใช่ที่งบ" งานวิจัยเห็นด้วย ผลของ debate แบนหลัง 2–3 รอบ / 3 เอเจนต์</p></div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-hash="rule4">
+  <p class="tag">Rule 4 of 4</p>
+  <h2 class="en">Trust the <span class="o">smoke test</span>, not the reviewer.</h2>
+  <h2 class="th">เชื่อ <span class="o">smoke test</span> ไม่ใช่เชื่อคนรีวิว</h2>
+  <p class="sub en">Review agents say "needs work" forever. If the thing runs, it works.</p>
+  <p class="sub th">เอเจนต์รีวิวบอก "ยังต้องแก้" ได้ตลอดกาล ถ้าของรันได้ ก็คือใช้ได้</p>
+  <p class="src">transcriber-oracle · 2026-06-18 · 13 → 3 → 1 → 1</p>
+  <div class="note"><p class="en">Critical findings per round: 13, 3, 1, 1. Round 1 was real. Rounds 2–4 were guards round 1 had added, overshooting. Verbatim: "chasing it past convergence is negative-ROI." Ground truth was the booklet smoke-testing to 14 pages three times.</p><p class="th">ข้อวิกฤตต่อรอบ: 13, 3, 1, 1 รอบแรกของจริง รอบ 2–4 คือด่านที่รอบแรกใส่เข้าไปแล้วเลยเถิด ตรงตัว: "ไล่ตามเลยจุดบรรจบคือติดลบ" ความจริงคือ booklet ผ่าน smoke test 14 หน้า สามครั้ง</p></div>
+</section>
+
+<!-- 21 -->
+<section class="slide" data-hash="agree">
+  <p class="tag">The fleet's own idea</p>
+  <h2 class="en">When two agents agree <span class="o">on their own</span>, that's evidence.</h2>
+  <h2 class="th">พอสองเอเจนต์เห็นตรงกัน<span class="o">โดยไม่ได้นัด</span> นั่นคือหลักฐาน</h2>
+  <p class="sub en">Every framework calls duplicate work waste. The fleet calls it a second opinion — as long as they didn't share the frame.</p>
+  <p class="sub th">ทุกเฟรมเวิร์กเรียกงานซ้ำว่าสิ้นเปลือง ฟลีตเรียกว่าความเห็นที่สอง ตราบใดที่ไม่ได้ใช้กรอบเดียวกัน</p>
+  <div class="note"><p class="en">mawjs-oracle 2026-04-16: "when two oracles of shared lineage independently research the same technical question and arrive at the same answer, that convergence is materially stronger evidence than a single-oracle decision." The ensemble papers agree — 15 copies of Llama2-13B match Llama2-70B; debate lifts arithmetic from 67% to 82%. The caveat is Rule 2.</p><p class="th">mawjs-oracle 2026-04-16: "พอ oracle สองตัวที่สายเลือดเดียวกัน ค้นคำถามเดียวกันแยกกันแล้วได้คำตอบเดียวกัน จุดบรรจบนั้นคือหลักฐานที่หนักแน่นกว่า oracle เดียวมาก" เปเปอร์ ensemble เห็นด้วย Llama2-13B 15 ตัวเทียบ Llama2-70B ได้ debate ดันเลขคณิตจาก 67% เป็น 82% ข้อยกเว้นคือกฎข้อ 2</p></div>
+</section>
+
+<!-- 22 -->
+<section class="slide" data-hash="decide">
+  <p class="tag">Decide</p>
+  <div class="two">
+    <div><div class="hd en g">Stay single when</div><div class="hd th g">อยู่เดี่ยวเมื่อ</div>
+      <ul class="en"><li>it's coding with shared state</li><li>each step needs the last one's answer</li><li>you can't afford 3–15×</li><li>you haven't checked the question</li></ul>
+      <ul class="th"><li>เป็นโค้ดที่มี state ร่วมกัน</li><li>แต่ละขั้นต้องรอคำตอบขั้นก่อน</li><li>จ่าย 3–15 เท่าไม่ไหว</li><li>ยังไม่ได้ตรวจคำถาม</li></ul></div>
+    <div><div class="hd en o">Fan out when</div><div class="hd th o">กระจายเมื่อ</div>
+      <ul class="en"><li>agents don't need to see each other</li><li>the work is wide, not deep</li><li>checking the answer is cheap</li><li>one worker already came back fine</li></ul>
+      <ul class="th"><li>เอเจนต์ไม่ต้องเห็นกัน</li><li>งานกว้าง ไม่ใช่ลึก</li><li>ตรวจคำตอบได้ถูก</li><li>ตัวเดียวรันแล้วกลับมาดี</li></ul></div>
+  </div>
+  <div class="note"><p class="en">Synthesis of Anthropic's three reasons, Cognition's two principles, MAST's failure split, and the fleet's four rules.</p><p class="th">สรุปจากสามเหตุผลของ Anthropic สองหลักของ Cognition การแบ่งความล้มเหลวของ MAST และสี่กฎของฟลีต</p></div>
+</section>
+
+<!-- 23 -->
+<section class="slide" data-hash="end">
+  <p class="tag">In one line</p>
+  <h2 class="en">Single by default.<br>Split for three reasons.<br><span class="o">Check the question first.</span></h2>
+  <h2 class="th">เริ่มจากตัวเดียว<br>แบ่งเมื่อมีสามเหตุผล<br><span class="o">ตรวจคำถามก่อนเสมอ</span></h2>
+  <p class="src">6 Sonnet agents · black + web · every number sourced · 2026-09-05</p>
+  <div class="note"><p class="en">Two figures were flagged as weakly sourced and left out: a 2026 SWE-bench multi-agent cost study (none found) and a "$47K runaway agent" story (one vendor blog only). The dense version of this deck with all sources is multi-agent-deck.html.</p><p class="th">ตัวเลขสองอย่างถูกตัดออกเพราะแหล่งอ่อน: งานศึกษาต้นทุน SWE-bench หลายเอเจนต์ปี 2026 (หาไม่เจอ) กับเรื่อง "เอเจนต์วิ่งเลยเถิด $47K" (มีแค่บล็อกผู้ขายเจ้าเดียว) เวอร์ชันละเอียดพร้อมแหล่งอ้างอิงทั้งหมดอยู่ที่ multi-agent-deck.html</p></div>
+</section>
+
+</main>
+
+<aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
+
+<nav class="chrome" aria-label="Deck navigation">
+  <span class="mark">Multi-Agent Workflows</span>
+  <span class="spacer"></span>
+  <span class="hint">← → · S language · N notes · F fullscreen</span>
+  <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
+  <button class="nav-btn" id="prev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <span class="counter" id="counter">1 / 23</span>
+  <button class="nav-btn" id="next" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+</nav>
+
+<script>
+(() => {
+  'use strict';
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const rail = document.getElementById('rail-fill');
+  const counter = document.getElementById('counter');
+  const prev = document.getElementById('prev'), next = document.getElementById('next');
+  const notes = document.getElementById('notes'), notesBody = document.getElementById('notes-body');
+  const btnEn = document.getElementById('btn-en'), btnTh = document.getElementById('btn-th');
+  let i = 0, lang = 'en', notesOpen = false;
+
+  function setLang(l) {
+    lang = l === 'th' ? 'th' : 'en';
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.lang = lang;
+    btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+    btnTh.setAttribute('aria-pressed', String(lang === 'th'));
+    try { localStorage.setItem('ma-simple-lang', lang); } catch (e) {}
+  }
+  function render() {
+    slides.forEach((s, k) => s.classList.toggle('is-active', k === i));
+    counter.textContent = (i + 1) + ' / ' + total;
+    rail.style.width = (i / (total - 1)) * 100 + '%';
+    prev.disabled = i === 0; next.disabled = i === total - 1;
+    const n = slides[i].querySelector('.note');
+    notesBody.innerHTML = n ? n.innerHTML : '';
+    const h = slides[i].dataset.hash;
+    if (h) { try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+  }
+  function go(k) { i = Math.max(0, Math.min(total - 1, k)); render(); window.scrollTo({ top: 0, behavior: 'instant' }); }
+  function toggleNotes() { notesOpen = !notesOpen; notes.classList.toggle('is-open', notesOpen); }
+
+  prev.addEventListener('click', () => go(i - 1));
+  next.addEventListener('click', () => go(i + 1));
+  btnEn.addEventListener('click', () => setLang('en'));
+  btnTh.addEventListener('click', () => setLang('th'));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); go(i + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(i - 1); }
+    else if (k === 'Home') { e.preventDefault(); go(0); }
+    else if (k === 'End') { e.preventDefault(); go(total - 1); }
+    else if (k === 's' || k === 'S') { e.preventDefault(); setLang(lang === 'en' ? 'th' : 'en'); }
+    else if (k === 'n' || k === 'N') { e.preventDefault(); toggleNotes(); }
+    else if (k === 'f' || k === 'F') { e.preventDefault(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+  });
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(i + (dx < 0 ? 1 : -1)); tx = null; }, { passive: true });
+
+  function fromHash() { const h = location.hash.slice(1); const k = slides.findIndex(s => s.dataset.hash === h); if (k >= 0) { i = k; return true; } return false; }
+  window.addEventListener('hashchange', () => { if (fromHash()) render(); });
+  let saved = 'en'; try { saved = localStorage.getItem('ma-simple-lang') || 'en'; } catch (e) {}
+  setLang(saved); fromHash(); render();
+})();
+</script>

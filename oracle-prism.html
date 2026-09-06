@@ -1,0 +1,465 @@
+<title>Oracle Prism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* dark-first */
+:root{
+  --ground:#0e0d14; --surface:#181722; --ink:#eceaf4; --muted:#9b95ac; --faint:#6f6a80;
+  --rule:#2b2937; --beam:#ffffff;
+  --l1:#e0a437; --l2:#e8705c; --l3:#d16bb0; --l4:#7c86e8; --l5:#4fb8b0;
+  --sans:'Inter','Noto Sans Thai',system-ui,sans-serif;
+  --serif:'Instrument Serif','Noto Sans Thai',Georgia,serif;
+  --thai:'Noto Sans Thai','Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --ground:#f6f5f9; --surface:#ffffff; --ink:#16141d; --muted:#555063; --faint:#736d82;
+    --rule:#dedae7; --beam:#16141d;
+    --l1:#9a6708; --l2:#b8402c; --l3:#9c3277; --l4:#4450b8; --l5:#1a7f77;
+  }
+}
+:root[data-theme="light"]{
+  --ground:#f6f5f9; --surface:#ffffff; --ink:#16141d; --muted:#555063; --faint:#736d82;
+  --rule:#dedae7; --beam:#16141d;
+  --l1:#9a6708; --l2:#b8402c; --l3:#9c3277; --l4:#4450b8; --l5:#1a7f77;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:18px;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--l4);outline-offset:3px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+[data-lang="en"] .th{display:none!important}
+[data-lang="th"] .en{display:none!important}
+.th{font-family:var(--thai)}
+h1.th,h2.th{font-weight:600;letter-spacing:0;line-height:1.35}
+.sub.th{line-height:1.7}
+
+.slide{display:none;min-height:100dvh;padding:8vh clamp(24px,7vw,120px) 120px;max-width:1180px;margin-inline:auto;flex-direction:column;justify-content:center;gap:clamp(22px,4vh,44px)}
+.slide.is-active{display:flex;animation:in 260ms ease-out both}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(3.4rem,10vw,8rem);line-height:.92;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,6.4vw,5.4rem);line-height:1.02;letter-spacing:-.015em;margin:0;text-wrap:balance;max-width:20ch}
+h2.th{font-size:clamp(2.1rem,5.2vw,4.2rem);max-width:24ch}
+.sub{font-size:clamp(1.15rem,2.2vw,1.6rem);line-height:1.5;color:var(--muted);margin:0;max-width:44ch;text-wrap:pretty}
+.src{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin:0}
+.c1{color:var(--l1)} .c2{color:var(--l2)} .c3{color:var(--l3)} .c4{color:var(--l4)} .c5{color:var(--l5)}
+
+.big{font-family:var(--serif);font-size:clamp(7rem,22vw,17rem);line-height:.85;letter-spacing:-.04em;color:var(--l4)}
+.big small{font-size:.28em;color:var(--muted);letter-spacing:-.01em;margin-left:.1em}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:end}
+.pair .big{font-size:clamp(4.5rem,13vw,10rem)}
+.pair .lbl{font-family:var(--mono);font-size:13px;color:var(--faint);margin-top:10px}
+
+.prism-fig{width:100%;max-width:620px;height:auto}
+.prism-fig .glass{fill:color-mix(in srgb,var(--ink) 7%,transparent);stroke:var(--faint);stroke-width:1.5}
+.prism-fig .beam{stroke:var(--beam);stroke-width:2.5;stroke-linecap:round}
+
+.lenses{display:flex;flex-direction:column;gap:0;max-width:900px}
+.lens{display:grid;grid-template-columns:44px minmax(0,230px) 1fr;gap:18px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--rule)}
+.lens .em{font-size:24px}
+.lens .nm{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1}
+.lens .nm.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.2rem,2.4vw,1.7rem)}
+.lens .q{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--muted);line-height:1.5}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px)}
+.three div{display:flex;flex-direction:column;gap:8px}
+.three .k{font-family:var(--mono);font-size:12px;letter-spacing:.12em}
+.three .w2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05}
+.three .w2.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.5rem,3.2vw,2.4rem)}
+.three .s{font-size:15px;color:var(--muted);line-height:1.5}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,5vw,80px)}
+.two .hd{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05;margin-bottom:14px}
+.two .hd.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.5rem,3.2vw,2.4rem)}
+.two ul{margin:0;padding-left:20px;font-size:clamp(1rem,1.8vw,1.3rem);line-height:1.7;color:var(--muted)}
+
+.bars{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.bar{display:grid;grid-template-columns:110px 1fr 90px;gap:16px;align-items:center;font-size:17px}
+.bar .lb{color:var(--muted)}
+.bar .tk{height:28px;display:flex}
+.bar .tk i{display:block;height:100%;border-radius:3px;background:var(--faint);min-width:4px}
+.bar .tk i.over{background:var(--l2)}
+.bar .n{font-family:var(--mono);font-size:17px;text-align:right;font-variant-numeric:tabular-nums}
+.conv{display:flex;align-items:flex-end;gap:22px;height:190px}
+.conv div{display:flex;flex-direction:column;align-items:center;gap:10px}
+.conv i{display:block;width:72px;border-radius:3px 3px 0 0;background:var(--l2)}
+.conv i.ok{background:var(--l5)}
+.conv b{font-family:var(--serif);font-size:2.4rem;font-weight:400}
+.conv span{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.args{display:flex;flex-direction:column;gap:10px;max-width:900px}
+.arg{font-family:var(--mono);font-size:clamp(.9rem,1.5vw,1.1rem);line-height:1.6;color:var(--muted);padding:10px 16px;border-left:3px solid var(--l3);overflow-wrap:anywhere}
+.arg b{color:var(--l3);font-weight:500}
+.dna{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 40px;max-width:960px}
+.dna div{display:flex;gap:14px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--rule);font-size:clamp(1rem,1.7vw,1.2rem)}
+.dna b{font-weight:600;min-width:11em}
+.dna span{color:var(--muted);font-size:.9em}
+.dna .t b{color:var(--l1)}
+.four{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,3vw,36px)}
+.four div{display:flex;flex-direction:column;gap:6px}
+.four .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--l2)}
+.four .h{font-family:var(--serif);font-size:clamp(1.4rem,2.8vw,2.1rem);line-height:1.1}
+.four .h.th{font-family:var(--thai);font-weight:600;font-size:clamp(1.2rem,2.2vw,1.6rem)}
+
+/* chrome */
+.spectrum{position:fixed;top:0;left:0;right:0;height:3px;display:flex;z-index:40}
+.spectrum i{flex:1;opacity:.18;transition:opacity 300ms}
+.spectrum i.on{opacity:1}
+.spectrum i:nth-child(1){background:var(--l1)}.spectrum i:nth-child(2){background:var(--l2)}.spectrum i:nth-child(3){background:var(--l3)}.spectrum i:nth-child(4){background:var(--l4)}.spectrum i:nth-child(5){background:var(--l5)}
+.chrome{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:12px;padding:12px clamp(16px,4vw,40px);background:color-mix(in srgb,var(--ground) 90%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--rule)}
+.chrome .mark{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.chrome .spacer{flex:1}
+.langsw{display:flex;gap:2px;padding:2px;border:1px solid var(--rule);border-radius:4px}
+.langsw button{font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:2px;color:var(--faint);min-height:28px}
+.langsw button[aria-pressed="true"]{background:var(--l4);color:#fff}
+.nav-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--rule);border-radius:3px;color:var(--muted)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.counter{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;padding:6px 10px}
+.hint{font-family:var(--mono);font-size:12px;color:var(--faint)}
+@media (max-width:800px){.hint{display:none}}
+.notes{position:fixed;left:0;right:0;bottom:60px;z-index:39;max-height:38vh;overflow:auto;background:var(--surface);border-top:2px solid var(--l4);padding:18px clamp(16px,5vw,60px) 22px;display:none;font-size:15px;line-height:1.7;color:var(--muted)}
+.notes.is-open{display:block}
+.notes .nt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--l4);margin-bottom:8px}
+.notes p{margin:0 0 8px;max-width:90ch}
+.notes .th{line-height:1.9}
+.note{display:none}
+
+@media (max-width:820px){
+  .slide{justify-content:flex-start;padding-top:12vh}
+  .three,.two,.pair,.dna,.four{grid-template-columns:1fr}
+  .lens{grid-template-columns:36px 1fr;row-gap:4px}
+  .lens .q{grid-column:2}
+  .bar{grid-template-columns:90px 1fr 70px}
+  .conv{height:150px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+<main id="deck">
+
+<!-- 1 -->
+<section class="slide" data-hash="start">
+  <svg class="prism-fig" viewBox="0 0 620 250" fill="none" aria-label="One beam entering a prism, five rays leaving">
+    <path class="glass" d="M240 48 L308 178 L172 178 Z"/><path class="beam" d="M28 120 H205"/>
+    <path d="M278 126 L596 62" stroke="var(--l1)" stroke-width="2.5" stroke-linecap="round"/><path d="M278 126 L596 100" stroke="var(--l2)" stroke-width="2.5" stroke-linecap="round"/><path d="M278 126 L596 138" stroke="var(--l3)" stroke-width="2.5" stroke-linecap="round"/><path d="M278 126 L596 176" stroke="var(--l4)" stroke-width="2.5" stroke-linecap="round"/><path d="M278 126 L596 214" stroke="var(--l5)" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+  <h1>Oracle Prism</h1>
+  <p class="sub en">One agent. Five lenses. Zero subagents.</p>
+  <p class="sub th">เอเจนต์เดียว ห้าเลนส์ ไม่แตก subagent เลย</p>
+  <div class="note"><p class="en">"แสงเดียวผ่านปริซึม แตกเป็นหลายสี — เรื่องเดียวกัน มองจากหลายมุม เห็นต่างกัน." The skill lives at black:~/.claude/skills/oracle-prism/SKILL.md, 4,823 bytes, one file, no scripts.</p><p class="th">"แสงเดียวผ่านปริซึม แตกเป็นหลายสี — เรื่องเดียวกัน มองจากหลายมุม เห็นต่างกัน" สกิลอยู่ที่ black:~/.claude/skills/oracle-prism/SKILL.md 4,823 bytes ไฟล์เดียว ไม่มีสคริปต์</p></div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-hash="idea">
+  <p class="tag">The idea</p>
+  <h2 class="en">Same facts. Five different questions.</h2>
+  <h2 class="th">ข้อเท็จจริงชุดเดียว ห้าคำถามที่ต่างกัน</h2>
+  <p class="sub en">The agent doesn't delegate. It changes lenses and looks again.</p>
+  <p class="sub th">เอเจนต์ไม่ได้กระจายงาน แค่เปลี่ยนเลนส์แล้วมองใหม่</p>
+  <div class="note"><p class="en">One agent moves through the lenses in sequence, writing one section per lens. Not adversarial — it isn't trying to disprove anything. It's trying to stop you tunnelling on the first thing you noticed.</p><p class="th">เอเจนต์เดียวไล่ไปทีละเลนส์ เขียนหัวข้อละหนึ่ง ไม่ใช่ adversarial ไม่ได้จะหักล้างอะไร แค่กันไม่ให้จมอยู่กับสิ่งแรกที่เห็น</p></div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-hash="born">
+  <p class="tag">2026-06-07</p>
+  <div class="pair">
+    <div><div class="big" style="color:var(--l2)">08:13</div><div class="lbl">/adversarial-analysis · 5 agents</div></div>
+    <div><div class="big">11:48</div><div class="lbl">/oracle-prism · 0 agents</div></div>
+  </div>
+  <h2 class="en">Born three and a half hours after its opposite.</h2>
+  <h2 class="th">เกิดหลังพี่น้องคนละขั้ว สามชั่วโมงครึ่ง</h2>
+  <div class="note"><p class="en">That morning, a cross-check found issue #2370's fix wouldn't solve the athena-athena bug — it became #2375. Out of that came adversarial-analysis: five parallel agents trying to destroy a claim. Three and a half hours later, the same five-lens shape was written again with the agents removed. Neither file mentions the other.</p><p class="th">เช้าวันนั้น การไขว้สอบเจอว่า fix ของ issue #2370 ไม่แก้บั๊ก athena-athena กลายเป็น #2375 จากตรงนั้น adversarial-analysis ก็เกิด ห้าเอเจนต์ขนานพยายามทุบข้อสรุป สามชั่วโมงครึ่งต่อมา โครงห้าเลนส์เดิมถูกเขียนใหม่โดยถอดเอเจนต์ออก ไม่มีไฟล์ไหนพูดถึงอีกไฟล์เลย</p></div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-hash="lenses">
+  <p class="tag">Five lenses</p>
+  <div class="lenses">
+    <div class="lens"><span class="em">🔍</span><span class="nm c1">Archaeologist</span><span class="q en">What actually happened?</span><span class="q th">เกิดอะไรขึ้นจริง ๆ</span></div>
+    <div class="lens"><span class="em">🐛</span><span class="nm c2">Bug Hunter</span><span class="q en">What broke?</span><span class="q th">อะไรพัง</span></div>
+    <div class="lens"><span class="em">💀</span><span class="nm c3">Skeptic</span><span class="q en">What did we do wrong?</span><span class="q th">เราทำอะไรผิด</span></div>
+    <div class="lens"><span class="em">🏗️</span><span class="nm c4">Architect</span><span class="q en">What changed?</span><span class="q th">อะไรเปลี่ยนไป</span></div>
+    <div class="lens"><span class="em">📋</span><span class="nm c5">Auditor</span><span class="q en">What's left?</span><span class="q th">อะไรยังค้าง</span></div>
+  </div>
+  <div class="note"><p class="en">Each lens becomes a section header in the output with its emoji, name and question — so a reader can see which question produced which claim. The Auditor exists for one moment: when someone asks "did we miss anything?"</p><p class="th">แต่ละเลนส์กลายเป็นหัวข้อใน output พร้อม emoji ชื่อ และคำถาม คนอ่านเห็นว่าคำถามไหนให้ข้อสรุปไหน Auditor มีไว้เพื่อจังหวะเดียว ตอนมีคนถามว่า "ตกอะไรไปหรือเปล่า"</p></div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-hash="presets">
+  <p class="tag">Swap the whole set</p>
+  <div class="three">
+    <div><span class="k c1">--preset retro</span><span class="w2 en">Look back</span><span class="w2 th">มองย้อน</span><span class="s">Historian · Critic · Cheerleader · Connector · Planner</span></div>
+    <div><span class="k c4">--preset design</span><span class="w2 en">Look at</span><span class="w2 th">มองตรง</span><span class="s">User · Maintainer · Breaker · Simplifier · Integrator</span></div>
+    <div><span class="k c2">--preset incident</span><span class="w2 en">Look for cause</span><span class="w2 th">หาต้นเหตุ</span><span class="s">Firefighter · Detective · Defender · Forecaster · Builder</span></div>
+  </div>
+  <h2 class="en">Different work, different questions.</h2>
+  <h2 class="th">งานคนละแบบ ถามคนละคำถาม</h2>
+  <div class="note"><p class="en">Or --custom "Security Auditor,Performance Engineer,UX Designer". Bounds: 3–7 lenses, default 5. Keep that number in mind — it's coming back.</p><p class="th">หรือ --custom "Security Auditor,Performance Engineer,UX Designer" ขอบเขต 3–7 เลนส์ ค่าตั้งต้น 5 จำเลขนี้ไว้ เดี๋ยวจะกลับมา</p></div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-hash="rule4">
+  <p class="tag">Rule 4 of 8</p>
+  <h2 class="en">If the lenses agree, you learned nothing.</h2>
+  <h2 class="th">ถ้าทุกเลนส์เห็นตรงกันหมด ก็ไม่ได้อะไรเลย</h2>
+  <p class="sub en">"Don't harmonize." Show the disagreement.</p>
+  <p class="sub th">"ห้ามเกลี่ยให้เข้ากัน" ให้แสดงจุดที่เห็นต่าง</p>
+  <div class="note"><p class="en">Verbatim: "Lenses disagree — if the Architect says 'clean' but the Auditor says 'incomplete', show both. Don't harmonize." This is the rule the whole skill rests on.</p><p class="th">ตรงตัว: "เลนส์ต้องเห็นไม่ตรงกัน ถ้า Architect บอกว่าเรียบร้อย แต่ Auditor บอกว่ายังไม่เสร็จ ให้แสดงทั้งคู่ ห้ามเกลี่ยให้เข้ากัน" นี่คือกฎที่ทั้งสกิลพิงอยู่</p></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-hash="weakness">
+  <p class="tag">The weakness</p>
+  <h2 class="en">But they've already read each other.</h2>
+  <h2 class="th">แต่พวกมันอ่านกันมาแล้ว</h2>
+  <p class="sub en">One agent writing five sections knows what the first section said. A rule can ask it to disagree. It can't make it.</p>
+  <p class="sub th">เอเจนต์เดียวเขียนห้าหัวข้อ รู้อยู่แล้วว่าหัวข้อแรกพูดอะไร กฎขอให้เห็นต่างได้ แต่บังคับไม่ได้</p>
+  <div class="note"><p class="en">Self-consistency pressure. Adversarial gets independence structurally — five processes that never see each other. Prism trades that for zero cost and tries to buy it back with a sentence. Worse: lens 1 sets the timeline lenses 2–5 inherit. Get the Archaeologist wrong and all five are wrong the same way.</p><p class="th">แรงกดดันให้สอดคล้องกัน ฝั่ง adversarial ได้ความเป็นอิสระจากโครงสร้าง ห้าโพรเซสไม่เห็นกันเลย prism แลกตรงนั้นกับต้นทุนศูนย์ แล้วพยายามซื้อคืนด้วยประโยคเดียว แย่กว่านั้น เลนส์แรกวางไทม์ไลน์ให้เลนส์ 2–5 พอ Archaeologist ผิด ทั้งห้าก็ผิดทางเดียวกัน</p></div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-hash="vs">
+  <p class="tag">Prism vs adversarial</p>
+  <div class="two">
+    <div><div class="hd en c4">Prism gives angles</div><div class="hd th c4">prism ให้มุมมอง</div>
+      <ul class="en"><li>0 agents</li><li>prose</li><li>no score, no decision rule</li><li>use when you want to be shown what you missed</li></ul>
+      <ul class="th"><li>0 เอเจนต์</li><li>ได้ความเรียง</li><li>ไม่มีคะแนน ไม่มีเกณฑ์ตัดสิน</li><li>ใช้ตอนอยากให้ใครชี้สิ่งที่มองข้าม</li></ul></div>
+    <div><div class="hd en c2">Adversarial gives a verdict</div><div class="hd th c2">adversarial ให้คำตัดสิน</div>
+      <ul class="en"><li>5 agents</li><li>X / 5 score</li><li>5/5 go · 3/5 dig · ≤2/5 stop</li><li>use when being wrong is expensive</li></ul>
+      <ul class="th"><li>5 เอเจนต์</li><li>คะแนน X / 5</li><li>5/5 ไป · 3/5 ขุดต่อ · ≤2/5 หยุด</li><li>ใช้ตอนผิดแล้วแพง</li></ul></div>
+  </div>
+  <div class="note"><p class="en">Trust → Verify → Cross-check → Act. Prism sits at Verify. Adversarial sits at Cross-check. Don't confuse them.</p><p class="th">เชื่อ → ตรวจ → ไขว้สอบ → ลงมือ prism อยู่ตรงตรวจ adversarial อยู่ตรงไขว้สอบ อย่าสลับกัน</p></div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-hash="noise">
+  <p class="tag">What the logs say</p>
+  <div class="pair">
+    <div><div class="big num" style="color:var(--faint)">253,231</div><div class="lbl en">times the name appears</div><div class="lbl th">ครั้งที่ชื่อโผล่</div></div>
+    <div><div class="big num" style="color:var(--l5)">102</div><div class="lbl en">times it actually ran</div><div class="lbl th">ครั้งที่รันจริง</div></div>
+  </div>
+  <h2 class="en">Almost every mention is noise.</h2>
+  <h2 class="th">ที่โผล่เยอะ ๆ เกือบทั้งหมดคือเสียงรบกวน</h2>
+  <div class="note"><p class="en">110,952 transcripts on black. The skills manifest is injected into every session, so the name shows up in 49,470 files that never ran it. Real calls only — command tags and Skill tool calls — leaves 102 across 50 sessions and ~25 repos. Noise ratio 2,483 to 1.</p><p class="th">transcript 110,952 ไฟล์บน black manifest ของสกิลถูกยัดเข้าทุก session ชื่อเลยโผล่ใน 49,470 ไฟล์ที่ไม่เคยรัน นับเฉพาะการเรียกจริง — แท็กคำสั่งกับ Skill tool call — เหลือ 102 ครั้งใน 50 session ราว 25 repo สัดส่วนเสียงรบกวน 2,483 ต่อ 1</p></div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-hash="dormant">
+  <p class="tag">Timeline</p>
+  <h2 class="en">Used on its birthday. Silent since August.</h2>
+  <h2 class="th">ใช้ตั้งแต่วันเกิด แล้วเงียบไปตั้งแต่สิงหา</h2>
+  <p class="sub en">First run 2026-06-07. Last run 2026-08-01. Thirty-four active days in between.</p>
+  <p class="sub th">รันแรก 2026-06-07 รันสุดท้าย 2026-08-01 ใช้จริง 34 วันระหว่างนั้น</p>
+  <div class="note"><p class="en">Near-daily through June and July — 6 runs on 06-14, 7 on 07-05. Then nothing. A skill that can't auto-trigger is a skill you have to remember, and after five weeks nobody did.</p><p class="th">เกือบทุกวันตลอด มิ.ย.–ก.ค. 6 ครั้งวันที่ 06-14, 7 ครั้งวันที่ 07-05 แล้วก็ไม่มีอีก สกิลที่เรียกตัวเองไม่ได้คือสกิลที่ต้องจำเอง ผ่านไปห้าสัปดาห์ก็ไม่มีใครจำ</p></div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-hash="design">
+  <p class="tag">What people actually typed</p>
+  <div class="args">
+    <div class="arg"><b>--lenses 20</b> — REDESIGN the transcribe-combo web UI</div>
+    <div class="arg"><b>--lenses 10</b> — upside-down redesign of the Config tab: forget the card grid, find the NEW shape</div>
+    <div class="arg"><b>--lenses 20</b> — Bifröst UX อ่านยาก ตัวเล็กไป ควรรื้อ UX/readability ยังไง</div>
+    <div class="arg"><b>--lenses 20</b> — brainstorm cover copy for the mini-book</div>
+  </div>
+  <h2 class="en">Documented as a retro tool. Used as a design tool.</h2>
+  <h2 class="th">เอกสารบอกว่าไว้ทำ retro แต่คนเอาไปใช้ออกแบบ</h2>
+  <div class="note"><p class="en">The five default lenses all look backwards at something that already happened. The arguments people actually type look forwards at something being made — redesign, critique, framing, cover copy, readability.</p><p class="th">เลนส์ตั้งต้นทั้งห้ามองย้อนหลังไปที่สิ่งที่เกิดแล้ว แต่คำสั่งที่คนพิมพ์จริงมองไปข้างหน้า ไปที่ของที่กำลังทำ รื้อดีไซน์ วิจารณ์ จัดกรอบ คิดปก แก้ให้อ่านง่าย</p></div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-hash="cap">
+  <p class="tag">The rule says 3 to 7</p>
+  <div class="bars">
+    <div class="bar"><span class="lb">5 lenses</span><span class="tk"><i style="width:20%"></i></span><span class="n">5 runs</span></div>
+    <div class="bar"><span class="lb">7 lenses</span><span class="tk"><i style="width:12%"></i></span><span class="n">3</span></div>
+    <div class="bar"><span class="lb">10 lenses</span><span class="tk"><i class="over" style="width:100%"></i></span><span class="n">25</span></div>
+    <div class="bar"><span class="lb">20 lenses</span><span class="tk"><i class="over" style="width:60%"></i></span><span class="n">15</span></div>
+    <div class="bar"><span class="lb">30 lenses</span><span class="tk"><i class="over" style="width:4%"></i></span><span class="n">1</span></div>
+  </div>
+  <h2 class="en">Four runs in five break the cap.</h2>
+  <h2 class="th">ห้ารัน มีสี่รันที่แหกเพดาน</h2>
+  <div class="note"><p class="en">Of 51 runs naming a lens count, 41 exceeded seven — 80%. The mode is 10, not 5. One transcript reads "--lenses 10 (capped to skill max 7)" — the model obeyed a limit the user had already rejected. The rule isn't broken by accident; seven isn't enough for the work people bring.</p><p class="th">จาก 51 รันที่ระบุจำนวนเลนส์ 41 รันเกินเจ็ด คิดเป็น 80% ค่าที่เจอบ่อยสุดคือ 10 ไม่ใช่ 5 transcript หนึ่งเขียน "--lenses 10 (capped to skill max 7)" โมเดลทำตามเพดานที่ผู้ใช้ปฏิเสธไปแล้ว กฎไม่ได้โดนแหกเพราะเผลอ แต่เจ็ดไม่พอกับงานที่คนเอามา</p></div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-hash="dna-ask">
+  <p class="tag">One run just says</p>
+  <h1 class="c3" style="font-family:var(--mono);font-size:clamp(2.6rem,8vw,6rem);letter-spacing:0">10 dna !</h1>
+  <h2 class="en">Someone already asked for the next slide.</h2>
+  <h2 class="th">มีคนขอสไลด์ถัดไปไว้แล้ว</h2>
+  <div class="note"><p class="en">Verbatim from the transcripts, display-census repo. Someone reaching for DNA-flavoured lenses the skill has never offered — lenses named after real masters, like every resonance file in the fleet.</p><p class="th">ตรงตัวจาก transcript ใน repo display-census คนเอื้อมหาเลนส์แบบ DNA ที่สกิลไม่เคยมี เลนส์ที่ตั้งชื่อตามปรมาจารย์จริง เหมือน resonance ทุกไฟล์ในฟลีต</p></div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-hash="designer">
+  <p class="tag">Proposal · --preset designer</p>
+  <div class="dna">
+    <div><b>🎨 Van Gogh</b><span class="en">does it have a temperature?</span><span class="th">มีอุณหภูมิไหม</span></div>
+    <div><b>○ Kenya Hara</b><span class="en">what is the white space doing?</span><span class="th">ที่ว่างทำหน้าที่อะไร</span></div>
+    <div><b>⬛ Dieter Rams</b><span class="en">what survives deletion?</span><span class="th">ตัดแล้วอะไรยังอยู่</span></div>
+    <div><b>⚡ Tibor Kalman</b><span class="en">where is this too safe?</span><span class="th">ตรงไหนเซฟเกินไป</span></div>
+    <div><b>▦ Vignelli</b><span class="en">is there a system?</span><span class="th">มีระบบไหม</span></div>
+    <div class="t"><b>ก ประชา สุวีรานนท์</b><span class="en">is this Thai type really Thai?</span><span class="th">ตัวไทยนี้เป็นไทยจริงไหม</span></div>
+    <div><b>✂️ Saul Bass</b><span class="en">one shape — which?</span><span class="th">เหลือรูปเดียว จะเป็นรูปไหน</span></div>
+    <div class="t"><b>✎ ศิลป์ พีระศรี</b><span class="en">how long will this last?</span><span class="th">ฝีมือนี้อยู่ได้นานแค่ไหน</span></div>
+    <div><b>⌗ Susan Kare</b><span class="en">does it read when tiny?</span><span class="th">ย่อเล็กแล้วยังอ่านออกไหม</span></div>
+    <div class="t"><b>🔥 เฉลิมชัย</b><span class="en">devotion, or just enough?</span><span class="th">ทุ่มจริง หรือแค่พอผ่าน</span></div>
+  </div>
+  <h2 class="en">Ten lenses with a lineage.</h2>
+  <h2 class="th">สิบเลนส์ที่มีสายเลือด</h2>
+  <div class="note"><p class="en">Seven from the world, three from Thailand — the same shape every resonance file uses. Ten, because ten is the observed mode. Design, because design is the dominant real use. Each lens names the master, the one trait taken, and the question it asks.</p><p class="th">เจ็ดจากโลก สามจากไทย โครงเดียวกับ resonance ทุกไฟล์ สิบเพราะสิบคือค่าที่เจอบ่อยสุด ดีไซน์เพราะดีไซน์คือการใช้งานหลัก แต่ละเลนส์ระบุปรมาจารย์ คุณสมบัติเดียวที่รับมา และคำถามที่มันถาม</p></div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-hash="honesty">
+  <p class="tag">Its best save</p>
+  <h2 class="en">It caught a book claiming cause where there was only correlation.</h2>
+  <h2 class="th">มันจับหนังสือที่อ้างเหตุ ทั้งที่มีแค่ความสัมพันธ์</h2>
+  <p class="sub en">"converges on" — not "is". The thesis got rewritten.</p>
+  <p class="sub th">"บรรจบกับ" ไม่ใช่ "คือ" ธีสิสเลยถูกเขียนใหม่</p>
+  <div class="note"><p class="en">Hermes engine book, 21 chapters. A prism pass logged as 09-PRISM changed the central thesis from "is the philosophy" to "converges on boundary-integrity invariant under engineering pressure" — the memory says "no false causation". It also graded every claim ⭐/◆/○ and added a per-chapter "where it breaks" section. Not a retro. An honesty pass.</p><p class="th">หนังสือ Hermes engine 21 บท prism รอบที่บันทึกว่า 09-PRISM เปลี่ยนธีสิสหลักจาก "คือปรัชญา" เป็น "บรรจบกับ boundary-integrity invariant ภายใต้แรงกดดันทางวิศวกรรม" memory จดว่า "ไม่มี false causation" ยังให้เกรดทุกข้ออ้าง ⭐/◆/○ แล้วเพิ่มหัวข้อ "ตรงไหนที่มันพัง" ประจำบทด้วย ไม่ใช่ retro แต่เป็นการตรวจความซื่อตรง</p></div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-hash="readers">
+  <p class="tag">Lenses can be readers</p>
+  <div class="three" style="grid-template-columns:repeat(4,1fr)">
+    <div><span class="w2 th" style="display:block;font-family:var(--thai);font-weight:600;color:var(--l1)">นักเขียน</span><span class="s en">the writer</span><span class="s th">คนเขียน</span></div>
+    <div><span class="w2 th" style="display:block;font-family:var(--thai);font-weight:600;color:var(--l2)">นักอ่าน</span><span class="s en">the reader</span><span class="s th">คนอ่าน</span></div>
+    <div><span class="w2 th" style="display:block;font-family:var(--thai);font-weight:600;color:var(--l4)">บรรณารักษ์</span><span class="s en">the librarian</span><span class="s th">บรรณารักษ์</span></div>
+    <div><span class="w2 th" style="display:block;font-family:var(--thai);font-weight:600;color:var(--l5)">คนไม่มีพื้นฐาน</span><span class="s en">no technical background</span><span class="s th">ไม่มีพื้นฐานเทคนิค</span></div>
+  </div>
+  <h2 class="en">Four readers found the same problem, separately.</h2>
+  <h2 class="th">คนอ่านสี่แบบเจอปัญหาเดียวกัน แยกกันเจอ</h2>
+  <div class="note"><p class="en">A book still felt like a wall of text. Four custom Thai lenses — not Archaeologist and Auditor, four kinds of reader. Recorded outcome: "confirmed the same root cause independently — the writer-lens gap was structural (no rhythm governance), not a content-accuracy problem." Six of nine files had paragraphs over 400 characters.</p><p class="th">หนังสือยังอ่านเหมือนกำแพงตัวอักษร เลนส์ไทยกำหนดเองสี่แบบ ไม่ใช่ Archaeologist กับ Auditor แต่เป็นคนอ่านสี่แบบ ผลที่บันทึก: "ยืนยันต้นเหตุเดียวกันได้เองอย่างอิสระ ช่องว่างฝั่งคนเขียนเป็นเรื่องโครงสร้าง (ไม่มีการคุมจังหวะ) ไม่ใช่ปัญหาความถูกต้องของเนื้อหา" หกในเก้าไฟล์มีย่อหน้าเกิน 400 ตัวอักษร</p></div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-hash="stop">
+  <p class="tag">Knowing when to stop</p>
+  <div class="conv">
+    <div><b>13</b><i style="height:130px"></i><span>round 1</span></div>
+    <div><b>3</b><i style="height:30px"></i><span>round 2</span></div>
+    <div><b>1</b><i class="ok" style="height:10px"></i><span>round 3</span></div>
+    <div><b>1</b><i class="ok" style="height:10px"></i><span>round 4</span></div>
+  </div>
+  <h2 class="en">Round one was real. The rest was chasing your own fixes.</h2>
+  <h2 class="th">รอบแรกของจริง ที่เหลือคือไล่ตามการแก้ของตัวเอง</h2>
+  <div class="note"><p class="en">Building /oracle-booklet with a prism + code-review + adversarial loop. Criticals per round: 13, 3, 1, 1. Rounds 2–4 were guards round 1 had added, overshooting. The recorded rule: a loop has converged when each round's criticals are things your own previous fixes introduced. Ground truth was the booklet smoke-testing to 14 pages, three times. Review agents say "needs-work" forever.</p><p class="th">สร้าง /oracle-booklet ด้วยลูป prism + code-review + adversarial ข้อวิกฤตต่อรอบ 13, 3, 1, 1 รอบ 2–4 คือด่านที่รอบแรกใส่เข้าไปแล้วเลยเถิด กฎที่จด: ลูปบรรจบเมื่อข้อวิกฤตแต่ละรอบคือของที่การแก้รอบก่อนของเราใส่เข้าไปเอง ความจริงคือ booklet ผ่าน smoke test 14 หน้า สามครั้ง เอเจนต์รีวิวบอก "ยังต้องแก้" ได้ตลอด</p></div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-hash="defects">
+  <p class="tag">Four defects</p>
+  <div class="four">
+    <div><span class="k">01</span><span class="h en">No frontmatter → can't auto-trigger</span><span class="h th">ไม่มี frontmatter → เรียกตัวเองไม่ได้</span></div>
+    <div><span class="k">02</span><span class="h en">Not in git → one rm from gone</span><span class="h th">ไม่อยู่ใน git → rm เดียวก็หาย</span></div>
+    <div><span class="k">03</span><span class="h en">One node only → never synced</span><span class="h th">อยู่เครื่องเดียว → ไม่เคยซิงก์</span></div>
+    <div><span class="k">04</span><span class="h en">/roundtable → doesn't exist</span><span class="h th">/roundtable → ไม่มีอยู่จริง</span></div>
+  </div>
+  <h2 class="en">It works. It just can't be found, kept, or shared.</h2>
+  <h2 class="th">มันใช้ได้ แต่หาไม่เจอ เก็บไม่อยู่ ส่งต่อไม่ได้</h2>
+  <div class="note"><p class="en">01: opens straight at "#", no description field, no matcher — 8 of 112 skills on black share this. 02: /home/nat is a git repo, git ls-files says "did not match any file(s) known to git". 03: on black only; not this MacBook, not white, not m5. 04: named in prism's own table and in Athena's intake flow; installed nowhere.</p><p class="th">01: เปิดมาเจอ "#" เลย ไม่มี description ไม่มีตัวจับคู่ 8 จาก 112 สกิลบน black เป็นแบบนี้ 02: /home/nat เป็น git repo แต่ git ls-files บอกว่าไม่รู้จักไฟล์นี้ 03: มีแค่บน black เครื่องนี้ white m5 ไม่มี 04: ตารางของ prism เองก็อ้าง flow ของ Athena ก็แนะนำ แต่ไม่มีลงไว้ที่ไหน</p></div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-hash="fix">
+  <p class="tag">Today · 30 minutes</p>
+  <div class="three">
+    <div><span class="k c5">01</span><span class="w2 en">Commit it</span><span class="w2 th">commit ซะ</span></div>
+    <div><span class="k c5">02</span><span class="w2 en">Add frontmatter</span><span class="w2 th">ใส่ frontmatter</span></div>
+    <div><span class="k c5">03</span><span class="w2 en">Fix /roundtable</span><span class="w2 th">เคลียร์ /roundtable</span></div>
+  </div>
+  <h2 class="en">Then raise the cap to 20 and ship the designer preset.</h2>
+  <h2 class="th">แล้วค่อยขยับเพดานเป็น 20 กับเพิ่ม preset designer</h2>
+  <div class="note"><p class="en">Later, your call: raise the cap (80% already exceed it) · --preset designer (design is the dominant use) · fold the 13→3→1→1 convergence rule into the skill · make lens 1 emit a checkable timeline the later lenses must challenge · sync to the fleet through the skills CLI and wake it up.</p><p class="th">ทีหลัง แล้วแต่คุณ: ขยับเพดาน (80% เกินอยู่แล้ว) · --preset designer (ดีไซน์คือการใช้งานหลัก) · ใส่กฎบรรจบ 13→3→1→1 เข้าสกิล · ให้เลนส์แรกปล่อยไทม์ไลน์ที่ตรวจได้แล้วเลนส์หลังต้องท้าทาย · ซิงก์ขึ้นฟลีตผ่าน skills CLI แล้วปลุกมัน</p></div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-hash="end">
+  <p class="tag">In one line</p>
+  <h2 class="en">Prism when you want <span class="c4">angles</span>.<br>Adversarial when you want to be <span class="c2">sure</span>.</h2>
+  <h2 class="th">อยากได้<span class="c4">มุมมอง</span>ใช้ prism<br>อยาก<span class="c2">มั่นใจ</span>ใช้ adversarial</h2>
+  <p class="src">black:~/.claude/skills/{oracle-prism,adversarial-analysis} · 110,952 transcripts · fleet memory · 2026-09-05</p>
+  <div class="note"><p class="en">The lightest multi-perspective tool in the family — no agents, no spawning, no coordination. That cheapness is the whole proposition and also the limit: what you save on invocations, you pay for in independence. The dense version with every source is oracle-prism-deck.html.</p><p class="th">เครื่องมือมองหลายมุมที่เบาที่สุดในตระกูล ไม่มีเอเจนต์ ไม่แตกโพรเซส ไม่ต้องประสาน ความถูกคือข้อเสนอทั้งหมด แล้วก็เป็นขีดจำกัดด้วย ประหยัด invocation เท่าไร ก็จ่ายคืนเป็นความเป็นอิสระเท่านั้น เวอร์ชันละเอียดพร้อมทุกแหล่งอยู่ที่ oracle-prism-deck.html</p></div>
+</section>
+
+</main>
+
+<aside class="notes" id="notes" aria-label="Presenter notes"><div class="nt">Notes · press N to hide</div><div id="notes-body"></div></aside>
+
+<nav class="chrome" aria-label="Deck navigation">
+  <span class="mark">Oracle Prism</span>
+  <span class="spacer"></span>
+  <span class="hint">← → · S language · N notes · F fullscreen</span>
+  <div class="langsw" role="group" aria-label="Language"><button id="btn-en" lang="en" aria-pressed="true">EN</button><button id="btn-th" lang="th" aria-pressed="false">ไทย</button></div>
+  <button class="nav-btn" id="prev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <span class="counter" id="counter">1 / 20</span>
+  <button class="nav-btn" id="next" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+</nav>
+
+<script>
+(() => {
+  'use strict';
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const bands = Array.from(document.querySelectorAll('.spectrum i'));
+  const counter = document.getElementById('counter');
+  const prev = document.getElementById('prev'), next = document.getElementById('next');
+  const notes = document.getElementById('notes'), notesBody = document.getElementById('notes-body');
+  const btnEn = document.getElementById('btn-en'), btnTh = document.getElementById('btn-th');
+  let i = 0, lang = 'en', notesOpen = false;
+
+  function setLang(l) {
+    lang = l === 'th' ? 'th' : 'en';
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.lang = lang;
+    btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+    btnTh.setAttribute('aria-pressed', String(lang === 'th'));
+    try { localStorage.setItem('prism-simple-lang', lang); } catch (e) {}
+  }
+  function render() {
+    slides.forEach((s, k) => s.classList.toggle('is-active', k === i));
+    counter.textContent = (i + 1) + ' / ' + total;
+    const lit = Math.round(((i + 1) / total) * bands.length);
+    bands.forEach((b, k) => b.classList.toggle('on', k < lit));
+    prev.disabled = i === 0; next.disabled = i === total - 1;
+    const n = slides[i].querySelector('.note');
+    notesBody.innerHTML = n ? n.innerHTML : '';
+    const h = slides[i].dataset.hash;
+    if (h) { try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+  }
+  function go(k) { i = Math.max(0, Math.min(total - 1, k)); render(); window.scrollTo({ top: 0, behavior: 'instant' }); }
+  function toggleNotes() { notesOpen = !notesOpen; notes.classList.toggle('is-open', notesOpen); }
+
+  prev.addEventListener('click', () => go(i - 1));
+  next.addEventListener('click', () => go(i + 1));
+  btnEn.addEventListener('click', () => setLang('en'));
+  btnTh.addEventListener('click', () => setLang('th'));
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); go(i + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(i - 1); }
+    else if (k === 'Home') { e.preventDefault(); go(0); }
+    else if (k === 'End') { e.preventDefault(); go(total - 1); }
+    else if (k === 's' || k === 'S') { e.preventDefault(); setLang(lang === 'en' ? 'th' : 'en'); }
+    else if (k === 'n' || k === 'N') { e.preventDefault(); toggleNotes(); }
+    else if (k === 'f' || k === 'F') { e.preventDefault(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+  });
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(i + (dx < 0 ? 1 : -1)); tx = null; }, { passive: true });
+  function fromHash() { const h = location.hash.slice(1); const k = slides.findIndex(s => s.dataset.hash === h); if (k >= 0) { i = k; return true; } return false; }
+  window.addEventListener('hashchange', () => { if (fromHash()) render(); });
+  let saved = 'en'; try { saved = localStorage.getItem('prism-simple-lang') || 'en'; } catch (e) {}
+  setLang(saved); fromHash(); render();
+})();
+</script>

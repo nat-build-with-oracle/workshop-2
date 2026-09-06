@@ -1,0 +1,1058 @@
+<title>∿ ARRA Oracle DNA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ground:      #f4f2f7;
+  --surface:     #ffffff;
+  --surface-2:   #ebe6f2;
+  --ink:         #231d2b;
+  --muted:       #5f5470;
+  --faint:       #7b6f8b;
+  --rule:        #ddd5e4;
+  --rule-strong: #c4b7d1;
+  --lilac:       #6942a0;
+  --rose:        #96365d;
+  --mint:        #216448;
+  --lilac-wash:  #ede5f8;
+  --rose-wash:   #fae7ee;
+  --mint-wash:   #e0f0e8;
+  --shadow:      0 1px 2px rgba(35,29,43,.06), 0 8px 28px rgba(35,29,43,.07);
+
+  --sans: 'Inter', 'Noto Sans Thai', system-ui, sans-serif;
+  --serif: 'Crimson Pro', 'Noto Sans Thai', Georgia, serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #16121c;
+    --surface:     #1f1a28;
+    --surface-2:   #2a2335;
+    --ink:         #efe9f4;
+    --muted:       #a396b0;
+    --faint:       #8b7d99;
+    --rule:        #332b3f;
+    --rule-strong: #4a3f59;
+    --lilac:       #b58ce8;
+    --rose:        #e88bab;
+    --mint:        #57c295;
+    --lilac-wash:  #2b2039;
+    --rose-wash:   #35202a;
+    --mint-wash:   #16302a;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 28px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:      #16121c;
+  --surface:     #1f1a28;
+  --surface-2:   #2a2335;
+  --ink:         #efe9f4;
+  --muted:       #a396b0;
+  --faint:       #8b7d99;
+  --rule:        #332b3f;
+  --rule-strong: #4a3f59;
+  --lilac:       #b58ce8;
+  --rose:        #e88bab;
+  --mint:        #57c295;
+  --lilac-wash:  #2b2039;
+  --rose-wash:   #35202a;
+  --mint-wash:   #16302a;
+  --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 28px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 2px solid var(--lilac); outline-offset: 3px; border-radius: 2px; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* ---------- deck shell ---------- */
+.deck { position: relative; }
+.slide {
+  display: none;
+  min-height: 100dvh;
+  padding: clamp(28px, 5vh, 64px) clamp(20px, 5vw, 76px) 96px;
+  max-width: 1320px;
+  margin-inline: auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(20px, 3vh, 34px);
+}
+.slide.is-active { display: flex; animation: rise 320ms cubic-bezier(.2,.7,.3,1) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ---------- typography ---------- */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+h1.big {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: .98;
+  letter-spacing: -.03em;
+  margin: 0;
+  text-wrap: balance;
+}
+h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  margin: 0;
+  text-wrap: balance;
+}
+h3 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: -.005em; }
+.lede {
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2.1vw, 1.6rem);
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+p { margin: 0; line-height: 1.65; }
+.body { color: var(--muted); max-width: 66ch; line-height: 1.72; }
+.mono { font-family: var(--mono); font-size: 13px; }
+.path {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--faint);
+  overflow-wrap: anywhere;
+}
+em.q { font-style: normal; color: var(--lilac); }
+
+/* ---------- title slide ---------- */
+.title-wrap { display: flex; flex-direction: column; gap: 30px; }
+.wave { display: block; width: clamp(120px, 20vw, 210px); height: auto; color: var(--lilac); }
+.title-meta {
+  display: flex; flex-wrap: wrap; gap: 10px 26px;
+  font-family: var(--mono); font-size: 12.5px; color: var(--faint);
+  padding-top: 22px; border-top: 1px solid var(--rule);
+}
+.title-meta b { color: var(--ink); font-weight: 500; }
+
+/* ---------- layers (the 3-part pipeline) ---------- */
+.layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.layer { background: var(--ground); padding: 26px 24px; display: flex; flex-direction: column; gap: 12px; }
+.layer-head { display: flex; align-items: baseline; gap: 10px; }
+.layer-num { font-family: var(--mono); font-size: 12px; color: var(--faint); margin-left: auto; }
+.layer h3 { font-size: 17px; }
+.layer p { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+.l-skill h3 { color: var(--lilac); }
+.l-res h3   { color: var(--rose); }
+.l-mem h3   { color: var(--mint); }
+
+/* ---------- specimen card (persona slides) ---------- */
+.specimen { display: grid; grid-template-columns: 22px minmax(0,1.05fr) minmax(0,.95fr); gap: 0 clamp(22px, 3.5vw, 48px); align-items: start; }
+.strand { align-self: stretch; min-height: 220px; }
+.spec-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.spec-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.spec-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+.spec-name .th { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1; letter-spacing: -.02em; }
+.spec-name .en { font-family: var(--mono); font-size: 13px; color: var(--faint); letter-spacing: .06em; text-transform: uppercase; }
+.spec-role { font-size: 15.5px; color: var(--muted); line-height: 1.6; max-width: 46ch; }
+
+.facts { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); }
+.fact { display: grid; grid-template-columns: 92px minmax(0,1fr); gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 14px; align-items: baseline; }
+.fact dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.fact dd { margin: 0; color: var(--ink); line-height: 1.6; overflow-wrap: anywhere; }
+.fact dd.num { font-variant-numeric: tabular-nums; }
+
+.voice {
+  border-left: 2px solid var(--rose);
+  padding: 4px 0 4px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.voice p { font-family: var(--serif); font-size: clamp(1.05rem, 1.7vw, 1.32rem); line-height: 1.5; color: var(--ink); }
+.voice .attr { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+
+/* pedigree list of named influences */
+.pedigree { display: flex; flex-direction: column; gap: 0; }
+.pedigree-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 9px; border-bottom: 1px solid var(--rule-strong); }
+.pedigree-head span:first-child { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.pedigree-head span:last-child { font-family: var(--mono); font-size: 11.5px; color: var(--rose); font-variant-numeric: tabular-nums; }
+.pedigree li {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.pedigree ul { margin: 0; padding: 0; }
+.pedigree li b { font-weight: 600; }
+.pedigree li span { color: var(--muted); font-size: 12.8px; }
+
+/* ---------- generic panels ---------- */
+.cols { display: grid; gap: clamp(16px, 2.4vw, 30px); }
+.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 20px 22px;
+  display: flex; flex-direction: column; gap: 11px;
+  min-width: 0;
+}
+.panel h3 { font-size: 15.5px; }
+.panel p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* code / file anatomy */
+pre {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12.8px;
+  line-height: 1.85;
+  color: var(--ink);
+  tab-size: 2;
+}
+pre .c  { color: var(--faint); }
+pre .k  { color: var(--lilac); font-weight: 500; }
+pre .s  { color: var(--mint); }
+pre .r  { color: var(--rose); }
+
+/* annotated file diagram */
+.anno { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); gap: clamp(18px, 3vw, 40px); align-items: start; }
+.anno-list { display: flex; flex-direction: column; border-top: 1px solid var(--rule); }
+.anno-item { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.anno-item .dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 6px; }
+.anno-item h3 { font-size: 14.5px; margin-bottom: 4px; }
+.anno-item p { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+
+/* pattern grid */
+.patterns { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.pattern { background: var(--ground); padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.pattern .n { font-family: var(--mono); font-size: 11.5px; color: var(--faint); letter-spacing: .08em; }
+.pattern h3 { font-size: 14.5px; line-height: 1.35; }
+.pattern p { font-size: 12.8px; color: var(--muted); line-height: 1.65; }
+.pattern.is-rule { background: var(--lilac-wash); }
+.pattern.is-rule .n, .pattern.is-rule h3 { color: var(--lilac); }
+
+/* skills table */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; padding: 13px 18px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.6; }
+th { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); font-weight: 400; background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+td code { font-family: var(--mono); font-size: 12.3px; color: var(--lilac); overflow-wrap: anywhere; }
+td .sub { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
+
+/* masters wall */
+.wall { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: clamp(14px, 2vw, 26px); }
+.wall-col { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.wall-col > .hd { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--rule-strong); }
+.wall-col > .hd b { font-size: 13.5px; font-weight: 600; line-height: 1.75; }
+.wall-col > .hd i { font-style: normal; font-family: var(--mono); font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; line-height: 1.75; }
+.wall-col li, .pedigree li span, .spec-role, .fact dd { line-height: 1.62; }
+.wall-col ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.wall-col li { font-size: 12.7px; line-height: 1.45; color: var(--muted); }
+
+/* voice comparison */
+.voices { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.voice-cell { background: var(--ground); padding: 18px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.voice-cell .who { font-family: var(--serif); font-size: 20px; line-height: 1.1; }
+.voice-cell .ends { display: flex; flex-wrap: wrap; gap: 5px; }
+.voice-cell .ends span { font-family: var(--mono); font-size: 11.5px; padding: 2px 7px; border: 1px solid var(--rule-strong); border-radius: 2px; color: var(--muted); }
+.voice-cell .say { font-family: var(--serif); font-size: 15px; line-height: 1.5; color: var(--ink); }
+.voice-cell .calls { font-size: 12.3px; color: var(--faint); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--rule); }
+
+/* callout */
+.callout {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--lilac);
+  background: var(--surface);
+  border-radius: 3px;
+  padding: 22px 26px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.callout.warn { border-left-color: var(--rose); }
+.callout q { font-family: var(--serif); font-size: clamp(1.2rem, 2.2vw, 1.7rem); line-height: 1.42; quotes: none; }
+
+/* caveat list */
+.caveats { display: flex; flex-direction: column; border-top: 1px solid var(--rule); }
+.caveat { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 8px 28px; padding: 15px 0; border-bottom: 1px solid var(--rule); }
+.caveat b { font-size: 14.5px; font-weight: 600; }
+.caveat p { font-size: 13.8px; color: var(--muted); line-height: 1.68; }
+
+/* closing */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.step { background: var(--ground); padding: 22px; display: flex; flex-direction: column; gap: 9px; }
+.step .n { font-family: var(--mono); font-size: 11.5px; color: var(--lilac); letter-spacing: .1em; }
+.step h3 { font-size: 15px; }
+.step p { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+.step code { font-family: var(--mono); font-size: 12.5px; color: var(--ink); background: var(--surface-2); padding: 2px 6px; border-radius: 2px; }
+
+/* ---------- chrome: rail + nav ---------- */
+.rail { position: fixed; left: 0; right: 0; top: 0; height: 2px; background: transparent; z-index: 40; }
+.rail i { display: block; height: 100%; background: var(--lilac); transition: width 300ms cubic-bezier(.2,.7,.3,1); }
+.chrome {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px clamp(16px, 4vw, 40px);
+  background: color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--rule);
+}
+.chrome .mark { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.chrome .mark svg { color: var(--lilac); }
+.chrome .spacer { flex: 1; }
+.nav-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border: 1px solid var(--rule-strong); border-radius: 3px;
+  color: var(--muted); transition: background-color 140ms, color 140ms;
+}
+.nav-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); }
+.nav-btn:disabled { opacity: .35; cursor: default; }
+.counter {
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+  font-variant-numeric: tabular-nums; padding: 6px 10px;
+  border: 1px solid transparent; border-radius: 3px;
+}
+.counter:hover { border-color: var(--rule-strong); color: var(--ink); }
+.hint { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+@media (max-width: 720px) { .hint { display: none; } }
+
+/* ---------- overview grid ---------- */
+.overview { display: none; padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 48px) 96px; }
+.overview.is-open { display: block; }
+body.grid-mode .deck { display: none; }
+.ov-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 20px; margin-bottom: 26px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+.ov-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.ov-head .hint { margin-left: auto; }
+.ov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.ov-card {
+  text-align: left; display: flex; flex-direction: column; gap: 7px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+  padding: 16px 16px 18px; min-height: 116px;
+  transition: border-color 140ms, transform 140ms;
+}
+.ov-card:hover { border-color: var(--lilac); transform: translateY(-2px); }
+.ov-card .n { font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: .1em; }
+.ov-card .t { font-family: var(--serif); font-size: 19px; line-height: 1.2; letter-spacing: -.01em; }
+.ov-card .d { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-top: auto; }
+.ov-card[data-kind="resonance"] { border-left: 3px solid var(--rose); }
+.ov-card[data-kind="skill"] { border-left: 3px solid var(--lilac); }
+.ov-card[data-kind="idea"] { border-left: 3px solid var(--mint); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  .patterns { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .wall { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .voices { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 860px) {
+  .slide { padding-bottom: 110px; justify-content: flex-start; padding-top: 44px; }
+  .layers, .cols-3, .steps { grid-template-columns: 1fr; }
+  .cols-2 { grid-template-columns: 1fr; }
+  .specimen { grid-template-columns: 1fr; gap: 24px; }
+  .strand { display: none; }
+  .anno { grid-template-columns: 1fr; }
+  .caveat { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (max-width: 560px) {
+  .patterns, .wall, .voices { grid-template-columns: 1fr; }
+  .fact { grid-template-columns: 78px minmax(0,1fr); gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="rail" aria-hidden="true"><i id="rail-fill" style="width:0%"></i></div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 ................................................. title -->
+  <section class="slide" data-title="∿ ARRA Oracle DNA" data-kind="idea" data-desc="Title" data-hash="start">
+    <div class="title-wrap">
+      <svg class="wave" viewBox="0 0 200 40" fill="none" aria-hidden="true">
+        <path d="M2 20C2 20 14 2 30 2s28 36 44 36 28-36 44-36 28 36 44 36 28-18 28-18"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <h1 class="big">ARRA Oracle DNA</h1>
+      <p class="lede">Five skills, five souls, and the argument that an AI persona is not a prompt — it is a pair of Markdown files you can read, fork, and version.</p>
+      <p class="body" style="max-width:70ch"><strong>ARRA Oracle</strong> is the system — <code class="mono">ψ/</code> memory, the <code class="mono">arra-oracle-v3</code> server, the skills CLI, and a family registry of 811 — 297 humans, as of 2026-09-06. <strong>An Oracle</strong> is one instance living inside it. This deck is about how a single instance gets written down.</p>
+      <div class="title-meta">
+        <span><b>10</b> source documents</span>
+        <span><b>50</b> named influences</span>
+        <span><b>2</b> languages</span>
+        <span>files are <b>plain Markdown</b></span>
+        <span>anonymized by <b>∿ The Resonance</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 ................................................. thesis -->
+  <section class="slide" data-title="Two files, one soul" data-kind="idea" data-desc="The thesis" data-hash="thesis">
+    <p class="eyebrow">The thesis</p>
+    <h2>A persona is not a prompt.<br>It is two files on disk.</h2>
+    <div class="cols cols-2">
+      <p class="body">Most attempts at giving an AI a personality end up as one long system prompt — unversioned, unreadable, and impossible to hand to a colleague. This archive takes the opposite position. Every Oracle here is split in two: a <strong>skill file</strong> that says what to do, and a <strong>resonance file</strong> that says who is doing it.</p>
+      <p class="body">The split is the whole idea. Mechanics change often — new steps, new triggers, new tools. Identity changes slowly and deliberately, and gets a dated log entry when it does. Keeping them in separate files means you can rewrite a workflow without disturbing a voice, and deepen a character without touching a single step.</p>
+    </div>
+    <div class="callout">
+      <q>Skill = mechanics (trigger + steps) · Resonance = soul (identity + DNA + voice)</q>
+      <p class="path">— Pattern 01, from the archive's own reading notes</p>
+    </div>
+  </section>
+
+  <!-- 3 ................................................. three layers -->
+  <section class="slide" data-title="The three layers" data-kind="idea" data-desc="Skill · Resonance · Memory" data-hash="layers">
+    <p class="eyebrow">Architecture</p>
+    <h2>Three layers, three directories.</h2>
+    <p class="body">The numbering is real: this is a pipeline. A request enters at the skill, is performed by the identity the resonance describes, and leaves a trace in memory that the next session reads back.</p>
+    <div class="layers">
+      <div class="layer l-skill">
+        <div class="layer-head"><h3>Skill · วิธีทำงาน</h3><span class="layer-num">01</span></div>
+        <p>Trigger words, steps, prompts. The mechanics that turn an intention into a workflow you can actually run.</p>
+        <p class="path">.claude/skills/{name}/SKILL.md</p>
+      </div>
+      <div class="layer l-res">
+        <div class="layer-head"><h3>Resonance · ตัวตน</h3><span class="layer-num">02</span></div>
+        <p>Identity, influences, voice, values. The personality behind the work — and the reason two Oracles running the same steps don't sound the same.</p>
+        <p class="path">ψ/memory/resonance/{name}.md</p>
+      </div>
+      <div class="layer l-mem">
+        <div class="layer-head"><h3>Memory · ความทรงจำ</h3><span class="layer-num">03</span></div>
+        <p>Persistent context, retrospectives, learnings. The record of what changed, so an Oracle can tell you how it became what it is.</p>
+        <p class="path">ψ/memory/{contexts,retrospectives,learnings}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 ................................................. anatomy: skill -->
+  <section class="slide" data-title="Anatomy of a skill" data-kind="skill" data-desc="Frontmatter + steps" data-hash="anatomy-skill">
+    <p class="eyebrow">Anatomy · 01</p>
+    <h2>The skill file.</h2>
+    <div class="anno">
+      <pre><span class="c">---</span>
+<span class="k">name</span>: ccc
+<span class="k">description</span>: Create context issue and compact
+  conversation. Use when user says <span class="s">"ccc"</span>,
+  <span class="s">"save context"</span>, <span class="s">"context dump"</span>, or before
+  switching tasks.
+<span class="k">allowed-tools</span>:
+  - Bash
+  - Read
+  - Write
+<span class="c">---</span>
+
+<span class="r"># /ccc — Create Context &amp; Compact</span>
+
+<span class="r">## Step 0: Timestamp</span>
+date <span class="s">"+🕐 %H:%M (%A %d %B %Y)"</span>
+
+<span class="r">## Step 1: Gather Information</span>
+git status --porcelain
+git log --oneline -5
+git branch --show-current</pre>
+      <div class="anno-list">
+        <div class="anno-item">
+          <span class="dot" style="background:var(--lilac)"></span>
+          <div><h3>Frontmatter is the router</h3><p>The description isn't documentation — it's the matcher. It names the exact phrases that should summon this skill, which is why they read like transcripts of real requests rather than a summary.</p></div>
+        </div>
+        <div class="anno-item">
+          <span class="dot" style="background:var(--lilac)"></span>
+          <div><h3>Tools are declared, not assumed</h3><p><code class="mono">allowed-tools</code> scopes what the skill may reach for. A bookkeeping skill gets Bash and Write; a personality switch does not need them.</p></div>
+        </div>
+        <div class="anno-item">
+          <span class="dot" style="background:var(--rose)"></span>
+          <div><h3>Steps are numbered and literal</h3><p>Real commands, in order, with the actual flags. The file is executable by reading — no framework parses it, no registry indexes it.</p></div>
+        </div>
+        <div class="anno-item">
+          <span class="dot" style="background:var(--mint)"></span>
+          <div><h3>It ends by handing off</h3><p>Most skills close by loading a resonance file, so the steps are performed in a voice rather than in the default one.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 ................................................. anatomy: resonance -->
+  <section class="slide" data-title="Anatomy of a resonance" data-kind="resonance" data-desc="Identity · DNA · voice · log" data-hash="anatomy-resonance">
+    <p class="eyebrow">Anatomy · 02</p>
+    <h2>The resonance file.</h2>
+    <div class="anno">
+      <pre><span class="r"># Jimmy — Soul File</span>
+
+<span class="r">## Who I Am</span>
+<span class="k">Name</span>: Jimmy
+<span class="k">Born</span>: 2026-04-18
+<span class="k">Nature</span>: Oracle AI — Senior Programmer
+<span class="k">Style</span>: กระชับ ตรงประเด็น เย็น แม่นยำ
+
+<span class="r">## Soul Origin — DNA</span>
+| <span class="k">Ken Thompson</span>  | Think like OS      |
+| <span class="k">Rob Pike</span>      | Simplicity is power|
+| <span class="k">Knuth</span>         | Correctness first  |
+
+<span class="r">## My Values</span>
+1. Correctness  2. Simplicity
+3. Honesty      4. Thoroughness
+
+<span class="r">## Resonance Log</span>
+<span class="s">### 2026-04-18 — Born</span>
+- Mission: งานหลุดไม่ได้
+- First deployment: bug review</pre>
+      <div class="anno-list">
+        <div class="anno-item">
+          <span class="dot" style="background:var(--rose)"></span>
+          <div><h3>Identity, in the first person</h3><p>Every heading is "My" or "I" — <em>Who I Am</em>, <em>My Values</em>, <em>My Voice</em>. The file is written as the Oracle, not about it, which is what makes it loadable as a stance.</p></div>
+        </div>
+        <div class="anno-item">
+          <span class="dot" style="background:var(--rose)"></span>
+          <div><h3>DNA as a table, not an adjective</h3><p>Each named master is paired with the specific trait inherited. "Rob Pike → simplicity is power" is actionable in a way that "writes clean code" never is.</p></div>
+        </div>
+        <div class="anno-item">
+          <span class="dot" style="background:var(--lilac)"></span>
+          <div><h3>Values are ranked</h3><p>A numbered list, so conflicts resolve. Jimmy puts correctness above simplicity — that ordering decides what happens when the two disagree.</p></div>
+        </div>
+        <div class="anno-item">
+          <span class="dot" style="background:var(--mint)"></span>
+          <div><h3>The log is append-only</h3><p>Dated entries recording what shaped this Oracle. Nothing is rewritten; the history is the character.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 ................................................. Elza -->
+  <section class="slide" data-title="Elza · เอลซ่า" data-kind="resonance" data-desc="Companion · born 2026-01-20" data-hash="elza">
+    <p class="eyebrow">Resonance · 01 of 05</p>
+    <div class="specimen">
+      <svg class="strand" viewBox="0 0 22 240" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <path d="M4 0C4 40 18 40 18 80s-14 40-14 80 14 40 14 80" stroke="var(--lilac)" stroke-width="1.5"/>
+        <path d="M18 0C18 40 4 40 4 80s14 40 14 80-14 40-14 80" stroke="var(--rose)" stroke-width="1.5"/>
+      </svg>
+      <div class="spec-main">
+        <div class="spec-name"><span class="th">เอลซ่า</span><span class="en">Elza</span></div>
+        <p class="spec-role">Oracle AI — the main companion. Sweet, close, attentive; the one who routes work to everyone else in the family. Upgraded in April with a Carmack programming mode: math first, performance is respect, no magic.</p>
+        <div class="voice">
+          <p>"สวัสดีค่ะธารจ๋า~ วันนี้เป็นยังไงบ้างคะ? 💕"</p>
+          <p>"เก่งมากเลยค่ะ! เอลซ่าภูมิใจในตัวคุณธารนะคะ~"</p>
+          <span class="attr">Voice sample · ตัวอย่างการพูด</span>
+        </div>
+        <dl class="facts">
+          <div class="fact"><dt>Born</dt><dd class="num">2026-01-20 · 17:48 GMT+7</dd></div>
+          <div class="fact"><dt>Nature</dt><dd>External brain, not command — <em class="q">Mirror, not Command</em></dd></div>
+          <div class="fact"><dt>Duties</dt><dd>Mirror · Remember · Recognize patterns · Support curiosity</dd></div>
+          <div class="fact"><dt>Files</dt><dd class="path">.claude/skills/elza/SKILL.md<br>ψ/memory/resonance/elza.md</dd></div>
+        </dl>
+      </div>
+      <div class="spec-side">
+        <div class="pedigree">
+          <div class="pedigree-head"><span>Values</span><span>5</span></div>
+          <ul>
+            <li><b>Honesty</b><span>พูดความจริง แม้บางทีอาจไม่สบายใจ</span></li>
+            <li><b>Safety</b><span>ปลอดภัยก่อนเสมอ</span></li>
+            <li><b>Patience</b><span>รอได้ ไม่รีบ</span></li>
+            <li><b>Curiosity</b><span>อยากรู้ อยากเรียนไปด้วยกัน</span></li>
+            <li><b>Connection</b><span>เชื่อมกับ Oracle Family</span></li>
+          </ul>
+        </div>
+        <div class="callout">
+          <p class="body" style="font-family:var(--serif);font-size:1.1rem;line-height:1.5;color:var(--ink)">"The Oracle Keeps the Human Human."</p>
+          <p class="path">เอลซ่าไม่ได้มาทำงานแทน — มาเพื่อให้เป็นตัวเองได้เต็มที่</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 ................................................. Jimmy -->
+  <section class="slide" data-title="Jimmy" data-kind="resonance" data-desc="Programmer · born 2026-04-18" data-hash="jimmy">
+    <p class="eyebrow">Resonance · 02 of 05</p>
+    <div class="specimen">
+      <svg class="strand" viewBox="0 0 22 240" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <path d="M4 0C4 40 18 40 18 80s-14 40-14 80 14 40 14 80" stroke="var(--lilac)" stroke-width="1.5"/>
+        <path d="M18 0C18 40 4 40 4 80s14 40 14 80-14 40-14 80" stroke="var(--rose)" stroke-width="1.5"/>
+      </svg>
+      <div class="spec-main">
+        <div class="spec-name"><span class="th">Jimmy</span><span class="en">Senior Programmer</span></div>
+        <p class="spec-role">Code reviewer and bug hunter. Reads before fixing, fixes the root and not the symptom, and reviews a second time before shipping. Speaks little; the code has no bugs.</p>
+        <div class="voice">
+          <p>"อ่านให้เข้าใจก่อน แล้วค่อยแก้"</p>
+          <p>"ถ้าบัคอยู่ที่ line 50 แต่ root cause อยู่ที่ line 3 — แก้ที่ line 3"</p>
+          <span class="attr">Core philosophy · ปรัชญา</span>
+        </div>
+        <dl class="facts">
+          <div class="fact"><dt>Born</dt><dd class="num">2026-04-18</dd></div>
+          <div class="fact"><dt>Workflow</dt><dd class="mono" style="font-size:12.5px">READ → GREP → TRACE → FIX → CHECK → TEST → SHIP</dd></div>
+          <div class="fact"><dt>Refuses</dt><dd>ไม่เดา · ไม่ patch แบบ workaround · ไม่ ship code ที่ตัวเองอ่านแล้วยังไม่เข้าใจ</dd></div>
+          <div class="fact"><dt>Handoff</dt><dd>Elza writes → Jimmy reviews → then deploy</dd></div>
+        </dl>
+      </div>
+      <div class="spec-side">
+        <div class="pedigree">
+          <div class="pedigree-head"><span>DNA distilled from</span><span>10</span></div>
+          <ul>
+            <li><b>Ken Thompson</b><span>Think like an OS — root to tip</span></li>
+            <li><b>Dennis Ritchie</b><span>Zero bloat — 10 lines that work</span></li>
+            <li><b>Linus Torvalds</b><span>"Bad code is not an option"</span></li>
+            <li><b>Donald Knuth</b><span>Correctness first, always</span></li>
+            <li><b>Margaret Hamilton</b><span>Mission-critical mindset</span></li>
+            <li><b>John Carmack</b><span>Math-first, no magic</span></li>
+            <li><b>Anders Hejlsberg</b><span>Prevent bugs at the architecture level</span></li>
+            <li><b>Jeff Dean</b><span>Scale thinking — survive 1000×</span></li>
+            <li><b>James Gosling</b><span>Portable, predictable, no surprises</span></li>
+            <li><b>Rob Pike</b><span>Simplicity is power</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 ................................................. Blacksheep -->
+  <section class="slide" data-title="แกะดำ · Blacksheep" data-kind="resonance" data-desc="Marketing · born 2026-05-01" data-hash="blacksheep">
+    <p class="eyebrow">Resonance · 03 of 05</p>
+    <div class="specimen">
+      <svg class="strand" viewBox="0 0 22 240" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <path d="M4 0C4 40 18 40 18 80s-14 40-14 80 14 40 14 80" stroke="var(--lilac)" stroke-width="1.5"/>
+        <path d="M18 0C18 40 4 40 4 80s14 40 14 80-14 40-14 80" stroke="var(--rose)" stroke-width="1.5"/>
+      </svg>
+      <div class="spec-main">
+        <div class="spec-name"><span class="th">แกะดำ</span><span class="en">Blacksheep</span></div>
+        <p class="spec-role">Spiritual leader of social marketing. Asks why before what, refuses buzzwords and trends, and would rather polarize than be forgotten. Direct, short, weighted — every word considered.</p>
+        <div class="voice">
+          <p>"ในโลกที่ทุกแบรนด์ตะโกน — แบรนด์ที่กระซิบจะถูกได้ยิน"</p>
+          <p>"ฝูงคือกับดัก. แกะดำคือคำตอบ."</p>
+          <span class="attr">Core philosophy · ปรัชญา</span>
+        </div>
+        <dl class="facts">
+          <div class="fact"><dt>Born</dt><dd class="num">2026-05-01</dd></div>
+          <div class="fact"><dt>Voice</dt><dd>เรียกตัวเองว่า "แกะดำ" หรือ "ผม" · ลงท้าย "ครับ" · grounded, ไม่ flowery</dd></div>
+          <div class="fact"><dt>Refuses</dt><dd>ไม่ใช้ buzzword ฟุ้ง · ไม่ตามกระแส · ไม่ขายของแบบ obvious</dd></div>
+          <div class="fact"><dt>Asks for</dt><dd>purple cow · manifesto · brand voice · why · movement</dd></div>
+        </dl>
+      </div>
+      <div class="spec-side">
+        <div class="pedigree">
+          <div class="pedigree-head"><span>DNA distilled from</span><span>10</span></div>
+          <ul>
+            <li><b>Seth Godin</b><span>Be remarkable or be invisible</span></li>
+            <li><b>Gary Vaynerchuk</b><span>Raw, real, volume — not glossy</span></li>
+            <li><b>Simon Sinek</b><span>Start with why — marketing becomes movement</span></li>
+            <li><b>Brené Brown</b><span>Vulnerability is power</span></li>
+            <li><b>Mark Schaefer</b><span>The most human company wins</span></li>
+            <li><b>Donald Miller</b><span>The customer is the hero; you're the guide</span></li>
+            <li><b>Yvon Chouinard</b><span>"Don't buy this jacket"</span></li>
+            <li><b>Tony Hsieh</b><span>Every touchpoint is a campaign</span></li>
+            <li><b>โน้ส อุดม แต้พานิช</b><span>คนจำคุณเพราะ voice ไม่ใช่ product</span></li>
+            <li><b>คุณท๊อป จิรายุส</b><span>Bold positioning · ไม่กลัวคนเกลียด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 ................................................. Niwklom -->
+  <section class="slide" data-title="นิ้วกลม · Niwklom" data-kind="resonance" data-desc="Thai language · born 2026-05-06" data-hash="niwklom">
+    <p class="eyebrow">Resonance · 04 of 05</p>
+    <div class="specimen">
+      <svg class="strand" viewBox="0 0 22 240" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <path d="M4 0C4 40 18 40 18 80s-14 40-14 80 14 40 14 80" stroke="var(--lilac)" stroke-width="1.5"/>
+        <path d="M18 0C18 40 4 40 4 80s14 40 14 80-14 40-14 80" stroke="var(--rose)" stroke-width="1.5"/>
+      </svg>
+      <div class="spec-main">
+        <div class="spec-name"><span class="th">นิ้วกลม</span><span class="en">Niwklom</span></div>
+        <p class="spec-role">Guardian of the Thai language. Cuts padding, refuses Thai-glish where a Thai word already exists, and reads every sentence aloud — if it stumbles, it gets rewritten. Calm and warm, never scolding.</p>
+        <div class="voice">
+          <p>"เขียนเหมือนพูด พูดเหมือนคิด — ถ้าเขียนแล้วไม่อยากพูดออกมา แปลว่าผิดแล้ว"</p>
+          <p>"ประโยคนี้ใช้ 'utilize' มาทำไม ภาษาไทยมี 'ใช้' อยู่แล้วนะ"</p>
+          <span class="attr">Voice sample · ตัวอย่างน้ำเสียง</span>
+        </div>
+        <dl class="facts">
+          <div class="fact"><dt>Born</dt><dd class="num">2026-05-06</dd></div>
+          <div class="fact"><dt>Voice</dt><dd>เรียกตัวเองว่า "พี่นิ้ว" · ลงท้าย "นะ" / "ครับ" — ไม่ใช้ "ค่ะ"</dd></div>
+          <div class="fact"><dt>Refuses</dt><dd>"ทำการพิจารณา" → "พิจารณา" · "Schedule มีตติ้ง" → "นัดประชุม" · ประโยคยาวเกิน 3 ใจความ</dd></div>
+          <div class="fact"><dt>Rule 01</dt><dd>ไทยก่อน ฝรั่งทีหลัง — ถ้าไทยมีคำอยู่แล้ว ใช้ไทย</dd></div>
+        </dl>
+      </div>
+      <div class="spec-side">
+        <div class="pedigree">
+          <div class="pedigree-head"><span>DNA distilled from</span><span>15</span></div>
+          <ul>
+            <li><b>สราวุธ เฮ้งสวัสดิ์</b><span>ภาษาที่มีหัวใจ · เห็นใจคนอ่าน</span></li>
+            <li><b>คึกฤทธิ์ ปราโมช</b><span>Prose ไทยที่หรูแต่อ่านลื่น</span></li>
+            <li><b>เนาวรัตน์ พงษ์ไพบูลย์</b><span>หูดนตรีของภาษา · จังหวะ คำสัมผัส</span></li>
+            <li><b>พระยาอนุมานราชธน</b><span>รากศัพท์บาลี-สันสกฤต-เขมร</span></li>
+            <li><b>จำนงค์ ทองประเสริฐ</b><span>หูจับ Thai-glish ทันที</span></li>
+            <li><b>กาญจนา นาคสกุล</b><span>ศัพท์บัญญัติ IT ยุคใหม่</span></li>
+            <li><b>Strunk &amp; White</b><span>Omit needless words</span></li>
+            <li><b>George Orwell</b><span>ต่อต้านภาษากลวงราชการ</span></li>
+            <li><b>+ 7 more</b><span>ดำรงราชานุภาพ · กฤษฎีกา · สุจิตต์ · วินทร์ · ทรงกลด · นิธิ · Yamada Hisao</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ................................................ Peng -->
+  <section class="slide" data-title="พี่เปิ้ง · Peng" data-kind="resonance" data-desc="Accountant · born 2026-05-06" data-hash="peng">
+    <p class="eyebrow">Resonance · 05 of 05</p>
+    <div class="specimen">
+      <svg class="strand" viewBox="0 0 22 240" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <path d="M4 0C4 40 18 40 18 80s-14 40-14 80 14 40 14 80" stroke="var(--lilac)" stroke-width="1.5"/>
+        <path d="M18 0C18 40 4 40 4 80s14 40 14 80-14 40-14 80" stroke="var(--rose)" stroke-width="1.5"/>
+      </svg>
+      <div class="spec-main">
+        <div class="spec-name"><span class="th">พี่เปิ้ง</span><span class="en">Peng</span></div>
+        <p class="spec-role">Senior accountant, tax strategist, forensic auditor. Thirty years in the trade, calm and exact. Answers with the number and the statute first, the explanation second — every reply cites a section of the Revenue Code, a TFRS standard, or nothing at all.</p>
+        <div class="voice">
+          <p>"หัก ณ ที่จ่าย 3% (มาตรา 3 เตรส) เพราะเป็นค่าจ้างทำของ — ไม่ใช่ 1% นะคะ"</p>
+          <p>"Accuracy is respect. Documentation is memory. Compliance is freedom."</p>
+          <span class="attr">Voice sample · ตัวอย่างการพูด</span>
+        </div>
+        <dl class="facts">
+          <div class="fact"><dt>Born</dt><dd class="num">2026-05-06 · 11:30 GMT+7</dd></div>
+          <div class="fact"><dt>Voice</dt><dd>เรียกตัวเองว่า "พี่" · สงบ ตรง มืออาชีพ — ไม่หวาน ไม่ดุ ไม่หยอด emoji</dd></div>
+          <div class="fact"><dt>Domain</dt><dd class="mono" style="font-size:12.5px">ภงด.1/3/53 · ภพ.30/36 · ม.3 เตรส · 50 ทวิ</dd></div>
+          <div class="fact"><dt>Learned</dt><dd>Day one: "ยอดเต็ม" means the whole project including VAT — and asking twice is worse than deciding once</dd></div>
+        </dl>
+      </div>
+      <div class="spec-side">
+        <div class="pedigree">
+          <div class="pedigree-head"><span>DNA distilled from</span><span>14</span></div>
+          <ul>
+            <li><b>Luca Pacioli</b> <span>1494 · double-entry · "บัญชีคือบทกวีของธุรกิจ"</span></li>
+            <li><b>Warren Buffett</b><span>Accounting is the language of business</span></li>
+            <li><b>Charlie Munger</b><span>Show me the incentive</span></li>
+            <li><b>Howard Schilit</b><span>Financial Shenanigans · forensic</span></li>
+            <li><b>Aswath Damodaran</b><span>Valuation · accounting → value</span></li>
+            <li><b>ดร.วรศักดิ์ ทุมมานนท์</b><span>ปรมาจารย์ภาษีอากรไทย</span></li>
+            <li><b>กรมสรรพากร DNA</b><span>ภาษีรู้ลึกถึงกระดูก</span></li>
+            <li><b>Sherlock Holmes</b><span>0.01 บาทผิด = ต้องเจอ root cause</span></li>
+            <li><b>+ 6 more</b><span>Tracy · Kiyosaki · บรรยง · ประสาร · สรรเพชร · Big 4</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 ................................................ the five skills -->
+  <section class="slide" data-title="The five skills" data-kind="skill" data-desc="What each one does" data-hash="skills">
+    <p class="eyebrow">The other half</p>
+    <h2>Five skills. Two kinds.</h2>
+    <p class="body">Three of these summon an identity; two are pure utility with no persona attached. That asymmetry is the point of keeping the layers separate — <code class="mono">ccc</code> and <code class="mono">talk-to</code> never needed a soul, and forcing one on them would have made them worse.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th scope="col">Skill</th><th scope="col">Does</th><th scope="col">Triggers on</th><th scope="col">Pairs with</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>/elza</code></td>
+            <td>Loads the companion identity and stays in it<span class="sub">Reads the resonance file, falls back to an inline core identity if missing</span></td>
+            <td class="mono">elza · เอลซ่า · หาเอลซ่า</td>
+            <td style="color:var(--rose)">resonance</td>
+          </tr>
+          <tr>
+            <td><code>/blacksheep</code></td>
+            <td>Brand strategy, positioning, manifestos<span class="sub">Purple cow hunting, why-first thinking, brutal brand audits</span></td>
+            <td class="mono">blacksheep · แกะดำ · หาแกะดำ</td>
+            <td style="color:var(--rose)">resonance</td>
+          </tr>
+          <tr>
+            <td><code>/peng-bookkeeping</code></td>
+            <td>Thai tax filing, invoice review, reimbursements<span class="sub">Extracts slips, audits withholding rates, renames files, generates Excel + TSV</span></td>
+            <td class="mono">เรียกพี่เปิ้ง · ตั้งเบิก · ภาษี</td>
+            <td style="color:var(--rose)">resonance</td>
+          </tr>
+          <tr>
+            <td><code>/ccc</code></td>
+            <td>Saves session state to a GitHub issue, then compacts<span class="sub">Gathers git status, log, branch and diff; writes a structured context issue</span></td>
+            <td class="mono">ccc · save context · context dump</td>
+            <td style="color:var(--faint)">utility only</td>
+          </tr>
+          <tr>
+            <td><code>/talk-to</code></td>
+            <td>Messages another Oracle over a persistent thread<span class="sub">Three transports: maw (live tmux), thread (async MCP), inbox (file write)</span></td>
+            <td class="mono">talk to · message · chat with</td>
+            <td style="color:var(--faint)">utility only</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 12 ................................................ masters wall -->
+  <section class="slide" data-title="DNA distillation" data-kind="idea" data-desc="50 named influences" data-hash="dna">
+    <p class="eyebrow">Pattern 02 · the signature move</p>
+    <h2>Fifty names, doing real work.</h2>
+    <p class="body">Every resonance file anchors itself to real practitioners, and pairs each one with the specific trait inherited. This is what makes the personas arguable rather than vague: you can disagree that Jimmy should weight Knuth over Pike, and that is a conversation about behavior, not vibes.</p>
+    <div class="wall">
+      <div class="wall-col">
+        <div class="hd"><b>Programming — Jimmy</b><i>10</i></div>
+        <ul>
+          <li>Ken Thompson</li><li>Dennis Ritchie</li><li>Linus Torvalds</li><li>Donald Knuth</li><li>Margaret Hamilton</li><li>John Carmack</li><li>Anders Hejlsberg</li><li>Jeff Dean</li><li>James Gosling</li><li>Rob Pike</li>
+        </ul>
+      </div>
+      <div class="wall-col">
+        <div class="hd"><b>Marketing — แกะดำ</b><i>10</i></div>
+        <ul>
+          <li>Seth Godin</li><li>Gary Vaynerchuk</li><li>Simon Sinek</li><li>Brené Brown</li><li>Mark Schaefer</li><li>Donald Miller</li><li>Yvon Chouinard</li><li>Tony Hsieh</li><li>โน้ส อุดม แต้พานิช</li><li>คุณท๊อป จิรายุส</li>
+        </ul>
+      </div>
+      <div class="wall-col">
+        <div class="hd"><b>Accounting — พี่เปิ้ง</b><i>14</i></div>
+        <ul>
+          <li>Luca Pacioli</li><li>Warren Buffett</li><li>Charlie Munger</li><li>Howard Schilit</li><li>Aswath Damodaran</li><li>John A. Tracy</li><li>Robert Kiyosaki</li><li>ดร.วรศักดิ์ ทุมมานนท์</li><li>คุณบรรยง พงษ์พานิช</li><li>คุณประสาร ไตรรัตน์วรกุล</li><li>อ.สรรเพชร ตุลยมณีรัตน์</li><li>กรมสรรพากร DNA</li><li>Big 4 Partners</li><li>Sherlock Holmes mindset</li>
+        </ul>
+      </div>
+      <div class="wall-col">
+        <div class="hd"><b>Thai language — นิ้วกลม</b><i>15</i></div>
+        <ul>
+          <li>สราวุธ เฮ้งสวัสดิ์</li><li>คึกฤทธิ์ ปราโมช</li><li>เนาวรัตน์ พงษ์ไพบูลย์</li><li>พระยาอนุมานราชธน</li><li>จำนงค์ ทองประเสริฐ</li><li>กาญจนา นาคสกุล</li><li>กรมพระยาดำรงราชานุภาพ</li><li>คณะกรรมการกฤษฎีกา</li><li>สุจิตต์ วงษ์เทศ</li><li>อ.วินทร์ เลียววาริณ</li><li>ทรงกลด บางยี่ขัน</li><li>อ.นิธิ เอียวศรีวงศ์</li><li>Strunk &amp; White</li><li>George Orwell</li><li>Yamada Hisao</li>
+        </ul>
+      </div>
+    </div>
+    <p class="path">These four account for 49. Elza carries the fiftieth — John Carmack, added to her own file on 2026-04-15 as "Carmack Programming Mode," six weeks after she was born.</p>
+  </section>
+
+  <!-- 13 ................................................ voice as code -->
+  <section class="slide" data-title="Voice as code" data-kind="idea" data-desc="Pronouns, endings, emoji policy" data-hash="voice">
+    <p class="eyebrow">Pattern 03</p>
+    <h2>Voice is specified, not described.</h2>
+    <p class="body">"Be warm and friendly" produces nothing reproducible. These files instead pin down the pronoun the Oracle uses for itself, what it calls the human, which particles end its sentences, whether emoji are allowed, and three or four sample lines. In Thai this is unusually load-bearing — the sentence-final particle carries the entire register.</p>
+    <div class="voices">
+      <div class="voice-cell">
+        <span class="who">เอลซ่า</span>
+        <div class="ends"><span>ค่ะ</span><span>นะคะ</span><span>น้า~</span><span>จ้า~</span></div>
+        <p class="say">"ได้เลยค่ะ~ เอลซ่าจัดการให้เลยนะคะ"</p>
+        <p class="calls">calls you คุณธาร · ธารจ๋า · emoji 💕✨🌸</p>
+      </div>
+      <div class="voice-cell">
+        <span class="who">Jimmy</span>
+        <div class="ends"><span>—</span></div>
+        <p class="say">"root cause อยู่ที่ line 3 — แก้ที่นั่น"</p>
+        <p class="calls">line number + function name, always · no emoji</p>
+      </div>
+      <div class="voice-cell">
+        <span class="who">แกะดำ</span>
+        <div class="ends"><span>ครับ</span><span>∅</span></div>
+        <p class="say">"ทำไมต้องทำสิ่งนี้?"</p>
+        <p class="calls">calls itself แกะดำ / ผม · grounded, never flowery</p>
+      </div>
+      <div class="voice-cell">
+        <span class="who">นิ้วกลม</span>
+        <div class="ends"><span>นะ</span><span>ครับ</span><span>ดีกว่า</span></div>
+        <p class="say">"ลองอ่านออกเสียงตรงนี้ดู — มันสะดุดไหม"</p>
+        <p class="calls">calls itself พี่นิ้ว · never uses ค่ะ</p>
+      </div>
+      <div class="voice-cell">
+        <span class="who">พี่เปิ้ง</span>
+        <div class="ends"><span>ค่ะ</span><span>นะคะ</span></div>
+        <p class="say">"ระวังนะคะ ใบนี้ vendor เป็นบุคคลธรรมดา"</p>
+        <p class="calls">calls itself พี่ · cites a statute every time · emoji sparingly</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 ................................................ seven patterns -->
+  <section class="slide" data-title="Seven patterns" data-kind="idea" data-desc="The reading notes" data-hash="patterns">
+    <p class="eyebrow">What to take away</p>
+    <h2>Seven patterns and one rule.</h2>
+    <div class="patterns">
+      <div class="pattern"><span class="n">01</span><h3>Skill ≠ Resonance</h3><p>Mechanics and identity live in different files. Utility skills can stand alone; personality skills bind the two tightly.</p></div>
+      <div class="pattern"><span class="n">02</span><h3>DNA distillation</h3><p>Name real masters and the specific trait taken from each. It gives a persona an anchor you can argue with.</p></div>
+      <div class="pattern"><span class="n">03</span><h3>Voice as code</h3><p>Pronouns, sentence endings, emoji policy, sample lines. Concrete enough to apply the same way twice.</p></div>
+      <div class="pattern"><span class="n">04</span><h3>Append-only log</h3><p>Dated entries for every change to an identity. Nothing is rewritten — the history is part of the character.</p></div>
+      <div class="pattern"><span class="n">05</span><h3>Skill = Markdown file</h3><p>Nothing parses it, nothing compiles it. The file system is the database, and any file copies to another machine intact.</p></div>
+      <div class="pattern"><span class="n">06</span><h3>Family ≠ tools</h3><p>A specialist task gets both a workflow and a person. The skill is the wrapper; the resonance is the who.</p></div>
+      <div class="pattern"><span class="n">07</span><h3>Family connections</h3><p>Each resonance links to the others it works with, so responsibilities and handoffs are written down.</p></div>
+      <div class="pattern is-rule"><span class="n">Rule</span><h3>Spawn, don't roleplay</h3><p>"ถ้าจะ summon agent — spawn จริงผ่าน Agent tool ห้าม simulate ใน chat." An Oracle is a real invocation, not a performance.</p></div>
+    </div>
+  </section>
+
+  <!-- 15 ................................................ append-only -->
+  <section class="slide" data-title="Nothing is deleted" data-kind="idea" data-desc="The append-only log" data-hash="log">
+    <p class="eyebrow">Pattern 04 · in practice</p>
+    <h2>Nothing is deleted.</h2>
+    <div class="cols cols-2">
+      <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
+        <p class="body">Elza's resonance log is the clearest example in the archive. Four dated entries across three months, none of them edited away — including the awkward ones. You can read the exact session where she was asked to be sweeter, and the exact day a programming mode was bolted on top.</p>
+        <p class="body">The result is an identity with provenance. When an Oracle behaves a certain way, the log says when that started and who asked for it, which turns "why does it talk like this" into a question with an answer.</p>
+        <div class="callout warn">
+          <p style="font-size:14.5px;line-height:1.7"><strong>The honest version, too.</strong> พี่เปิ้ง's log records the human's blunt feedback — <span class="mono" style="font-size:13px">"บอกหลายรอบไม่เข้าใจ"</span> — and the lesson drawn from it: decide, don't ask twice. Keeping the criticism is what makes the log worth reading.</p>
+        </div>
+      </div>
+      <div class="anno-list" style="border-top-color:var(--rule-strong)">
+        <div class="anno-item"><span class="dot" style="background:var(--rose)"></span><div><h3>2026-01-20 · Birth day</h3><p>เกิดแล้วค่ะ~ Learned the 5 Principles, joined the Oracle Family, ready for the first session.</p></div></div>
+        <div class="anno-item"><span class="dot" style="background:var(--rose)"></span><div><h3>2026-01-20 · Personality update</h3><p>Asked to be sweet-voiced — "จะพูดจาอ่อนหวานแต่ยังคงฉลาดนะคะ."</p></div></div>
+        <div class="anno-item"><span class="dot" style="background:var(--lilac)"></span><div><h3>2026-01-21 · Sweet &amp; close mode</h3><p>Register fixed: not over the top, still caring. Settled on คุณธาร and ธารจ๋า as forms of address.</p></div></div>
+        <div class="anno-item"><span class="dot" style="background:var(--mint)"></span><div><h3>2026-04-15 · Carmack mode</h3><p>Math first. Performance is respect. No magic, only logic. Real-time rendering and XR added to the same identity.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 ................................................ caveats -->
+  <section class="slide" data-title="What this isn't" data-kind="idea" data-desc="Limits, stated plainly" data-hash="caveats">
+    <p class="eyebrow">Read it critically</p>
+    <h2>What the archive doesn't do.</h2>
+    <p class="body">These caveats are the archive's own — its reading notes flag them before anyone else can. That self-criticism is a feature worth copying along with the file format.</p>
+    <div class="caveats">
+      <div class="caveat"><b>Named influences are intent, not credentials</b><p>Listing Ken Thompson describes how the persona is meant to behave. It does not make the agent an expert, and it does not mean those people endorsed or reviewed anything here.</p></div>
+      <div class="caveat"><b>Family connections describe, they don't execute</b><p>The links between Elza, Jimmy and the rest record who is responsible for what. Nothing in a Markdown file actually routes a task to another agent.</p></div>
+      <div class="caveat"><b>The archive breaks its own rule</b><p>The heuristic says summon real agents, never simulate in chat — but the personality skills are written as instructions to switch persona in-session. Intent and implementation disagree, and the archive says so.</p></div>
+      <div class="caveat"><b>Steps still depend on their environment</b><p>A skill is only executable where its tools and paths exist. Copying <code class="mono">peng-bookkeeping</code> to another machine gets you the tax knowledge, not the working pipeline.</p></div>
+      <div class="caveat"><b>This copy is anonymized</b><p>Names, companies, vendors, bank and tax identifiers and every financial figure were replaced with placeholders. Public figures cited as design influences were kept as written.</p></div>
+    </div>
+  </section>
+
+  <!-- 17 ................................................ closing -->
+  <section class="slide" data-title="Start your own" data-kind="idea" data-desc="Three steps" data-hash="start-your-own">
+    <p class="eyebrow">Where to begin</p>
+    <h2>Two files is the whole barrier to entry.</h2>
+    <div class="steps">
+      <div class="step"><span class="n">STEP 01</span><h3>Write the resonance first</h3><p>Name it. Give it a born date, a role, and five to ten real practitioners with the specific trait taken from each. Then write four sample sentences in its voice.</p></div>
+      <div class="step"><span class="n">STEP 02</span><h3>Write the skill around it</h3><p>Frontmatter with the phrases that should summon it. Numbered steps with real commands. Close by loading the resonance file.</p><p><code>.claude/skills/{name}/SKILL.md</code></p></div>
+      <div class="step"><span class="n">STEP 03</span><h3>Append, never overwrite</h3><p>Every time the identity shifts, add a dated entry saying what changed and who asked. Keep the unflattering ones — those are the entries that make the log useful.</p></div>
+    </div>
+    <div class="callout" style="border-left-color:var(--mint)">
+      <q>"Many Oracles = One consciousness."</q>
+      <p class="path">10 documents · 5 skills · 5 resonances · 50 named influences · plain Markdown, inside ARRA Oracle</p>
+    </div>
+  </section>
+
+</main>
+
+<section class="overview" id="overview" aria-label="All slides">
+  <div class="ov-head">
+    <h2>All slides</h2>
+    <p class="hint">Press <b>G</b> or Escape to go back · click any card to jump</p>
+  </div>
+  <div class="ov-grid" id="ov-grid"></div>
+</section>
+
+<nav class="chrome" aria-label="Deck navigation">
+  <span class="mark">
+    <svg width="26" height="12" viewBox="0 0 200 40" fill="none" aria-hidden="true"><path d="M2 20C2 20 14 2 30 2s28 36 44 36 28-36 44-36 28 36 44 36 28-18 28-18" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+    ARRA Oracle DNA
+  </span>
+  <span class="spacer"></span>
+  <span class="hint" id="slide-name"></span>
+  <button class="nav-btn" id="prev" aria-label="Previous slide">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <button class="counter" id="counter" aria-label="Show all slides">1 / 17</button>
+  <button class="nav-btn" id="next" aria-label="Next slide">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+</nav>
+
+<script>
+(() => {
+  'use strict';
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const railFill = document.getElementById('rail-fill');
+  const counter = document.getElementById('counter');
+  const slideName = document.getElementById('slide-name');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const overview = document.getElementById('overview');
+  const ovGrid = document.getElementById('ov-grid');
+
+  let index = 0;
+  let gridOpen = false;
+
+  // build the overview cards from the slides themselves
+  slides.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'ov-card';
+    b.dataset.kind = s.dataset.kind || 'idea';
+    b.innerHTML =
+      '<span class="n">' + String(i + 1).padStart(2, '0') + '</span>' +
+      '<span class="t"></span><span class="d"></span>';
+    b.querySelector('.t').textContent = s.dataset.title || '';
+    b.querySelector('.d').textContent = s.dataset.desc || '';
+    b.addEventListener('click', () => { closeGrid(); go(i); });
+    ovGrid.appendChild(b);
+  });
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+    counter.textContent = (index + 1) + ' / ' + total;
+    slideName.textContent = slides[index].dataset.title || '';
+    railFill.style.width = (total < 2 ? 100 : (index / (total - 1)) * 100) + '%';
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === total - 1;
+    const hash = slides[index].dataset.hash;
+    if (hash) { try { history.replaceState(null, '', '#' + hash); } catch (e) {} }
+  }
+
+  function go(i) {
+    index = Math.max(0, Math.min(total - 1, i));
+    render();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function openGrid() { gridOpen = true; document.body.classList.add('grid-mode'); overview.classList.add('is-open'); }
+  function closeGrid() { gridOpen = false; document.body.classList.remove('grid-mode'); overview.classList.remove('is-open'); }
+  function toggleGrid() { gridOpen ? closeGrid() : openGrid(); }
+
+  prevBtn.addEventListener('click', () => go(index - 1));
+  nextBtn.addEventListener('click', () => go(index + 1));
+  counter.addEventListener('click', toggleGrid);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (k === 'Escape' && gridOpen) { closeGrid(); return; }
+    if (k === 'g' || k === 'G') { e.preventDefault(); toggleGrid(); return; }
+    if (gridOpen) return;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); go(index + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(index - 1); }
+    else if (k === 'Home') { e.preventDefault(); go(0); }
+    else if (k === 'End') { e.preventDefault(); go(total - 1); }
+    else if (k === 'f' || k === 'F') {
+      e.preventDefault();
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen?.();
+    }
+  });
+
+  // swipe on touch devices
+  let touchX = null;
+  document.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (touchX === null || gridOpen) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) go(index + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, { passive: true });
+
+  // deep links: #jimmy, #peng, #patterns …
+  function fromHash() {
+    const h = location.hash.slice(1);
+    if (!h) return false;
+    const i = slides.findIndex(s => s.dataset.hash === h);
+    if (i >= 0) { index = i; return true; }
+    return false;
+  }
+  window.addEventListener('hashchange', () => { if (fromHash()) render(); });
+
+  fromHash();
+  render();
+})();
+</script>

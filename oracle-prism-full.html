@@ -1,0 +1,874 @@
+<title>Oracle Prism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* dark-first: :root carries the full dark palette */
+:root {
+  --ground:#0e0d14; --surface:#181722; --surface-2:#22202e;
+  --ink:#eceaf4; --muted:#9b95ac; --faint:#6f6a80;
+  --rule:#2b2937; --rule-hi:#3d3a4d; --beam:#ffffff;
+  --l1:#e0a437; --l2:#e8705c; --l3:#d16bb0; --l4:#7c86e8; --l5:#4fb8b0;
+  --sans:'Inter','Noto Sans Thai',system-ui,sans-serif;
+  --serif:'Instrument Serif','Noto Sans Thai',Georgia,serif;
+  --thai:'Noto Sans Thai','Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --ground:#f6f5f9; --surface:#ffffff; --surface-2:#eceaf2;
+    --ink:#16141d; --muted:#555063; --faint:#736d82;
+    --rule:#dedae7; --rule-hi:#c3bcd0; --beam:#16141d;
+    --l1:#9a6708; --l2:#b8402c; --l3:#9c3277; --l4:#4450b8; --l5:#1a7f77;
+  }
+}
+:root[data-theme="light"] {
+  --ground:#f6f5f9; --surface:#ffffff; --surface-2:#eceaf2;
+  --ink:#16141d; --muted:#555063; --faint:#736d82;
+  --rule:#dedae7; --rule-hi:#c3bcd0; --beam:#16141d;
+  --l1:#9a6708; --l2:#b8402c; --l3:#9c3277; --l4:#4450b8; --l5:#1a7f77;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--l4);outline-offset:3px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ---------- bilingual switching ---------- */
+[data-lang="en"] .lang-th{display:none!important}
+[data-lang="th"] .lang-en{display:none!important}
+/* Thai needs more leading and no italics */
+.lang-th{font-family:var(--thai)}
+.lang-th em,.lang-th i{font-style:normal}
+p.lang-th,.body.lang-th{line-height:1.95}
+h2.lang-th,h1.lang-th{font-family:var(--thai);font-weight:600;letter-spacing:0;line-height:1.4}
+.lede.lang-th{font-family:var(--thai);font-weight:500;line-height:1.6}
+.nm.lang-th,.who.lang-th{font-family:var(--thai);font-weight:600}
+
+/* ---------- deck ---------- */
+.slide{display:none;min-height:100dvh;padding:clamp(30px,5vh,60px) clamp(20px,5vw,80px) 104px;max-width:1300px;margin-inline:auto;flex-direction:column;justify-content:center;gap:clamp(16px,2.6vh,30px)}
+.slide.is-active{display:flex;animation:in 300ms cubic-bezier(.2,.7,.3,1) both}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- type ---------- */
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:12px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+.eyebrow b{color:var(--ink);font-weight:500}
+h1.big{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,9vw,7.5rem);line-height:.92;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4.5vw,3.6rem);line-height:1.05;letter-spacing:-.015em;margin:0;text-wrap:balance}
+h3{font-size:15px;font-weight:600;margin:0}
+.lede{font-family:var(--serif);font-size:clamp(1.3rem,2.4vw,1.95rem);line-height:1.35;color:var(--muted);margin:0;max-width:56ch;text-wrap:pretty}
+.thai-epi{font-family:var(--thai);font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.9;color:var(--muted);max-width:64ch;margin:0}
+p{margin:0;line-height:1.65}
+.body{color:var(--muted);max-width:66ch;line-height:1.72;font-size:15.5px}
+.mono{font-family:var(--mono);font-size:13px}
+.path{font-family:var(--mono);font-size:12.5px;color:var(--faint);overflow-wrap:anywhere;line-height:1.7}
+strong{color:var(--ink);font-weight:600}
+
+/* ---------- prism figure ---------- */
+.prism-fig{width:100%;max-width:620px;height:auto}
+.prism-fig .glass{fill:color-mix(in srgb,var(--ink) 7%,transparent);stroke:var(--rule-hi);stroke-width:1.5}
+.prism-fig .beam{stroke:var(--beam);stroke-width:2.5;stroke-linecap:round}
+.prism-fig text{font-family:var(--mono);font-size:11px;fill:var(--faint)}
+
+/* ---------- lens rows ---------- */
+.lenses{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.lens-row{display:grid;grid-template-columns:4px 34px minmax(0,190px) minmax(0,1fr);gap:0 18px;align-items:center;padding:13px 0;border-bottom:1px solid var(--rule)}
+.lens-row .swatch{width:4px;height:100%;min-height:32px;border-radius:2px}
+.lens-row .em{font-size:19px;text-align:center}
+.lens-row .nm{font-family:var(--serif);font-size:23px;line-height:1.1}
+.lens-row .qs{color:var(--muted);font-size:14.5px;line-height:1.6}
+.r1 .swatch{background:var(--l1)}.r1 .nm{color:var(--l1)}
+.r2 .swatch{background:var(--l2)}.r2 .nm{color:var(--l2)}
+.r3 .swatch{background:var(--l3)}.r3 .nm{color:var(--l3)}
+.r4 .swatch{background:var(--l4)}.r4 .nm{color:var(--l4)}
+.r5 .swatch{background:var(--l5)}.r5 .nm{color:var(--l5)}
+
+/* ---------- DNA pedigree rows (designer preset) ---------- */
+.dna{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(20px,3vw,44px)}
+.dna-col{display:flex;flex-direction:column;border-top:1px solid var(--rule-hi)}
+.dna-row{display:grid;grid-template-columns:26px minmax(0,1fr);gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.dna-row .gl{font-size:15px;line-height:1.5;text-align:center}
+.dna-row .who{font-size:14.5px;font-weight:600;line-height:1.4}
+.dna-row .got{grid-column:2;color:var(--muted);font-size:12.8px;line-height:1.6}
+.dna-row .ask{grid-column:2;font-size:13px;line-height:1.55;color:var(--ink);border-left:2px solid var(--rule-hi);padding-left:10px;margin-top:5px}
+.dna-row.w .ask{border-left-color:var(--l4)}
+.dna-row.t .ask{border-left-color:var(--l1)}
+.dna-row.t .who{color:var(--l1)}
+.dna-row.w .who{color:var(--l4)}
+
+/* ---------- panels ---------- */
+.cols{display:grid;gap:clamp(16px,2.4vw,32px)}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:20px 22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel h3{font-size:15px}
+.panel p{font-size:13.8px;color:var(--muted);line-height:1.7}
+.panel .cap{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+.preset{border-top:2px solid var(--rule-hi);padding-top:14px;display:flex;flex-direction:column;min-width:0}
+.preset>.hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.preset>.hd b{font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.preset>.hd i{font-style:normal;font-size:12px;color:var(--faint)}
+.preset ul{margin:0;padding:0;list-style:none}
+.preset li{padding:8px 0;border-bottom:1px solid var(--rule);font-size:13.5px;display:flex;flex-direction:column;gap:2px}
+.preset li b{font-weight:600}
+.preset li span{color:var(--muted);font-size:12.6px;line-height:1.55}
+
+/* ---------- tables ---------- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{text-align:left;padding:12px 18px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.6}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:400;background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td code{font-family:var(--mono);font-size:12.3px;color:var(--l4)}
+td .sub{display:block;color:var(--muted);font-size:12.8px;margin-top:3px}
+.yes{color:var(--l5);font-weight:600}.no{color:var(--l2);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- funnel (jsonl dig) ---------- */
+.funnel{display:flex;flex-direction:column;gap:10px}
+.fn{display:grid;grid-template-columns:minmax(0,168px) minmax(0,1fr) 74px;gap:14px;align-items:center}
+.fn .lbl{font-size:13px;color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
+.fn .barwrap{display:flex;height:24px}
+.fn .barwrap i{display:block;height:100%;border-radius:2px;min-width:3px}
+.fn .n{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;text-align:right}
+
+/* ---------- lens histogram ---------- */
+.hist{display:flex;align-items:flex-end;gap:10px;height:180px;padding-top:8px}
+.hb{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;min-width:0}
+.hb .col{width:100%;max-width:64px;border-radius:2px 2px 0 0;background:var(--rule-hi)}
+.hb.over .col{background:var(--l2)}
+.hb .n{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.hb .lx{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* ---------- callout ---------- */
+.callout{border:1px solid var(--rule);border-left:3px solid var(--l4);background:var(--surface);border-radius:3px;padding:20px 24px;display:flex;flex-direction:column;gap:11px}
+.callout.warn{border-left-color:var(--l2)}
+.callout.good{border-left-color:var(--l5)}
+.callout q{font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.75rem);line-height:1.35;quotes:none}
+.callout q.lang-th{font-family:var(--thai);font-weight:600;font-size:clamp(1.05rem,1.9vw,1.4rem);line-height:1.6}
+
+/* ---------- evidence ---------- */
+.ev{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.ev-item{display:grid;grid-template-columns:128px minmax(0,1fr);gap:8px 24px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.ev-item .when{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.05em;padding-top:3px}
+.ev-item h3{font-size:15px;margin-bottom:5px}
+.ev-item p{font-size:13.8px;color:var(--muted);line-height:1.7}
+
+/* real-args quotes */
+.args{display:flex;flex-direction:column;gap:8px}
+.arg{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--muted);padding:9px 13px;background:var(--surface);border:1px solid var(--rule);border-left:2px solid var(--l3);border-radius:2px;overflow-wrap:anywhere}
+.arg b{color:var(--l3);font-weight:500}
+
+/* convergence */
+.conv{display:flex;align-items:flex-end;gap:14px;padding:8px 0}
+.conv .bar{display:flex;flex-direction:column;align-items:center;gap:8px}
+.conv .col{width:56px;border-radius:2px 2px 0 0;background:var(--l2)}
+.conv .col.ok{background:var(--l5)}
+.conv .n{font-family:var(--mono);font-size:15px;font-variant-numeric:tabular-nums}
+.conv .rd{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* defects */
+.defects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.defect{background:var(--ground);padding:17px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.defect .n{font-family:var(--mono);font-size:11px;color:var(--l2);letter-spacing:.1em}
+.defect h3{font-size:14.5px;line-height:1.35}
+.defect p{font-size:12.8px;color:var(--muted);line-height:1.65}
+
+/* plan */
+.plan{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.plan-row{display:grid;grid-template-columns:34px minmax(0,1fr) 96px;gap:16px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--rule)}
+.plan-row .pn{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.plan-row .what{font-size:14.5px;line-height:1.6}
+.plan-row .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-align:right}
+.tag.now{color:var(--l5)}.tag.call{color:var(--l1)}
+
+/* ---------- chrome ---------- */
+.spectrum{position:fixed;top:0;left:0;right:0;height:3px;display:flex;z-index:40}
+.spectrum i{flex:1;opacity:.18;transition:opacity 320ms}
+.spectrum i.on{opacity:1}
+.spectrum i:nth-child(1){background:var(--l1)}.spectrum i:nth-child(2){background:var(--l2)}
+.spectrum i:nth-child(3){background:var(--l3)}.spectrum i:nth-child(4){background:var(--l4)}
+.spectrum i:nth-child(5){background:var(--l5)}
+.chrome{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:12px;padding:11px clamp(14px,4vw,40px);background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--rule)}
+.chrome .mark{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.chrome .spacer{flex:1}
+.langsw{display:flex;gap:2px;padding:2px;border:1px solid var(--rule-hi);border-radius:4px}
+.langsw button{font-family:var(--mono);font-size:11.5px;padding:5px 9px;border-radius:2px;color:var(--faint);min-height:26px}
+.langsw button[aria-pressed="true"]{background:var(--l4);color:#fff}
+.langsw button:hover:not([aria-pressed="true"]){background:var(--surface-2);color:var(--ink)}
+.nav-btn{display:inline-flex;align-items:center;justify-content:center;width:33px;height:33px;border:1px solid var(--rule-hi);border-radius:3px;color:var(--muted)}
+.nav-btn:hover:not(:disabled){background:var(--surface-2);color:var(--ink)}
+.nav-btn:disabled{opacity:.32;cursor:default}
+.counter{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;padding:6px 9px;border:1px solid transparent;border-radius:3px}
+.counter:hover{border-color:var(--rule-hi);color:var(--ink)}
+.hint{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+@media (max-width:900px){.hint{display:none}.chrome .mark span{display:none}}
+
+/* overview */
+.overview{display:none;padding:clamp(22px,4vw,48px) clamp(16px,4vw,48px) 104px}
+.overview.is-open{display:block}
+body.grid-mode .deck{display:none}
+.ov-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:13px}
+.ov-card{text-align:left;display:flex;flex-direction:column;gap:7px;background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--rule-hi);border-radius:3px;padding:15px 16px 17px;min-height:108px;transition:border-color 140ms,transform 140ms}
+.ov-card:hover{transform:translateY(-2px);border-color:var(--l4)}
+.ov-card .n{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.1em}
+.ov-card .t{font-family:var(--serif);font-size:19px;line-height:1.15}
+.ov-card .d{font-size:12.3px;color:var(--muted);line-height:1.5;margin-top:auto}
+.ov-card[data-l="1"]{border-left-color:var(--l1)}.ov-card[data-l="2"]{border-left-color:var(--l2)}
+.ov-card[data-l="3"]{border-left-color:var(--l3)}.ov-card[data-l="4"]{border-left-color:var(--l4)}
+.ov-card[data-l="5"]{border-left-color:var(--l5)}
+
+@media (max-width:1000px){.defects{grid-template-columns:repeat(2,minmax(0,1fr))}.cols-3,.cols-4{grid-template-columns:1fr}.dna{grid-template-columns:1fr}}
+@media (max-width:860px){
+  .slide{justify-content:flex-start;padding-top:46px;padding-bottom:112px}
+  .cols-2{grid-template-columns:1fr}
+  .lens-row{grid-template-columns:4px 30px minmax(0,1fr);row-gap:5px}
+  .lens-row .qs{grid-column:3}
+  .ev-item{grid-template-columns:1fr;gap:4px}
+  .plan-row{grid-template-columns:28px minmax(0,1fr)}
+  .plan-row .tag{grid-column:2;text-align:left}
+  .fn{grid-template-columns:1fr;gap:4px}
+  .hist{height:140px}
+}
+@media (max-width:560px){.defects{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div class="spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 ............................................. title -->
+  <section class="slide" data-title="Oracle Prism" data-l="4" data-desc="Title" data-hash="start">
+    <svg class="prism-fig" viewBox="0 0 620 250" fill="none" aria-label="One beam entering a prism and splitting into five coloured rays">
+      <path class="glass" d="M240 48 L308 178 L172 178 Z"/>
+      <path class="beam" d="M28 120 H205"/>
+      <path d="M278 126 L596 62"  stroke="var(--l1)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M278 126 L596 100" stroke="var(--l2)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M278 126 L596 138" stroke="var(--l3)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M278 126 L596 176" stroke="var(--l4)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M278 126 L596 214" stroke="var(--l5)" stroke-width="2" stroke-linecap="round"/>
+      <text x="28" y="106">one claim</text>
+      <text x="470" y="46">five lenses</text>
+    </svg>
+    <h1 class="big">Oracle Prism</h1>
+    <p class="lede lang-en">Five perspectives. One agent. Zero subagents.</p>
+    <p class="lede lang-th">ห้ามุมมอง เอเจนต์เดียว ไม่แตก subagent เลย</p>
+    <p class="thai-epi">"แสงเดียวผ่านปริซึม แตกเป็นหลายสี — เรื่องเดียวกัน มองจากหลายมุม เห็นต่างกัน"</p>
+    <p class="path">black:~/.claude/skills/oracle-prism/SKILL.md · 4,823 bytes · 2026-06-07 → 2026-08-01 · 102 runs</p>
+  </section>
+
+  <!-- 2 ............................................. genesis -->
+  <section class="slide" data-title="Born as a reaction" data-l="1" data-desc="Twins, 3½ hours apart" data-hash="genesis">
+    <p class="eyebrow">Genesis · <b>2026-06-07</b></p>
+    <h2 class="lang-en">It was written three and a half hours after its opposite.</h2>
+    <h2 class="lang-th">เขียนขึ้นหลังพี่น้องคนละขั้วของมัน สามชั่วโมงครึ่ง</h2>
+    <div class="cols cols-2">
+      <div style="display:flex;flex-direction:column;gap:15px;min-width:0">
+        <p class="body lang-en">That morning, Atlas Oracle cross-checked mawjs-oracle's diagnosis of issue <strong>#2370</strong>. The adversarial pass found the proposed fix would <em>not</em> solve the athena-athena bug — which became a separate issue, <strong>#2375</strong>. Without the cross-check it would have shipped broken.</p>
+        <p class="body lang-th">เช้าวันนั้น Atlas Oracle ไล่ตรวจคำวินิจฉัย issue <strong>#2370</strong> ของ mawjs-oracle การตรวจแบบ adversarial เจอว่า fix ที่เสนอไม่ได้แก้บั๊ก athena-athena เลย กลายเป็น issue <strong>#2375</strong> แยกออกมาต่างหาก ถ้าไม่ได้ตรวจรอบนั้น ของก็หลุดไปแล้ว</p>
+
+        <p class="body lang-en">Out of that came <code class="mono">/adversarial-analysis</code> at 08:13 — five parallel agents, each trying to destroy a claim.</p>
+        <p class="body lang-th">จากเรื่องนั้น <code class="mono">/adversarial-analysis</code> ก็เกิดตอน 08:13 ห้าเอเจนต์วิ่งขนาน แต่ละตัวพยายามทุบข้อสรุปให้พัง</p>
+
+        <p class="body lang-en">At <strong>11:48</strong>, the same five-lens shape was written down again with the agents taken out. That is <code class="mono">/oracle-prism</code> — the cheap inverse of a tool born from a real bug, three and a half hours later.</p>
+        <p class="body lang-th">พอถึง <strong>11:48</strong> โครงห้าเลนส์เดิมก็ถูกเขียนใหม่ คราวนี้ถอดเอเจนต์ออกหมด นั่นแหละคือ <code class="mono">/oracle-prism</code> — ด้านกลับราคาถูกของเครื่องมือที่เกิดจากบั๊กจริง ห่างกันสามชั่วโมงครึ่งเท่านั้น</p>
+      </div>
+      <div class="ev">
+        <div class="ev-item"><span class="when">08:13:42</span><div><h3>/adversarial-analysis</h3>
+          <p class="lang-en">6,305 bytes · spawns 5 parallel agents to <strong>disprove</strong> a claim · scores X/5 · writes a lesson to ψ/ on refutation.</p>
+          <p class="lang-th">6,305 bytes · แตก 5 เอเจนต์ขนานเพื่อ <strong>หักล้าง</strong> ข้อสรุป · ให้คะแนน X/5 · ถ้าโดนหักล้างก็เขียน lesson ลง ψ/ ด้วย</p></div></div>
+        <div class="ev-item"><span class="when">11:48:01</span><div><h3>/oracle-prism</h3>
+          <p class="lang-en">4,823 bytes · same five-lens geometry, no spawning · produces angles, not verdicts.</p>
+          <p class="lang-th">4,823 bytes · เรขาคณิตห้าเลนส์เดิม แต่ไม่แตกเอเจนต์ · ได้มุมมอง ไม่ได้คำตัดสิน</p></div></div>
+        <div class="ev-item"><span class="when">both</span><div><h3 class="lang-en">Undocumented lineage</h3><h3 class="lang-th">สายเลือดที่ไม่มีใครจด</h3>
+          <p class="lang-en">Neither file mentions the other's timing. The relationship is only visible in the filesystem.</p>
+          <p class="lang-th">ไม่มีไฟล์ไหนพูดถึงเวลาของอีกไฟล์เลย ความสัมพันธ์นี้เห็นได้จาก filesystem ที่เดียว</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ............................................. how -->
+  <section class="slide" data-title="No subagents" data-l="4" data-desc="How it works" data-hash="how">
+    <p class="eyebrow">The mechanism</p>
+    <h2 class="lang-en">The agent doesn't delegate. It refracts.</h2>
+    <h2 class="lang-th">เอเจนต์ไม่ได้กระจายงาน แต่หักเหแสง</h2>
+    <div class="cols cols-3">
+      <div class="panel"><span class="cap">Not this</span><h3>Adversarial analysis</h3>
+        <p class="lang-en">Spawn five agents. Each tries to disprove the claim independently. Costs five invocations — and buys genuine independence.</p>
+        <p class="lang-th">แตกห้าเอเจนต์ แต่ละตัวพยายามหักล้างข้อสรุปแยกกัน จ่ายห้า invocation แต่ได้ความเป็นอิสระจริง</p></div>
+      <div class="panel"><span class="cap">Not this either</span><h3>A roundtable</h3>
+        <p class="lang-en">Personas debating each other in one thread. Named in prism's own table — and on this machine, <span class="no">it doesn't exist</span>.</p>
+        <p class="lang-th">หลายบุคลิกเถียงกันใน thread เดียว ตารางของ prism เองอ้างถึง แต่บนเครื่องนี้ <span class="no">ไม่มีอยู่จริง</span></p></div>
+      <div class="panel" style="border-color:var(--l4)"><span class="cap" style="color:var(--l4)">This</span><h3>Prismatic analysis</h3>
+        <p class="lang-en">One agent moves through the lenses in sequence, one section each. Same facts every time; only the question changes.</p>
+        <p class="lang-th">เอเจนต์เดียวไล่ไปทีละเลนส์ เขียนหัวข้อละหนึ่ง ข้อเท็จจริงชุดเดิมทุกรอบ เปลี่ยนแค่คำถาม</p></div>
+    </div>
+    <div class="callout">
+      <q class="lang-en">Same light, different colors.</q>
+      <q class="lang-th">แสงเดียวกัน คนละสี</q>
+      <p class="body lang-en">The skill is explicit that this is <strong>not</strong> adversarial analysis — it isn't trying to disprove anything. It's trying to stop you tunnelling on the first thing you noticed.</p>
+      <p class="body lang-th">สกิลบอกชัดว่านี่<strong>ไม่ใช่</strong> adversarial analysis ไม่ได้จะหักล้างอะไร แค่กันไม่ให้เราจมอยู่กับสิ่งแรกที่เห็นเท่านั้นเอง</p>
+    </div>
+  </section>
+
+  <!-- 4 ............................................. lenses -->
+  <section class="slide" data-title="The five lenses" data-l="1" data-desc="Default spectrum" data-hash="lenses">
+    <p class="eyebrow">Default set · <b>3–7 lenses, 5 by default</b></p>
+    <h2 class="lang-en">Each lens asks one question.</h2>
+    <h2 class="lang-th">เลนส์หนึ่งอัน ถามหนึ่งคำถาม</h2>
+    <div class="lenses">
+      <div class="lens-row r1"><span class="swatch"></span><span class="em">🔍</span><span class="nm">Archaeologist</span>
+        <span class="qs lang-en">"What actually happened? Timeline, sequence, facts."</span>
+        <span class="qs lang-th">"เกิดอะไรขึ้นจริง ๆ ไล่เวลา ไล่ลำดับ ไล่ข้อเท็จจริง"</span></div>
+      <div class="lens-row r2"><span class="swatch"></span><span class="em">🐛</span><span class="nm">Bug Hunter</span>
+        <span class="qs lang-en">"What problems did we hit? What's still broken?"</span>
+        <span class="qs lang-th">"เจอปัญหาอะไรบ้าง แล้วอะไรยังพังอยู่"</span></div>
+      <div class="lens-row r3"><span class="swatch"></span><span class="em">💀</span><span class="nm">Skeptic</span>
+        <span class="qs lang-en">"What did we do wrong? What would we redo?"</span>
+        <span class="qs lang-th">"ทำอะไรผิดไปบ้าง ถ้าย้อนได้จะทำใหม่ตรงไหน"</span></div>
+      <div class="lens-row r4"><span class="swatch"></span><span class="em">🏗️</span><span class="nm">Architect</span>
+        <span class="qs lang-en">"What changed structurally? What's the before/after?"</span>
+        <span class="qs lang-th">"โครงสร้างเปลี่ยนตรงไหน ก่อนกับหลังต่างกันยังไง"</span></div>
+      <div class="lens-row r5"><span class="swatch"></span><span class="em">📋</span><span class="nm">Auditor</span>
+        <span class="qs lang-en">"What's left undone? What's inconsistent?"</span>
+        <span class="qs lang-th">"อะไรยังค้างอยู่ อะไรไม่สอดคล้องกัน"</span></div>
+    </div>
+    <p class="body lang-en">The Auditor exists for one specific moment: when someone asks <em>"did we miss anything?"</em> Every lens reaches the output with its emoji, name and question as the section header — so the reader can see which question produced which claim.</p>
+    <p class="body lang-th">Auditor มีไว้เพื่อจังหวะเดียว คือตอนมีคนถามว่า "ตกอะไรไปหรือเปล่า" ทุกเลนส์จะโผล่ใน output พร้อม emoji ชื่อ และคำถามประจำตัวเป็นหัวข้อ คนอ่านก็เลยเห็นว่าคำถามไหนให้ข้อสรุปไหน</p>
+  </section>
+
+  <!-- 5 ............................................. presets -->
+  <section class="slide" data-title="Three presets" data-l="3" data-desc="retro · design · incident" data-hash="presets">
+    <p class="eyebrow">Swap the whole set</p>
+    <h2 class="lang-en">Different work needs different questions.</h2>
+    <h2 class="lang-th">งานคนละแบบ ก็ต้องถามคนละคำถาม</h2>
+    <div class="cols cols-3">
+      <div class="preset" style="border-top-color:var(--l1)">
+        <div class="hd"><b>--preset retro</b><i>session</i></div>
+        <ul>
+          <li><b>Historian</b><span class="lang-en">What happened, in what order?</span><span class="lang-th">เกิดอะไร เรียงลำดับยังไง</span></li>
+          <li><b>Critic</b><span class="lang-en">What went poorly or slowly?</span><span class="lang-th">ตรงไหนช้า ตรงไหนไม่เข้าท่า</span></li>
+          <li><b>Cheerleader</b><span class="lang-en">What should we repeat?</span><span class="lang-th">อะไรดีจนควรทำซ้ำ</span></li>
+          <li><b>Connector</b><span class="lang-en">What links to past work?</span><span class="lang-th">เชื่อมกับงานเก่าตรงไหน</span></li>
+          <li><b>Planner</b><span class="lang-en">What's the next move?</span><span class="lang-th">ก้าวต่อไปคืออะไร</span></li>
+        </ul>
+      </div>
+      <div class="preset" style="border-top-color:var(--l4)">
+        <div class="hd"><b>--preset design</b><i>review</i></div>
+        <ul>
+          <li><b>User</b><span class="lang-en">Is this easy to use? What's confusing?</span><span class="lang-th">ใช้ง่ายไหม ตรงไหนงง</span></li>
+          <li><b>Maintainer</b><span class="lang-en">Is this easy to change later?</span><span class="lang-th">วันหลังแก้ง่ายไหม</span></li>
+          <li><b>Breaker</b><span class="lang-en">How can this fail? Edge cases?</span><span class="lang-th">พังได้ยังไง เคสขอบมีอะไร</span></li>
+          <li><b>Simplifier</b><span class="lang-en">What can be removed?</span><span class="lang-th">ตัดอะไรออกได้บ้าง</span></li>
+          <li><b>Integrator</b><span class="lang-en">How does this fit the whole?</span><span class="lang-th">วางลงในภาพรวมแล้วเข้ากันไหม</span></li>
+        </ul>
+      </div>
+      <div class="preset" style="border-top-color:var(--l2)">
+        <div class="hd"><b>--preset incident</b><i>post-mortem</i></div>
+        <ul>
+          <li><b>Firefighter</b><span class="lang-en">What happened and how was it fixed?</span><span class="lang-th">เกิดอะไร แล้วดับยังไง</span></li>
+          <li><b>Detective</b><span class="lang-en">What was the root-cause chain?</span><span class="lang-th">ห่วงโซ่ต้นเหตุเป็นยังไง</span></li>
+          <li><b>Defender</b><span class="lang-en">What guards existed? Why did they miss?</span><span class="lang-th">มีด่านอะไรอยู่ ทำไมถึงหลุด</span></li>
+          <li><b>Forecaster</b><span class="lang-en">What similar things could happen?</span><span class="lang-th">แบบเดียวกันจะเกิดที่ไหนอีก</span></li>
+          <li><b>Builder</b><span class="lang-en">What systemic fix prevents recurrence?</span><span class="lang-th">แก้เชิงระบบยังไงไม่ให้ซ้ำ</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="path">--custom "Security Auditor,Performance Engineer,UX Designer"</p>
+  </section>
+
+  <!-- 6 ............................................. THE DIG -->
+  <section class="slide" data-title="What the logs say" data-l="5" data-desc="253,231 → 102" data-hash="dig">
+    <p class="eyebrow">JSONL dig · <b>110,952 session transcripts on black</b></p>
+    <h2 class="lang-en">Nearly every mention is noise.</h2>
+    <h2 class="lang-th">ที่เห็นว่าถูกพูดถึงเยอะ ๆ เกือบทั้งหมดเป็นเสียงรบกวน</h2>
+    <div class="cols cols-2">
+      <div class="funnel">
+        <div class="fn"><span class="lbl"><span class="lang-en">raw string matches</span><span class="lang-th">ที่ค้นเจอดิบ ๆ</span></span><span class="barwrap"><i style="width:100%;background:var(--rule-hi)"></i></span><span class="n">253,231</span></div>
+        <div class="fn"><span class="lbl"><span class="lang-en">files containing it</span><span class="lang-th">ไฟล์ที่มีชื่อนี้</span></span><span class="barwrap"><i style="width:78%;background:var(--l1)"></i></span><span class="n">49,470</span></div>
+        <div class="fn"><span class="lbl"><span class="lang-en">files with a real call</span><span class="lang-th">ไฟล์ที่เรียกจริง</span></span><span class="barwrap"><i style="width:9%;background:var(--l3)"></i></span><span class="n">50</span></div>
+        <div class="fn"><span class="lbl"><span class="lang-en">actual invocations</span><span class="lang-th">จำนวนการเรียกจริง</span></span><span class="barwrap"><i style="width:12%;background:var(--l5)"></i></span><span class="n">102</span></div>
+        <p class="body lang-en" style="margin-top:10px">The skills manifest is injected into every session, so the name appears in 49,470 files that never ran it. Filtering to real calls — <code class="mono">&lt;command-name&gt;</code> tags and <code class="mono">"skill":"oracle-prism"</code> tool calls — leaves <strong>102</strong>. A noise ratio of <strong>2,483 : 1</strong>.</p>
+        <p class="body lang-th" style="margin-top:10px">manifest ของสกิลถูกยัดเข้าไปทุก session ชื่อนี้เลยโผล่ใน 49,470 ไฟล์ที่ไม่เคยรันมันเลย พอกรองเหลือเฉพาะการเรียกจริง — แท็ก <code class="mono">&lt;command-name&gt;</code> กับ tool call <code class="mono">"skill":"oracle-prism"</code> — ก็เหลือ <strong>102</strong> ครั้ง คิดเป็นสัดส่วนเสียงรบกวน <strong>2,483 : 1</strong></p>
+      </div>
+      <div class="ev">
+        <div class="ev-item"><span class="when">2026-06-07</span><div><h3 class="lang-en">Used on its birthday</h3><h3 class="lang-th">ใช้ตั้งแต่วันเกิด</h3>
+          <p class="lang-en">First real invocation lands the same day the file was written — hours after, not weeks.</p>
+          <p class="lang-th">การเรียกจริงครั้งแรกอยู่วันเดียวกับที่เขียนไฟล์ ห่างกันไม่กี่ชั่วโมง ไม่ใช่เป็นสัปดาห์</p></div></div>
+        <div class="ev-item"><span class="when">Jun–Jul</span><div><h3 class="lang-en">34 active days</h3><h3 class="lang-th">ใช้จริง 34 วัน</h3>
+          <p class="lang-en">Near-daily through June and July. Busiest days: 6 runs on 06-14, 7 on 07-05.</p>
+          <p class="lang-th">เกือบทุกวันตลอดมิถุนายนกับกรกฎาคม วันที่หนักสุดคือ 6 ครั้งวันที่ 06-14 กับ 7 ครั้งวันที่ 07-05</p></div></div>
+        <div class="ev-item"><span class="when">2026-08-01</span><div><h3 class="lang-en">Then it stopped</h3><h3 class="lang-th">แล้วก็เงียบไป</h3>
+          <p class="lang-en">Last recorded run. Nothing since — <strong>dormant five weeks</strong>. A skill that can't auto-trigger is a skill you have to remember.</p>
+          <p class="lang-th">รันครั้งสุดท้ายอยู่ตรงนี้ หลังจากนั้นไม่มีอีกเลย <strong>เงียบมาห้าสัปดาห์แล้ว</strong> สกิลที่เรียกตัวเองไม่ได้ ก็คือสกิลที่ต้องจำเอาเอง</p></div></div>
+        <div class="ev-item"><span class="when">~25 repos</span><div><h3 class="lang-en">Spread, not concentrated</h3><h3 class="lang-th">กระจาย ไม่กระจุก</h3>
+          <p class="lang-en">maw-rs, transcriber, rainfall-poc, timekeeper, odin, mawjs, heimdall, ting, display-census…</p>
+          <p class="lang-th">maw-rs, transcriber, rainfall-poc, timekeeper, odin, mawjs, heimdall, ting, display-census…</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 ............................................. what it's really for -->
+  <section class="slide" data-title="It's a design tool" data-l="3" data-desc="What people actually ask it" data-hash="reality">
+    <p class="eyebrow">Real arguments, pulled from the transcripts</p>
+    <h2 class="lang-en">It's documented as a retro tool. It's used as a design tool.</h2>
+    <h2 class="lang-th">เอกสารบอกว่าเป็นเครื่องมือทำ retro แต่ของจริงคนเอาไปใช้ออกแบบ</h2>
+    <div class="cols cols-2">
+      <div class="args">
+        <div class="arg"><b>--lenses 20</b> — REDESIGN the transcribe-combo web UI</div>
+        <div class="arg"><b>--lenses 20</b> — Bifröst UX อ่านยาก ตัวเล็กไป; Nat ชอบ light (สว่าง/มีสี) ไม่ชอบ dark ควรรื้อ UX/readability ยังไง</div>
+        <div class="arg"><b>--lenses 10</b> (capped to skill max 7) — upside-down redesign of the Config tab: forget the card grid, find the NEW shape</div>
+        <div class="arg"><b>--lenses 10</b> Critique the Kru32 flasher's current …</div>
+        <div class="arg"><b>--lenses 20</b> — brainstorm cover copy/framing (Thai, for the mini-book)</div>
+        <div class="arg"><b>--preset design --lenses 3</b></div>
+        <div class="arg"><b>10 dna !</b></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <p class="body lang-en">Redesign. Critique. Framing. Cover copy. Readability. The five default lenses — Archaeologist, Bug Hunter, Skeptic, Architect, Auditor — all look <em>backwards</em> at something that already happened. But the arguments people actually type point <em>forwards</em>, at something being made.</p>
+        <p class="body lang-th">รื้อดีไซน์ วิจารณ์ จัดกรอบ คิดปกหนังสือ แก้ให้อ่านง่าย เลนส์ตั้งต้นทั้งห้า — Archaeologist, Bug Hunter, Skeptic, Architect, Auditor — มองย้อนหลังไปที่สิ่งที่เกิดไปแล้วทั้งนั้น แต่คำสั่งที่คนพิมพ์จริงกลับมองไปข้างหน้า ไปที่ของที่กำลังทำอยู่ต่างหาก</p>
+        <div class="callout" style="border-left-color:var(--l3)">
+          <p class="body lang-en">One run just says <strong>"10 dna !"</strong> — someone reaching for DNA-flavoured lenses that the skill has never offered. That request is the next slide.</p>
+          <p class="body lang-th">มีรันหนึ่งพิมพ์แค่ <strong>"10 dna !"</strong> คนเอื้อมหาเลนส์แบบ DNA ที่สกิลไม่เคยมีให้ คำขอนั้นก็คือสไลด์ถัดไป</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 ............................................. lens histogram -->
+  <section class="slide" data-title="Nobody obeys the cap" data-l="2" data-desc="80% exceed the max" data-hash="cap">
+    <p class="eyebrow">Rule 8 says <b>3–7 lenses. Maximum seven.</b></p>
+    <h2 class="lang-en">Four runs in five break it.</h2>
+    <h2 class="lang-th">ห้ารัน มีสี่รันที่แหกกฎ</h2>
+    <div class="hist">
+      <div class="hb"><span class="n">1</span><span class="col" style="height:6px"></span><span class="lx">3</span></div>
+      <div class="hb"><span class="n">1</span><span class="col" style="height:6px"></span><span class="lx">4</span></div>
+      <div class="hb"><span class="n">5</span><span class="col" style="height:28px"></span><span class="lx">5</span></div>
+      <div class="hb"><span class="n">3</span><span class="col" style="height:17px"></span><span class="lx">7</span></div>
+      <div class="hb over"><span class="n">25</span><span class="col" style="height:140px"></span><span class="lx">10</span></div>
+      <div class="hb over"><span class="n">15</span><span class="col" style="height:84px"></span><span class="lx">20</span></div>
+      <div class="hb over"><span class="n">1</span><span class="col" style="height:6px"></span><span class="lx">30</span></div>
+    </div>
+    <div class="cols cols-2">
+      <p class="body lang-en">Of 51 runs that named a lens count, <strong>41 exceeded the documented maximum</strong> — 80%. The mode is <strong>10</strong>, not 5. One run asked for <strong>30</strong>. The rule isn't being broken by accident; it's being ignored because seven isn't enough for the work people bring.</p>
+      <p class="body lang-th">จาก 51 รันที่ระบุจำนวนเลนส์ มี <strong>41 รันเกินเพดานที่เขียนไว้</strong> คิดเป็น 80% ค่าที่เจอบ่อยสุดคือ <strong>10</strong> ไม่ใช่ 5 แล้วมีรันหนึ่งขอถึง <strong>30</strong> กฎข้อนี้ไม่ได้โดนแหกเพราะเผลอ แต่โดนเมินเพราะเจ็ดเลนส์ไม่พอกับงานที่คนเอามาต่างหาก</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="callout warn">
+          <p class="body lang-en"><strong>The agent noticed.</strong> One transcript reads <code class="mono">--lenses 10 (capped to skill max 7)</code> — the model obeyed a limit the user had already rejected.</p>
+          <p class="body lang-th"><strong>เอเจนต์รู้ตัว</strong> transcript หนึ่งเขียนว่า <code class="mono">--lenses 10 (capped to skill max 7)</code> โมเดลทำตามเพดานที่ผู้ใช้ปฏิเสธไปแล้ว</p>
+        </div>
+        <p class="path">Undocumented flags also appear in the wild: --deep, opus, sonnet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 ............................................. DESIGNER DNA -->
+  <section class="slide" data-title="--preset designer" data-l="4" data-desc="Ten lenses with DNA" data-hash="designer">
+    <p class="eyebrow">Proposal · <b>--preset designer</b> · ten lenses, matching the observed mode</p>
+    <h2 class="lang-en">Give the lenses a lineage.</h2>
+    <h2 class="lang-th">ให้เลนส์มีสายเลือด</h2>
+    <p class="body lang-en">The archive pattern the fleet already uses: name a real master, name the one trait inherited, and turn it into a question. Seven from the world, three from Thailand — the same world-plus-Thai shape every resonance file in the family uses.</p>
+    <p class="body lang-th">แพตเทิร์นที่ตระกูลนี้ใช้อยู่แล้ว คือระบุชื่อปรมาจารย์จริง ระบุคุณสมบัติเดียวที่รับมา แล้วแปลงเป็นคำถาม เจ็ดคนจากโลก สามคนจากไทย โครงเดียวกับ resonance ทุกไฟล์ในตระกูลนี้เลย</p>
+    <div class="dna">
+      <div class="dna-col">
+        <div class="dna-row w"><span class="gl">🎨</span><span class="who">Vincent van Gogh</span>
+          <span class="got lang-en">Colour is feeling, not decoration</span><span class="got lang-th">สีคือความรู้สึก ไม่ใช่ของตกแต่ง</span>
+          <span class="ask lang-en">"Does this have a temperature — or only a palette?"</span><span class="ask lang-th">"อันนี้มีอุณหภูมิไหม หรือมีแค่ชุดสี"</span></div>
+        <div class="dna-row w"><span class="gl">⬛</span><span class="who">Dieter Rams</span>
+          <span class="got lang-en">As little design as possible</span><span class="got lang-th">ออกแบบให้น้อยที่สุดเท่าที่จะน้อยได้</span>
+          <span class="ask lang-en">"What survives deletion?"</span><span class="ask lang-th">"ตัดออกแล้วอะไรยังอยู่"</span></div>
+        <div class="dna-row w"><span class="gl">▦</span><span class="who">Massimo Vignelli</span>
+          <span class="got lang-en">The grid is a discipline</span><span class="got lang-th">กริดคือวินัย</span>
+          <span class="ask lang-en">"Is there a system here, or only arrangements?"</span><span class="ask lang-th">"ตรงนี้มีระบบ หรือมีแค่การจัดวาง"</span></div>
+        <div class="dna-row w"><span class="gl">✂️</span><span class="who">Saul Bass</span>
+          <span class="got lang-en">Reduce to a single gesture</span><span class="got lang-th">ย่อให้เหลือท่าเดียว</span>
+          <span class="ask lang-en">"If you got one shape, what is it?"</span><span class="ask lang-th">"ถ้าให้เหลือรูปเดียว จะเป็นรูปอะไร"</span></div>
+        <div class="dna-row w"><span class="gl">⌗</span><span class="who">Susan Kare</span>
+          <span class="got lang-en">Meaning at 16×16 pixels</span><span class="got lang-th">ความหมายที่ 16×16 พิกเซล</span>
+          <span class="ask lang-en">"Does it still read when it's tiny?"</span><span class="ask lang-th">"ย่อเล็กแล้วยังอ่านออกไหม"</span></div>
+      </div>
+      <div class="dna-col">
+        <div class="dna-row w"><span class="gl">○</span><span class="who">Kenya Hara · 原研哉</span>
+          <span class="got lang-en">Emptiness carries the content</span><span class="got lang-th">ความว่างเป็นตัวอุ้มเนื้อหา</span>
+          <span class="ask lang-en">"What is the white space actually doing?"</span><span class="ask lang-th">"ที่ว่างตรงนี้ทำหน้าที่อะไรอยู่"</span></div>
+        <div class="dna-row w"><span class="gl">⚡</span><span class="who">Tibor Kalman</span>
+          <span class="got lang-en">Useful discomfort · provocation</span><span class="got lang-th">ความไม่สบายใจที่มีประโยชน์</span>
+          <span class="ask lang-en">"Where is this too safe?"</span><span class="ask lang-th">"ตรงไหนที่เซฟเกินไป"</span></div>
+        <div class="dna-row t"><span class="gl">ก</span><span class="who">ประชา สุวีรานนท์</span>
+          <span class="got lang-en">Thai type and graphic identity</span><span class="got lang-th">ตัวพิมพ์ไทยกับอัตลักษณ์กราฟิก</span>
+          <span class="ask lang-en">"Is this Thai type really Thai — or a font dropped into a Latin grid?"</span><span class="ask lang-th">"ตัวอักษรไทยตรงนี้เป็นไทยจริง หรือแค่ยัดฟอนต์ลงกริดฝรั่ง"</span></div>
+        <div class="dna-row t"><span class="gl">✎</span><span class="who">ศิลป์ พีระศรี</span>
+          <span class="got lang-en">Ars longa, vita brevis · craft as discipline</span><span class="got lang-th">ศิลปะยืนยาว ชีวิตสั้น · ฝีมือคือวินัย</span>
+          <span class="ask lang-en">"How long will this workmanship last?"</span><span class="ask lang-th">"ฝีมือตรงนี้จะอยู่ได้นานแค่ไหน"</span></div>
+        <div class="dna-row t"><span class="gl">🔥</span><span class="who">เฉลิมชัย โฆษิตพิพัฒน์</span>
+          <span class="got lang-en">Obsessive devotion · nothing merely adequate</span><span class="got lang-th">ทุ่มจนสุดตัว ไม่เอาแค่พอผ่าน</span>
+          <span class="ask lang-en">"Is this devotion, or is it just enough to pass?"</span><span class="ask lang-th">"อันนี้ทุ่มจริง หรือแค่พอผ่าน"</span></div>
+      </div>
+    </div>
+    <p class="path lang-en">Grounded in the data: design is the dominant real use, 10 is the observed mode, and one run literally typed "10 dna !"</p>
+    <p class="path lang-th">อิงข้อมูลจริง งานออกแบบคือการใช้งานหลัก เลข 10 คือค่าที่เจอบ่อยสุด แล้วมีรันหนึ่งพิมพ์ว่า "10 dna !" ตรง ๆ เลย</p>
+  </section>
+
+  <!-- 10 ............................................ rule 4 -->
+  <section class="slide" data-title="Rule 4" data-l="3" data-desc="Lenses must disagree" data-hash="rule4">
+    <p class="eyebrow">The load-bearing rule</p>
+    <h2 class="lang-en">If the lenses agree, you learned nothing.</h2>
+    <h2 class="lang-th">ถ้าทุกเลนส์เห็นตรงกันหมด ก็แปลว่าไม่ได้อะไรเลย</h2>
+    <div class="callout" style="border-left-color:var(--l3)">
+      <q class="lang-en">"Lenses disagree — if the Architect says 'clean' but the Auditor says 'incomplete', show both. Don't harmonize."</q>
+      <q class="lang-th">"เลนส์ต้องเห็นไม่ตรงกัน — ถ้า Architect บอกว่าเรียบร้อย แต่ Auditor บอกว่ายังไม่เสร็จ ให้แสดงทั้งคู่ ห้ามเกลี่ยให้เข้ากัน"</q>
+      <p class="path">Rule 4 of 8</p>
+    </div>
+    <div class="cols cols-2">
+      <p class="body lang-en">This is the rule the skill rests on, and it exists because of a weakness. One agent writing five sections in one pass has <strong>already read its own earlier sections</strong>. Self-consistency pressure pulls every lens toward the first verdict.</p>
+      <p class="body lang-th">กฎข้อนี้คือเสาหลักของสกิล แล้วที่ต้องมีก็เพราะมีจุดอ่อนอยู่ พอเอเจนต์เดียวเขียนห้าหัวข้อรวดเดียว มันก็<strong>อ่านหัวข้อก่อนหน้าของตัวเองไปแล้ว</strong> แรงกดดันให้เนื้อหาสอดคล้องกันก็ดึงทุกเลนส์ไปทางคำตัดสินแรก</p>
+      <p class="body lang-en">Adversarial gets independence structurally — five processes that never see each other's work. Prism trades that away for zero cost and tries to buy it back with a sentence. <strong>A written plea is not a mechanism.</strong></p>
+      <p class="body lang-th">ฝั่ง adversarial ได้ความเป็นอิสระจากโครงสร้าง ห้าโพรเซสไม่เห็นงานกันเลย ส่วน prism ยอมแลกตรงนั้นไปเพื่อให้ต้นทุนเป็นศูนย์ แล้วพยายามซื้อคืนด้วยประโยคเดียว <strong>คำขอร้องที่เขียนไว้ ไม่ใช่กลไก</strong></p>
+    </div>
+    <div class="callout warn">
+      <p class="body lang-en"><strong>The order effect nobody documented.</strong> Lens 1 sets the timeline that lenses 2–5 inherit. Get the Archaeologist wrong and all five are wrong in the same direction — exactly the failure multi-perspective analysis is meant to prevent.</p>
+      <p class="body lang-th"><strong>ผลของลำดับที่ไม่มีใครจดไว้</strong> เลนส์ที่ 1 วางไทม์ไลน์ให้เลนส์ 2–5 รับช่วงต่อ พอ Archaeologist ผิด ทั้งห้าเลนส์ก็ผิดไปทางเดียวกันหมด ซึ่งเป็นความล้มเหลวแบบที่การมองหลายมุมควรจะกันไว้พอดี</p>
+    </div>
+  </section>
+
+  <!-- 11 ............................................ vs -->
+  <section class="slide" data-title="Prism vs Adversarial" data-l="2" data-desc="The real distinction" data-hash="vs">
+    <p class="eyebrow">Choosing between the twins</p>
+    <h2 class="lang-en">Angles, or adversaries.</h2>
+    <h2 class="lang-th">จะเอามุมมอง หรือจะเอาคู่ต่อสู้</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th scope="col"></th><th scope="col">/oracle-prism</th><th scope="col">/adversarial-analysis</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="lang-en">Goal</strong><strong class="lang-th">เป้าหมาย</strong></td>
+              <td><span class="lang-en">See the same facts from many angles<span class="sub">Stop tunnelling</span></span><span class="lang-th">มองข้อเท็จจริงชุดเดิมจากหลายมุม<span class="sub">กันไม่ให้จมอยู่มุมเดียว</span></span></td>
+              <td><span class="lang-en">Destroy a claim from many angles<span class="sub">Earn confidence under pressure</span></span><span class="lang-th">ทุบข้อสรุปจากหลายมุม<span class="sub">ได้ความมั่นใจมาด้วยแรงกดดัน</span></span></td></tr>
+          <tr><td><strong class="lang-en">Agents</strong><strong class="lang-th">เอเจนต์</strong></td><td><span class="yes">0</span> — inline</td><td>5 parallel, <code>--model sonnet</code></td></tr>
+          <tr><td><strong class="lang-en">Independence</strong><strong class="lang-th">ความเป็นอิสระ</strong></td>
+              <td><span class="no lang-en">Rule-enforced only</span><span class="no lang-th">บังคับด้วยกฎเท่านั้น</span></td>
+              <td><span class="yes lang-en">Structural</span><span class="yes lang-th">มาจากโครงสร้าง</span></td></tr>
+          <tr><td><strong class="lang-en">Output</strong><strong class="lang-th">ผลลัพธ์</strong></td>
+              <td><span class="lang-en">Five sections + convergence note</span><span class="lang-th">ห้าหัวข้อ + สรุปจุดที่ตรงกัน</span></td>
+              <td><span class="lang-en">Verdict table + <strong>X/5 score</strong></span><span class="lang-th">ตารางคำตัดสิน + <strong>คะแนน X/5</strong></span></td></tr>
+          <tr><td><strong class="lang-en">Decision rule</strong><strong class="lang-th">เกณฑ์ตัดสินใจ</strong></td>
+              <td><span class="no lang-en">None — prose</span><span class="no lang-th">ไม่มี ได้แค่ความเรียง</span></td>
+              <td><span class="lang-en">5/5 proceed · 4/5 fix gap · 3/5 investigate · ≤2/5 don't act</span><span class="lang-th">5/5 ไปต่อ · 4/5 อุดช่องโหว่ก่อน · 3/5 สืบเพิ่ม · ≤2/5 อย่าเพิ่งทำ</span></td></tr>
+          <tr><td><strong class="lang-en">Writes to ψ/</strong><strong class="lang-th">เขียนลง ψ/</strong></td>
+              <td><span class="no lang-en">No</span><span class="no lang-th">ไม่</span></td>
+              <td><span class="yes lang-en">Yes — a learning file on refutation</span><span class="yes lang-th">เขียน ถ้าโดนหักล้างก็บันทึก lesson ไว้</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body lang-en">Prism produces prose. Adversarial produces a <strong>gate</strong>. Use prism when you want to be shown angles you hadn't considered; use adversarial when something is about to be acted on and being wrong is expensive.</p>
+    <p class="body lang-th">prism ให้ความเรียง ส่วน adversarial ให้<strong>ด่านตัดสิน</strong> ถ้าอยากให้ใครชี้มุมที่ยังไม่เคยคิดถึงก็ใช้ prism แต่ถ้าของกำลังจะถูกเอาไปทำจริงแล้วผิดพลาดมีราคาแพง ก็ใช้ adversarial</p>
+  </section>
+
+  <!-- 12 ............................................ honesty pass -->
+  <section class="slide" data-title="The honesty pass" data-l="1" data-desc="Caught a false causation" data-hash="honesty">
+    <p class="eyebrow">Real usage · <b>Hermes engine book</b></p>
+    <h2 class="lang-en">Its best save was an epistemic one.</h2>
+    <h2 class="lang-th">งานที่มันช่วยไว้ได้ดีที่สุด คือเรื่องความซื่อตรงทางความรู้</h2>
+    <div class="cols cols-2">
+      <div style="display:flex;flex-direction:column;gap:15px;min-width:0">
+        <p class="body lang-en">While writing a 21-chapter technical book, a prism pass logged as <code class="mono">09-PRISM</code> rewrote the book's central thesis. The fleet memory records the change exactly:</p>
+        <p class="body lang-th">ระหว่างเขียนหนังสือเทคนิค 21 บท มี prism รอบหนึ่งที่บันทึกไว้ว่า <code class="mono">09-PRISM</code> เข้าไปแก้ธีสิสหลักของหนังสือ memory ของฟลีตจดการเปลี่ยนไว้ตรงตัว</p>
+        <div class="callout good">
+          <p class="body" style="font-family:var(--serif);font-size:1.12rem;line-height:1.45;color:var(--ink)">"converges on boundary-integrity invariant under engineering pressure" — <strong>NOT</strong> "is the philosophy" — no false causation.</p>
+        </div>
+        <p class="body lang-en">The same pass graded every claim <strong>⭐ / ◆ / ○</strong> by strength and added a per-chapter <em>"where it breaks"</em> rule.</p>
+        <p class="body lang-th">รอบเดียวกันนั้นยังให้เกรดทุกข้ออ้างเป็น <strong>⭐ / ◆ / ○</strong> ตามน้ำหนัก แล้วเพิ่มกฎ "where it breaks" ประจำบทเข้าไปด้วย</p>
+      </div>
+      <div class="ev">
+        <div class="ev-item"><span class="when">what it did</span><div><h3 class="lang-en">Downgraded a causal claim</h3><h3 class="lang-th">ลดน้ำหนักข้ออ้างเชิงสาเหตุ</h3>
+          <p class="lang-en">"Converges on" instead of "is" — the book had been asserting causation the evidence didn't carry.</p>
+          <p class="lang-th">เปลี่ยนจาก "คือ" เป็น "บรรจบกับ" หนังสือเคยยืนยันความเป็นเหตุเป็นผลที่หลักฐานรับน้ำหนักไม่ไหว</p></div></div>
+        <div class="ev-item"><span class="when">what it added</span><div><h3 class="lang-en">Confidence grades</h3><h3 class="lang-th">เกรดความมั่นใจ</h3>
+          <p class="lang-en">Every mapping marked ⭐, ◆ or ○ so a reader can see which claims are strong.</p>
+          <p class="lang-th">ทุกการจับคู่ติดสัญลักษณ์ ⭐ ◆ หรือ ○ คนอ่านก็เห็นเลยว่าข้อไหนหนักแน่น</p></div></div>
+        <div class="ev-item"><span class="when">what it enforced</span><div><h3 class="lang-en">"Where it breaks"</h3><h3 class="lang-th">"ตรงไหนที่มันพัง"</h3>
+          <p class="lang-en">A per-chapter section naming the limits of the chapter's own argument.</p>
+          <p class="lang-th">หัวข้อประจำบทที่บอกขีดจำกัดของข้อโต้แย้งในบทนั้นเอง</p></div></div>
+        <div class="ev-item"><span class="when">the lesson</span><div><h3 class="lang-en">Not a retro tool</h3><h3 class="lang-th">ไม่ใช่เครื่องมือทำ retro</h3>
+          <p class="lang-en">The documented use is session retrospectives. The valuable use was catching an overclaim.</p>
+          <p class="lang-th">ในเอกสารเขียนว่าใช้ทำ retro ของ session แต่ที่มีค่าจริงคือจับข้ออ้างเกินจริงได้</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 ............................................ thai lenses -->
+  <section class="slide" data-title="Custom Thai lenses" data-l="5" data-desc="The prose-rhythm case" data-hash="thai">
+    <p class="eyebrow">Real usage · <b>prose rhythm investigation</b></p>
+    <h2 class="lang-en">Lenses don't have to be roles. They can be readers.</h2>
+    <h2 class="lang-th">เลนส์ไม่จำเป็นต้องเป็นบทบาท เป็นคนอ่านก็ได้</h2>
+    <p class="body lang-en">Investigating why a rendered book still felt like a wall of text, a four-lens pass ran with entirely custom Thai lenses — not Archaeologist and Auditor, but four kinds of <em>reader</em>:</p>
+    <p class="body lang-th">ตอนหาสาเหตุว่าทำไมหนังสือที่เรนเดอร์ออกมายังอ่านแล้วเหมือนกำแพงตัวอักษร ก็มีรอบหนึ่งใช้สี่เลนส์ที่กำหนดเองเป็นภาษาไทยล้วน ไม่ใช่ Archaeologist กับ Auditor แต่เป็นคนอ่านสี่แบบ</p>
+    <div class="cols cols-4">
+      <div class="panel" style="border-left:3px solid var(--l1)"><h3 style="font-family:var(--thai);font-size:21px">นักเขียน</h3>
+        <p class="lang-en">The writer — did I govern the rhythm, or only the facts?</p>
+        <p class="lang-th">คนเขียน — คุมจังหวะไว้ไหม หรือคุมแค่ข้อเท็จจริง</p></div>
+      <div class="panel" style="border-left:3px solid var(--l2)"><h3 style="font-family:var(--thai);font-size:21px">นักอ่าน</h3>
+        <p class="lang-en">The reader — where does my eye give up?</p>
+        <p class="lang-th">คนอ่าน — สายตายอมแพ้ตรงไหน</p></div>
+      <div class="panel" style="border-left:3px solid var(--l4)"><h3 style="font-family:var(--thai);font-size:21px">บรรณารักษ์</h3>
+        <p class="lang-en">The librarian — is this findable, scannable, shelvable?</p>
+        <p class="lang-th">บรรณารักษ์ — หาเจอไหม กวาดตาได้ไหม ขึ้นชั้นได้ไหม</p></div>
+      <div class="panel" style="border-left:3px solid var(--l5)"><h3 class="lang-en">no technical background</h3><h3 class="lang-th" style="font-family:var(--thai);font-size:19px">คนไม่มีพื้นฐานเทคนิค</h3>
+        <p class="lang-en">Someone with no context — does any of this land?</p>
+        <p class="lang-th">คนที่ไม่มีบริบทอะไรเลย — อ่านแล้วจับใจความได้ไหม</p></div>
+    </div>
+    <div class="callout good">
+      <p class="body lang-en">The recorded outcome: the pass <strong>"confirmed the same root cause independently — the writer-lens gap was structural (no rhythm governance), not a content-accuracy problem."</strong> Six of nine files had paragraphs over 400 characters; the worst had 17 of 21.</p>
+      <p class="body lang-th">ผลที่บันทึกไว้คือรอบนั้น <strong>"ยืนยันต้นเหตุเดียวกันได้เองอย่างอิสระ ช่องว่างฝั่งคนเขียนเป็นเรื่องโครงสร้าง (ไม่มีการคุมจังหวะ) ไม่ใช่ปัญหาความถูกต้องของเนื้อหา"</strong> หกในเก้าไฟล์มีย่อหน้ายาวเกิน 400 ตัวอักษร ไฟล์ที่หนักสุดมี 17 จาก 21 ย่อหน้า</p>
+    </div>
+  </section>
+
+  <!-- 14 ............................................ convergence -->
+  <section class="slide" data-title="Knowing when to stop" data-l="2" data-desc="13 → 3 → 1 → 1" data-hash="convergence">
+    <p class="eyebrow">Real usage · <b>building /oracle-booklet</b></p>
+    <h2 class="lang-en">Review loops don't end. You have to end them.</h2>
+    <h2 class="lang-th">ลูปรีวิวไม่จบเอง เราต้องเป็นคนจบมัน</h2>
+    <div class="cols cols-2">
+      <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
+        <p class="body lang-en">A multi-round loop of prism + code-review + adversarial verify ran against a new skill. Distinct critical findings per round:</p>
+        <p class="body lang-th">ลูปหลายรอบที่ผสม prism + code-review + adversarial verify ถูกยิงใส่สกิลใหม่ตัวหนึ่ง นับข้อวิกฤตที่ไม่ซ้ำกันได้รอบละเท่านี้</p>
+        <div class="conv">
+          <div class="bar"><span class="n">13</span><span class="col" style="height:150px"></span><span class="rd">round 1</span></div>
+          <div class="bar"><span class="n">3</span><span class="col" style="height:38px"></span><span class="rd">round 2</span></div>
+          <div class="bar"><span class="n">1</span><span class="col ok" style="height:14px"></span><span class="rd">round 3</span></div>
+          <div class="bar"><span class="n">1</span><span class="col ok" style="height:14px"></span><span class="rd">round 4</span></div>
+        </div>
+        <p class="path lang-en">Round 1 = real showstoppers. Rounds 2–4 = guards the previous round had added, overshooting.</p>
+        <p class="path lang-th">รอบ 1 คือของจริงที่ทำให้ไปต่อไม่ได้ รอบ 2–4 คือด่านที่รอบก่อนหน้าเพิ่งใส่เข้าไปเอง แล้วมันเลยเถิด</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:15px;min-width:0">
+        <div class="callout good">
+          <p class="body lang-en"><strong>The convergence test.</strong> A review loop has converged when each new round's criticals are things <em>your own previous-round fixes</em> introduced — not real defects in the artifact.</p>
+          <p class="body lang-th"><strong>เกณฑ์ว่าลูปบรรจบแล้ว</strong> คือพอข้อวิกฤตของรอบใหม่กลายเป็นของที่<em>การแก้ของเราเองรอบก่อน</em>ใส่เข้าไป ไม่ใช่ข้อบกพร่องจริงของชิ้นงาน ก็แปลว่าจบแล้ว</p>
+        </div>
+        <p class="body lang-en">Review agents return "needs-work" forever; finding polish is their job. Chasing it past convergence is negative-ROI — each fix risks becoming the next round's critical.</p>
+        <p class="body lang-th">เอเจนต์รีวิวตอบว่า "ยังต้องแก้" ได้ไม่รู้จบ เพราะหาที่ขัดเกลาคืองานของมัน ไล่ตามต่อหลังจุดบรรจบก็ติดลบเปล่า ๆ ทุกการแก้เสี่ยงกลายเป็นข้อวิกฤตของรอบถัดไปด้วย</p>
+        <div class="callout warn">
+          <p class="body lang-en"><strong>Ground truth is an end-to-end smoke test</strong>, not the reviewers' verdict. The booklet smoke-tested to 14pp three times. It worked, regardless of perpetual "needs-work."</p>
+          <p class="body lang-th"><strong>ความจริงอยู่ที่ smoke test ปลายทางถึงปลายทาง</strong> ไม่ใช่คำตัดสินของผู้รีวิว booklet ผ่าน smoke test ออกมา 14 หน้า สามครั้ง มันใช้ได้ ต่อให้คำว่า "ยังต้องแก้" จะขึ้นอยู่เรื่อย ๆ ก็ตาม</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 ............................................ defects -->
+  <section class="slide" data-title="Four defects" data-l="2" data-desc="What's broken" data-hash="defects">
+    <p class="eyebrow">Audit</p>
+    <h2 class="lang-en">It works. It just can't be found, kept, or shared.</h2>
+    <h2 class="lang-th">มันใช้ได้ แต่หาไม่เจอ เก็บไม่อยู่ แล้วก็ส่งต่อไม่ได้</h2>
+    <div class="defects">
+      <div class="defect"><span class="n">DEFECT 01</span><h3 class="lang-en">No frontmatter — can't auto-trigger</h3><h3 class="lang-th">ไม่มี frontmatter — เรียกตัวเองไม่ได้</h3>
+        <p class="lang-en">Opens straight at <code class="mono">#</code>. No <code class="mono">description</code> means no matcher, so it fires only when typed by name — never on "did we miss anything?"</p>
+        <p class="lang-th">เปิดไฟล์มาเจอ <code class="mono">#</code> เลย พอไม่มี <code class="mono">description</code> ก็ไม่มีตัวจับคู่ ต้องพิมพ์ชื่อเองถึงจะติด ไม่มีทางติดตอนถามว่า "ตกอะไรไปหรือเปล่า"</p></div>
+      <div class="defect"><span class="n">DEFECT 02</span><h3 class="lang-en">Untracked in git</h3><h3 class="lang-th">ไม่ได้อยู่ใน git</h3>
+        <p class="lang-en"><code class="mono">/home/nat</code> is a git repo. <code class="mono">git ls-files</code> returns <em>"did not match any file(s) known to git."</em> One <code class="mono">rm</code> from gone.</p>
+        <p class="lang-th"><code class="mono">/home/nat</code> เป็น git repo แต่ <code class="mono">git ls-files</code> ตอบว่าไม่รู้จักไฟล์นี้ ห่างจากหายไปเลยแค่ <code class="mono">rm</code> เดียว</p></div>
+      <div class="defect"><span class="n">DEFECT 03</span><h3 class="lang-en">Lives on one node</h3><h3 class="lang-th">อยู่เครื่องเดียว</h3>
+        <p class="lang-en">On <code class="mono">black</code> only — absent from this MacBook Air, <code class="mono">white</code> and <code class="mono">m5</code>. VERSION.md claims the CLI installed 7 skills; there are 114 directories.</p>
+        <p class="lang-th">มีแค่บน <code class="mono">black</code> เครื่องนี้ <code class="mono">white</code> กับ <code class="mono">m5</code> ไม่มีเลย VERSION.md บอกว่า CLI ลงไป 7 สกิล แต่ในโฟลเดอร์มี 114 อัน</p></div>
+      <div class="defect"><span class="n">DEFECT 04</span><h3 class="lang-en">/roundtable doesn't exist</h3><h3 class="lang-th">/roundtable ไม่มีอยู่จริง</h3>
+        <p class="lang-en">Named in prism's own comparison table, and recommended in Athena's standing intake flow. Not installed anywhere on the node.</p>
+        <p class="lang-th">ตารางเปรียบเทียบของ prism เองก็อ้างถึง flow รับงานประจำของ Athena ก็แนะนำ แต่ทั้งเครื่องไม่มีลงไว้เลย</p></div>
+    </div>
+    <p class="body lang-en"><strong>It is not alone.</strong> Exactly <strong>8 of 112</strong> skills on <code class="mono">black</code> lack frontmatter — prism, adversarial-analysis, archaeology, ask-codex-dispatch-parallel, deep-research-sonnet, nat-pulse, oracle-plan, vault-sync. The other <strong>104 have it</strong>. The bare ones are the hand-written ones.</p>
+    <p class="body lang-th"><strong>ไม่ได้เป็นอยู่ตัวเดียว</strong> บน <code class="mono">black</code> มีสกิลที่ขาด frontmatter <strong>8 จาก 112</strong> ตัวพอดี ได้แก่ prism, adversarial-analysis, archaeology, ask-codex-dispatch-parallel, deep-research-sonnet, nat-pulse, oracle-plan, vault-sync ที่เหลือ <strong>104 ตัวมีครบ</strong> ตัวที่ขาดก็คือตัวที่เขียนมือทั้งนั้น</p>
+  </section>
+
+  <!-- 16 ............................................ plan -->
+  <section class="slide" data-title="The plan" data-l="5" data-desc="Eight moves" data-hash="plan">
+    <p class="eyebrow">What to do about it</p>
+    <h2 class="lang-en">Three fixes today. Five decisions after.</h2>
+    <h2 class="lang-th">สามอย่างทำวันนี้ อีกห้าอย่างค่อยตัดสินใจ</h2>
+    <div class="plan">
+      <div class="plan-row"><span class="pn">01</span>
+        <span class="what lang-en"><strong>Commit both skills.</strong> Unversioned, unsynced, undocumented — this is the whole risk, and it's one command.</span>
+        <span class="what lang-th"><strong>commit ทั้งสองสกิล</strong> ไม่มีเวอร์ชัน ไม่ซิงก์ ไม่มีเอกสาร ความเสี่ยงอยู่ตรงนี้ทั้งหมด แล้วก็จบได้ด้วยคำสั่งเดียว</span>
+        <span class="tag now">10 min</span></div>
+      <div class="plan-row"><span class="pn">02</span>
+        <span class="what lang-en"><strong>Add frontmatter</strong> — <code class="mono">name</code>, <code class="mono">description</code>, <code class="mono">argument-hint</code> — copying the shape from <code class="mono">rrr</code>. Same fix for the other six bare skills.</span>
+        <span class="what lang-th"><strong>ใส่ frontmatter</strong> — <code class="mono">name</code>, <code class="mono">description</code>, <code class="mono">argument-hint</code> — ลอกโครงจาก <code class="mono">rrr</code> มา อีกหกตัวที่ขาดก็แก้แบบเดียวกัน</span>
+        <span class="tag now">10 min</span></div>
+      <div class="plan-row"><span class="pn">03</span>
+        <span class="what lang-en"><strong>Resolve /roundtable</strong> — write it, or delete the two live references pointing at nothing.</span>
+        <span class="what lang-th"><strong>เคลียร์ /roundtable</strong> จะเขียนขึ้นมาก็ได้ หรือลบสองที่ที่อ้างถึงของที่ไม่มีอยู่ทิ้งไป</span>
+        <span class="tag now">10 min</span></div>
+      <div class="plan-row"><span class="pn">04</span>
+        <span class="what lang-en"><strong>Raise the lens cap to 20.</strong> 80% of real runs already exceed 7. The documentation is wrong, not the users.</span>
+        <span class="what lang-th"><strong>ขยับเพดานเลนส์เป็น 20</strong> การรันจริง 80% เกิน 7 ไปแล้ว เอกสารผิด ไม่ใช่คนใช้ผิด</span>
+        <span class="tag call">your call</span></div>
+      <div class="plan-row"><span class="pn">05</span>
+        <span class="what lang-en"><strong>Ship <code class="mono">--preset designer</code>.</strong> Design critique is the dominant real use and the skill offers no lens set for it.</span>
+        <span class="what lang-th"><strong>เพิ่ม <code class="mono">--preset designer</code></strong> งานวิจารณ์ดีไซน์คือการใช้งานหลัก แต่สกิลไม่มีชุดเลนส์ให้เลย</span>
+        <span class="tag call">your call</span></div>
+      <div class="plan-row"><span class="pn">06</span>
+        <span class="what lang-en"><strong>Fold in the convergence rule</strong> as a stopping condition. It's stranded in a memory file neither skill can read.</span>
+        <span class="what lang-th"><strong>ใส่กฎจุดบรรจบ</strong> เป็นเงื่อนไขหยุด ตอนนี้มันค้างอยู่ในไฟล์ memory ที่ทั้งสองสกิลอ่านไม่ถึง</span>
+        <span class="tag call">your call</span></div>
+      <div class="plan-row"><span class="pn">07</span>
+        <span class="what lang-en"><strong>Fix the order effect.</strong> Have lens 1 emit its timeline as a checkable artifact later lenses are told to challenge.</span>
+        <span class="what lang-th"><strong>แก้ผลของลำดับ</strong> ให้เลนส์แรกปล่อยไทม์ไลน์ออกมาเป็นชิ้นที่ตรวจได้ แล้วสั่งให้เลนส์หลังท้าทายมัน</span>
+        <span class="tag call">your call</span></div>
+      <div class="plan-row"><span class="pn">08</span>
+        <span class="what lang-en"><strong>Sync to the fleet</strong> through the skills CLI once frontmatter exists — and wake it up. It has been dormant since 2026-08-01.</span>
+        <span class="what lang-th"><strong>ซิงก์ขึ้นฟลีต</strong> ผ่าน skills CLI พอมี frontmatter แล้ว ค่อยปลุกมันขึ้นมา เงียบมาตั้งแต่ 2026-08-01</span>
+        <span class="tag call">your call</span></div>
+    </div>
+  </section>
+
+  <!-- 17 ............................................ close -->
+  <section class="slide" data-title="When to reach for it" data-l="4" data-desc="Closing" data-hash="close">
+    <p class="eyebrow">In one line</p>
+    <h2 class="lang-en">Use prism when you want angles.<br>Use adversarial when you want to be sure.</h2>
+    <h2 class="lang-th">อยากได้มุมมองก็ใช้ prism<br>อยากมั่นใจก็ใช้ adversarial</h2>
+    <div class="cols cols-2">
+      <div class="ev">
+        <div class="ev-item"><span class="when">end of session</span><div><h3 class="lang-en">Catch what you missed</h3><h3 class="lang-th">เก็บของที่ตกหล่น</h3>
+          <p class="lang-en">Before closing, while the context is still loaded.</p><p class="lang-th">ก่อนปิดงาน ตอนบริบทยังอยู่ครบ</p></div></div>
+        <div class="ev-item"><span class="when">design work</span><div><h3 class="lang-en">Critique and redesign</h3><h3 class="lang-th">วิจารณ์และรื้อดีไซน์</h3>
+          <p class="lang-en">The dominant real use — 20 lenses on a UI beats one opinion.</p><p class="lang-th">คือการใช้งานหลักของจริง ยิง 20 เลนส์ใส่ UI ดีกว่าความเห็นเดียว</p></div></div>
+        <div class="ev-item"><span class="when">writing</span><div><h3 class="lang-en">Honesty pass on a claim</h3><h3 class="lang-th">ตรวจความซื่อตรงของข้ออ้าง</h3>
+          <p class="lang-en">Grade the evidence, name where the argument breaks.</p><p class="lang-th">ให้เกรดหลักฐาน แล้วชี้ว่าข้อโต้แย้งพังตรงไหน</p></div></div>
+        <div class="ev-item"><span class="when">post-incident</span><div><h3 class="lang-en">Structure without blame</h3><h3 class="lang-th">มีโครงสร้างโดยไม่โทษใคร</h3>
+          <p class="lang-en">Five angles on a failure, none of them a person.</p><p class="lang-th">ห้ามุมต่อความล้มเหลว ไม่มีมุมไหนเป็นตัวคน</p></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:15px;min-width:0">
+        <p class="body lang-en">It is the <strong>lightest</strong> multi-perspective tool in the family — no agents, no spawning, no coordination. That cheapness is the whole proposition, and also the limit: what you save on invocations, you pay for in independence.</p>
+        <p class="body lang-th">มันคือเครื่องมือมองหลายมุมที่<strong>เบาที่สุด</strong>ในตระกูล ไม่มีเอเจนต์ ไม่แตกโพรเซส ไม่ต้องประสานงาน ความถูกนี่แหละคือข้อเสนอทั้งหมด แล้วก็เป็นขีดจำกัดด้วย ประหยัด invocation ไปเท่าไร ก็จ่ายคืนเป็นความเป็นอิสระเท่านั้น</p>
+        <div class="callout" style="border-left-color:var(--l5)">
+          <q class="lang-en">Trust → Verify → Cross-check → Act</q>
+          <q class="lang-th">เชื่อ → ตรวจ → ไขว้สอบ → ลงมือ</q>
+          <p class="path lang-en">Prism sits at Verify. Adversarial sits at Cross-check. Don't confuse the two.</p>
+          <p class="path lang-th">prism อยู่ตรงตรวจ ส่วน adversarial อยู่ตรงไขว้สอบ อย่าสลับกัน</p>
+        </div>
+        <p class="path">Sources: black:~/.claude/skills/{oracle-prism,adversarial-analysis}/SKILL.md · 110,952 JSONL transcripts · fleet memory in ~/stage-restore/*/memory/ · read over NetBird, 2026-09-05</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section class="overview" id="overview" aria-label="All slides">
+  <div class="ov-head"><h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">All slides</h2><p class="hint" style="margin-left:auto">G / Esc to return · click to jump</p></div>
+  <div class="ov-grid" id="ov-grid"></div>
+</section>
+
+<nav class="chrome" aria-label="Deck navigation">
+  <span class="mark">
+    <svg width="16" height="14" viewBox="0 0 20 18" fill="none" aria-hidden="true"><path d="M10 2 L18 16 H2 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    <span>Oracle Prism</span>
+  </span>
+  <span class="spacer"></span>
+  <span class="hint" id="slide-name"></span>
+  <div class="langsw" role="group" aria-label="Language">
+    <button id="btn-en" lang="en" aria-pressed="true">EN</button>
+    <button id="btn-th" lang="th" aria-pressed="false">ไทย</button>
+  </div>
+  <button class="nav-btn" id="prev" aria-label="Previous slide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <button class="counter" id="counter" aria-label="Show all slides">1 / 17</button>
+  <button class="nav-btn" id="next" aria-label="Next slide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+</nav>
+
+<script>
+(() => {
+  'use strict';
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const bands = Array.from(document.querySelectorAll('.spectrum i'));
+  const counter = document.getElementById('counter');
+  const slideName = document.getElementById('slide-name');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const overview = document.getElementById('overview');
+  const ovGrid = document.getElementById('ov-grid');
+  const btnEn = document.getElementById('btn-en');
+  const btnTh = document.getElementById('btn-th');
+
+  let index = 0, gridOpen = false, lang = 'en';
+
+  slides.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'ov-card';
+    b.dataset.l = s.dataset.l || '4';
+    b.innerHTML = '<span class="n">' + String(i + 1).padStart(2, '0') + '</span><span class="t"></span><span class="d"></span>';
+    b.querySelector('.t').textContent = s.dataset.title || '';
+    b.querySelector('.d').textContent = s.dataset.desc || '';
+    b.addEventListener('click', () => { closeGrid(); go(i); });
+    ovGrid.appendChild(b);
+  });
+
+  function setLang(next) {
+    lang = (next === 'th') ? 'th' : 'en';
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.lang = lang;
+    btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+    btnTh.setAttribute('aria-pressed', String(lang === 'th'));
+    try { localStorage.setItem('prism-deck-lang', lang); } catch (e) {}
+  }
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+    counter.textContent = (index + 1) + ' / ' + total;
+    slideName.textContent = slides[index].dataset.title || '';
+    const lit = Math.round(((index + 1) / total) * bands.length);
+    bands.forEach((b, i) => b.classList.toggle('on', i < lit));
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === total - 1;
+    const h = slides[index].dataset.hash;
+    if (h) { try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+  }
+  function go(i) { index = Math.max(0, Math.min(total - 1, i)); render(); window.scrollTo({ top: 0, behavior: 'instant' }); }
+  function openGrid(){ gridOpen = true; document.body.classList.add('grid-mode'); overview.classList.add('is-open'); }
+  function closeGrid(){ gridOpen = false; document.body.classList.remove('grid-mode'); overview.classList.remove('is-open'); }
+
+  prevBtn.addEventListener('click', () => go(index - 1));
+  nextBtn.addEventListener('click', () => go(index + 1));
+  counter.addEventListener('click', () => gridOpen ? closeGrid() : openGrid());
+  btnEn.addEventListener('click', () => setLang('en'));
+  btnTh.addEventListener('click', () => setLang('th'));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (k === 'Escape' && gridOpen) { closeGrid(); return; }
+    if (k === 'g' || k === 'G') { e.preventDefault(); gridOpen ? closeGrid() : openGrid(); return; }
+    if (k === 's' || k === 'S') { e.preventDefault(); setLang(lang === 'en' ? 'th' : 'en'); return; }
+    if (gridOpen) return;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); go(index + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(index - 1); }
+    else if (k === 'Home') { e.preventDefault(); go(0); }
+    else if (k === 'End') { e.preventDefault(); go(total - 1); }
+    else if (k === 'f' || k === 'F') { e.preventDefault(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+  });
+
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (tx === null || gridOpen) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 60) go(index + (dx < 0 ? 1 : -1));
+    tx = null;
+  }, { passive: true });
+
+  function fromHash() {
+    const h = location.hash.slice(1); if (!h) return false;
+    const i = slides.findIndex(s => s.dataset.hash === h);
+    if (i >= 0) { index = i; return true; } return false;
+  }
+  window.addEventListener('hashchange', () => { if (fromHash()) render(); });
+
+  let saved = 'en';
+  try { saved = localStorage.getItem('prism-deck-lang') || 'en'; } catch (e) {}
+  setLang(saved);
+  fromHash();
+  render();
+})();
+</script>
