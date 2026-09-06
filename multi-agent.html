@@ -314,7 +314,7 @@ body.notes-open .slide.is-active{animation:none}
   <h2 class="en">Most failures are the humans, not the agents.</h2>
   <h2 class="th">ที่พังส่วนใหญ่มาจากคน ไม่ใช่เอเจนต์</h2>
   <p class="src">MAST taxonomy, arXiv:2503.13657 — 7 frameworks, 14 failure modes</p>
-  <div class="note"><p class="en">Specification 41.77%, inter-agent misalignment 36.94%, verification 21.30%. The fleet's own failure log — boot death, stale reports, queued ≠ delivered, resuming dead sessions — all falls in the second and third buckets. No recorded spec failures, which is either good design or a blind spot.</p><p class="th">การระบุงาน 41.77% เอเจนต์ไม่ตรงกัน 36.94% การตรวจสอบ 21.30% บันทึกความล้มเหลวของฟลีตเอง — บูตตาย รายงานเก่า เข้าคิว≠ส่งถึง ปลุก session ตาย — ตกอยู่ในกลุ่มสองกับสามทั้งหมด ไม่มีบันทึกพังจากโจทย์เลย จะเพราะออกแบบดีหรือเป็นจุดบอดก็ยังไม่รู้</p></div>
+  <div class="note"><p class="en">Specification 41.77%, inter-agent misalignment 36.94%, verification 21.30%. The fleet's own failure log — boot death, stale reports, queued ≠ delivered, resuming dead sessions — all falls in the second and third buckets. No recorded spec failures, which is either good design or a blind spot.</p><p class="th">การระบุงาน 41.77% เอเจนต์ไม่ตรงกัน 36.94% การตรวจสอบ 21.30% บันทึกความล้มเหลวของฟลีตเอง — บูตตาย รายงานเก่า เข้าคิว ≠ ส่งถึง ปลุก session ตาย — ตกอยู่ในกลุ่มสองกับสามทั้งหมด ไม่มีบันทึกพังจากโจทย์เลย จะเพราะออกแบบดีหรือเป็นจุดบอดก็ยังไม่รู้</p></div>
 </section>
 
 <!-- 17 -->
@@ -336,7 +336,7 @@ body.notes-open .slide.is-active{animation:none}
   <p class="sub en">Agents work inside the frame. They can't tell you the frame is wrong.</p>
   <p class="sub th">เอเจนต์ทำงานอยู่ในกรอบ มันบอกไม่ได้ว่ากรอบผิด</p>
   <p class="src">mawjs-oracle · premise-check · 2–5 minutes</p>
-  <div class="note"><p class="en">Verbatim: "Evaluators optimize inside the frame … they cannot validate the frame itself. Convergent answers within a wrong frame look like high confidence but are actually correlated wrong answers." This is the rule the papers don't have — and MAST says 42% of failures live exactly here.</p><p class="th">ตรงตัว: "ตัวประเมินทำงานอยู่ในกรอบ … มันตรวจตัวกรอบเองไม่ได้ คำตอบที่ตรงกันในกรอบที่ผิด ดูเหมือนมั่นใจสูง แต่จริง ๆ คือผิดพร้อมกัน" นี่คือกฎที่เปเปอร์ไม่มี แล้ว MAST บอกว่า 42% ของความล้มเหลวอยู่ตรงนี้พอดี</p></div>
+  <div class="note"><p class="en">Verbatim: "Evaluators optimize inside the frame … they cannot validate the frame itself. Convergent answers within a wrong frame look like high confidence but are actually correlated wrong answers." This is the rule the papers don't have — and MAST says 42% of failures live exactly here.</p><p class="th">ตรงตัว: "ตัวประเมินทำงานอยู่ในกรอบ … มันตรวจตัวกรอบเองไม่ได้ คำตอบที่ตรงกันในกรอบที่ผิด ดูเหมือนมั่นใจสูง แต่จริง ๆ คือผิดพร้อมกัน" นี่คือกฎที่งานวิจัยไม่มี แล้ว MAST บอกว่า 42% ของความล้มเหลวอยู่ตรงนี้พอดี</p></div>
 </section>
 
 <!-- 19 -->
@@ -368,7 +368,7 @@ body.notes-open .slide.is-active{animation:none}
   <h2 class="th">พอสองเอเจนต์เห็นตรงกัน<span class="o">โดยไม่ได้นัด</span> นั่นคือหลักฐาน</h2>
   <p class="sub en">Every framework calls duplicate work waste. The fleet calls it a second opinion — as long as they didn't share the frame.</p>
   <p class="sub th">ทุกเฟรมเวิร์กเรียกงานซ้ำว่าสิ้นเปลือง ฟลีตเรียกว่าความเห็นที่สอง ตราบใดที่ไม่ได้ใช้กรอบเดียวกัน</p>
-  <div class="note"><p class="en">mawjs-oracle 2026-04-16: "when two oracles of shared lineage independently research the same technical question and arrive at the same answer, that convergence is materially stronger evidence than a single-oracle decision." The ensemble papers agree — 15 copies of Llama2-13B match Llama2-70B; debate lifts arithmetic from 67% to 82%. The caveat is Rule 2.</p><p class="th">mawjs-oracle 2026-04-16: "พอ oracle สองตัวที่สายเลือดเดียวกัน ค้นคำถามเดียวกันแยกกันแล้วได้คำตอบเดียวกัน จุดบรรจบนั้นคือหลักฐานที่หนักแน่นกว่า oracle เดียวมาก" เปเปอร์ ensemble เห็นด้วย Llama2-13B 15 ตัวเทียบ Llama2-70B ได้ debate ดันเลขคณิตจาก 67% เป็น 82% ข้อยกเว้นคือกฎข้อ 2</p></div>
+  <div class="note"><p class="en">mawjs-oracle 2026-04-16: "when two oracles of shared lineage independently research the same technical question and arrive at the same answer, that convergence is materially stronger evidence than a single-oracle decision." The ensemble papers agree — 15 copies of Llama2-13B match Llama2-70B; debate lifts arithmetic from 67% to 82%. The caveat is Rule 2.</p><p class="th">mawjs-oracle 2026-04-16: "พอ oracle สองตัวที่สายเลือดเดียวกัน ค้นคำถามเดียวกันแยกกันแล้วได้คำตอบเดียวกัน จุดบรรจบนั้นคือหลักฐานที่หนักแน่นกว่า oracle เดียวมาก" งานวิจัย ensemble เห็นด้วย Llama2-13B 15 ตัวเทียบ Llama2-70B ได้ debate ดันเลขคณิตจาก 67% เป็น 82% ข้อยกเว้นคือกฎข้อ 2</p></div>
 </section>
 
 <!-- 22 -->
